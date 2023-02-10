@@ -1,6 +1,4 @@
-# s6-baby-monitor-simulator-frontend
-
-This template should help get you started developing with Vue 3 in Vite.
+# Baby Monitor Simulator (frontend)
 
 ## Recommended IDE Setup
 
