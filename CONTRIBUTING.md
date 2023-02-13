@@ -1,16 +1,15 @@
+# Tickets
+Basic rules for branches and tickets within this project.
+
 # Project Board
 > Please move your ticket to the appropriate catagory whenever creating, updating or completing a task.
-https://github.com/users/WinteryFox/projects/1
+[https://github.com/users/WinteryFox/projects/1](https://github.com/orgs/Baby-Monitor-Simulator/projects/3)
 
 | Column      | Purpose | *Note* | 
 | ----------- | ----------- | ----------- |
-| Backlog | **Upcoming Sprint Tickets** | *Remember to convert newly created tasks to issues through the GitHub interface.* |
-| Open | **Current ToDo Sprint Tickets** | *Remember to convert newly created tasks to issues through the GitHub interface.* |
+| Backlog | **ToDo Sprint Tickets** | *Remember to convert newly created tasks to issues through the GitHub interface.* |
 | In Progress | **In Development Tickets** (with separate branch) | *Remember to create a merge request and associate it with the branch and ticket.* |
 | In Review | **In Review Tickets** (with another user than the developer reviewing it) | *Remember to approve the merge requests.* |
-| To Test | **Approved Tickets** (from review) That **Still Need Testing** (following test plan) | ~~placeholder~~ |
-| In Testing | **In Testing Tickets** | ~~placeholder~~ |
-| To Integrate | **Reviewed and Tested Tickets**, Ready for Merge | *Merge the branche through the merge request if pipelines succeed.* |
 | Done | **Completed Sprint Tickets** | *Don't forget to move merged branches here when done.* |
 
 # Branches
