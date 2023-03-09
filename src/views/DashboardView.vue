@@ -3,5 +3,6 @@
 
 <template>
   <main>
+    <v-slider></v-slider>
   </main>
 </template>
