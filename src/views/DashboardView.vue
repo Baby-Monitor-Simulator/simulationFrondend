@@ -3,6 +3,6 @@
 
 <template>
   <main>
-    <v-slider></v-slider>
+    <v-slider direction="vertical"></v-slider>
   </main>
 </template>
