@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
-
+import GraphVue from '@/components/Graph.vue';
 // reactive state
 const count = ref(0)
 
@@ -11,9 +11,20 @@ onMounted(() => {
 </script>
 <template>
     <v-row justify="center" class="mt-2">
-      <v-col sm="6">
+      <v-col sm="2">
         <v-slider></v-slider>
+      </v-col>
+      <v-col sm="10">
+        <v-row>
+          <GraphVue></GraphVue>
+        </v-row>
       </v-col>
     </v-row>
 </template>
-<style></style>
+<style>
+v-row{
+  min-height: 50vh;
+  min-width: 100vw;
+}
+
+</style>
