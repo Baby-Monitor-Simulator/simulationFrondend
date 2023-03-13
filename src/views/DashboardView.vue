@@ -1,11 +1,19 @@
-<script setup lang="ts">
+<script lang="ts" setup>
+import { ref, onMounted } from 'vue'
+
+// reactive state
+const count = ref(0)
+
+// lifecycle hooks
+onMounted(() => {
+  console.log(`The initial count is ${count.value}.`)
+})
 </script>
-
 <template>
-  <main>
-    <div>
-          <v-slider direction="horizontal"></v-slider>
-    </div>
-
-  </main>
+    <v-row justify="center" class="mt-2">
+      <v-col sm="6">
+        <v-slider></v-slider>
+      </v-col>
+    </v-row>
 </template>
+<style></style>
