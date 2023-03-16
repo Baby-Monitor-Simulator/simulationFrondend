@@ -12,9 +12,6 @@ onMounted(() => {
 </script>
 <template>
     <v-row justify="center" class="mt-2">
-      <v-col sm="2">
-        <v-slider></v-slider>
-      </v-col>
       <v-col sm="10">
         <v-row>
           <GraphVue></GraphVue>

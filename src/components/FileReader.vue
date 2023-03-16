@@ -1,30 +1,29 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { ref, reactive, computed } from 'vue'
 import { useImportStore } from '@/stores/import'
 import type MatlabFile from "@/interfaces/IExpectedFileContent"
 
-let file: any = ref({})
-let content: any = ref("")
+const file: any = reactive({})
+const content: any = ref("")
 const docFile: any = ref(null)
 const importFile: any = useImportStore()
+const loading: any = ref(false)
 
-
-// functions
 function readMatlabTxtFile(): void {
-    file = docFile.value.files[0];
+    file.value = docFile.value.files[0];
     const reader = new FileReader();
-    if (file.name.includes(".txt")) {
+    if (file.value.name.includes(".txt")) {
         reader.onload = (res) => {
-            content = res.target!.result;
+            content.value = res.target!.result;
         };
-        reader.onerror = (err) => console.log(err);
-        reader.readAsText(file);
+        reader.readAsText(file.value);
     }
 }
 
 function parseMatLabTxtData(): void {
-    const pairs = content.split("\n")
-    const parsedContent: MatlabFile[] = [] 
+    loading.value = true
+    const pairs = content.value.split("\n")
+    const parsedContent: MatlabFile[] = []
     for (let i = 0; i < pairs.length; i++) {
         const pair = pairs[i];
         const indexEndOfLeftValue = pair.indexOf("\t")
@@ -36,13 +35,33 @@ function parseMatLabTxtData(): void {
         parsedContent.push(parsedValuesObject)
     }
     importFile.fileContent = parsedContent
+    setTimeout(() => (loading.value = false), 750)
 }
+
+const isFileEmpty = computed(() => {
+    return content.value.length > 0
+})
 
 </script>
 
 <template>
-    <v-btn variant="outlined" @click="parseMatLabTxtData">Load File</v-btn>
-    <div style="border-style:solid">
-        <input type="file" ref="docFile" @change="readMatlabTxtFile()" />
-    </div>
+    <v-container>
+        <v-row no-gutters>
+            <v-sheet class="ma-1 pa-2">
+                <v-btn :disabled="!isFileEmpty" :loading="loading" color="blue-grey" icon="mdi-cloud-upload"
+                    @click="parseMatLabTxtData()">
+                </v-btn>
+            </v-sheet>
+            <v-sheet class="ma-1 pa-1 file-reader-input">
+                <v-file-input :disabled="loading" prepend-icon="" ref="docFile" clearable accept=".txt" label="File input"
+                    @change="readMatlabTxtFile()"></v-file-input>
+            </v-sheet>
+        </v-row>
+    </v-container>
 </template>
+
+<style scoped>
+.file-reader-input {
+    width: 20rem
+}
+</style>
