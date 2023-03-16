@@ -1,6 +1,8 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import GraphVue from '@/components/Graph.vue';
+import Navbar from '@/components/Navbar.vue';
+import HeaderComponent from '@/components/Header.vue';
 // reactive state
 const count = ref(0)
 
@@ -10,21 +12,36 @@ onMounted(() => {
 })
 </script>
 <template>
-    <v-row justify="center" class="mt-2">
-      <v-col sm="2">
-        <v-slider></v-slider>
+    <v-row>
+      <v-col md="2">
+        <Navbar></Navbar>
+        <!--<v-slider></v-slider> -->
       </v-col>
-      <v-col sm="10">
+      <v-col md="10">
         <v-row>
-          <GraphVue></GraphVue>
+            <HeaderComponent></HeaderComponent>
+        </v-row>
+        <v-row>
+          <v-col md-6>
+            <GraphVue></GraphVue>
+          </v-col>
+          <v-col md-6>
+            <GraphVue></GraphVue>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col md-6>
+            <GraphVue></GraphVue>
+          </v-col>
+          <v-col md-6>
+            <GraphVue></GraphVue>
+          </v-col>
+
         </v-row>
       </v-col>
     </v-row>
 </template>
 <style>
-v-row{
-  min-height: 50vh;
-  min-width: 100vw;
-}
+
 
 </style>
