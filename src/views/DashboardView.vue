@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue'
 import GraphVue from '@/components/Graph.vue';
+import FileReader from '@/components/FileReader.vue';
 // reactive state
 const count = ref(0)
 
@@ -17,6 +18,9 @@ onMounted(() => {
       <v-col sm="10">
         <v-row>
           <GraphVue></GraphVue>
+        </v-row>
+        <v-row>
+          <FileReader></FileReader>
         </v-row>
       </v-col>
     </v-row>
