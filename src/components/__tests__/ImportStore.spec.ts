@@ -12,8 +12,4 @@ describe('ImportStore', () => {
 
         expect(store.fileContent).toStrictEqual([])
     })
-
-    test('that MatLab .txt file can be read', () => {
-        
-    })
 })
