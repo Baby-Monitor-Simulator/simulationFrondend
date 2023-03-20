@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
 import Navbar from '@/components/Navbar.vue';
 import HeaderComponent from '@/components/Header.vue';
 </script>
@@ -16,7 +16,6 @@ import HeaderComponent from '@/components/Header.vue';
           <RouterView />
         </v-main>
       </v-layout>
-
   </v-app>
 </template>
 
