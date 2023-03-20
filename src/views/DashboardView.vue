@@ -1,16 +1,8 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
 import GraphVue from '@/components/Graph.vue';
-import FileReader from '@/components/FileReader.vue';
 import Navbar from '@/components/Navbar.vue';
 import HeaderComponent from '@/components/Header.vue';
-// reactive state
-const count = ref(0)
 
-// lifecycle hooks
-onMounted(() => {
-  console.log(`The initial count is ${count.value}.`)
-})
 </script>
 <template>
     <v-row>
@@ -37,9 +29,6 @@ onMounted(() => {
           <v-col md-6>
             <GraphVue :y-min="60" :y-max="200" :y-step-size="20" :chart-title="'Fetal Heart Rate (FHR)'"></GraphVue>
           </v-col>
-        </v-row>
-        <v-row>
-          <FileReader></FileReader>
         </v-row>
       </v-col>
     </v-row>

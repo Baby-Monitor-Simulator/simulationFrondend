@@ -1,17 +1,4 @@
-<script lang="ts">
-
-export default{
-    name: 'Header',
-
-    mounted(){
-
-    },
-    data(){
-
-    },
-
-
-}
+<script lang="ts" setup>
 
 </script>
 <template>

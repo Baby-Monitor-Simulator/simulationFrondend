@@ -63,6 +63,6 @@ const isFileEmpty = computed(() => {
 
 <style scoped>
 .file-reader-input {
-    width: 20rem
+    width: 142px
 }
 </style>

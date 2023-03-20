@@ -1,37 +1,25 @@
-<script lang="ts">
-
-export default{
-    name: 'NavBar',
-
-    mounted(){
-
-    },
-    data(){
-
-    },
-
-
-}
+<script lang="ts" setup>
+import FileReader from '@/components/FileReader.vue';
 
 </script>
 <template>
     <div class="container">
         <v-navigation-drawer theme="dark">
-        <v-list>
-            <v-list-item title="Data importeren"><RouterLink to="/"></RouterLink></v-list-item>
-            <v-list-item title="Data exporteren"></v-list-item>
-            <v-divider></v-divider>
-            <v-list-item title="Taal selecteren"></v-list-item>
-        </v-list>
-    </v-navigation-drawer>
+            <v-list>
+                <v-list-item title="Data importeren">
+                    <RouterLink to="/"></RouterLink>
+                </v-list-item>
+                <v-list-item title="Data exporteren"></v-list-item>
+                <v-divider></v-divider>
+                <v-list-item title="Taal selecteren"></v-list-item>
+                <FileReader></FileReader>
+            </v-list>
+        </v-navigation-drawer>
     </div>
-
-
-
 </template>
 
 <style scoped>
-    .container{
-        width: 10%;
-    }
+.container {
+    width: 10%;
+}
 </style>
