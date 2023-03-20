@@ -42,10 +42,10 @@ const options: any = {
     scales: {
         y: {
             type: 'linear',
-            min: 35, //39
-            max: 55, //43
+            min: props.yMin, //35
+            max: props.yMax, //55
             ticks: {
-                stepSize: 5
+                stepSize: props.yStepSize
             }
         },
         x: {
