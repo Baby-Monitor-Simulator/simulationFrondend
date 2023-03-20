@@ -6,18 +6,16 @@ import HeaderComponent from '@/components/Header.vue';
 
 <template>
   <v-app>
-    <v-card>
       <v-layout>
         <Navbar></Navbar>
         <v-app-bar title="Application bar">
           <HeaderComponent></HeaderComponent>
         </v-app-bar>
 
-        <v-main style="min-height: 300px;">
+        <v-main>
           <RouterView />
         </v-main>
       </v-layout>
-    </v-card>
 
   </v-app>
 </template>
