@@ -1,5 +1,3 @@
-// import testDataTxt from "../fixtures/map.txt"
-
 describe('Test File Input', () => {
   it('Upload File & Parse Data', () => {
     cy.visit("http://localhost:4173/")

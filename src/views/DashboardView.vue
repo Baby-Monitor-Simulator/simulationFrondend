@@ -6,14 +6,7 @@ import HeaderComponent from '@/components/Header.vue';
 </script>
 <template>
     <v-row>
-      <v-col md="2">
-        <Navbar></Navbar>
-        <!--<v-slider></v-slider> -->
-      </v-col>
       <v-col md="10">
-        <v-row>
-            <HeaderComponent></HeaderComponent>
-        </v-row>
         <v-row>
           <v-col md-6>
             <GraphVue :y-min="10" :y-max="20" :y-step-size="1" :chart-title="'Fetal Blood (Po2)'"></GraphVue>
