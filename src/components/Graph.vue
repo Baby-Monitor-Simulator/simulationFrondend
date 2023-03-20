@@ -1,20 +1,20 @@
+<template>
+    <div class="container">
+        <Line :data="data" :options="options" />
+    </div>
+</template>
+  
 <script lang="ts" setup>
+import { ref, onMounted } from 'vue'
+import { Chart as ChartJS, Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, type ChartData } from 'chart.js'
 import { Line } from 'vue-chartjs'
-import { Chart as ChartJS, Title, Tooltip, Legend, PointElement, LineElement, CategoryScale, LinearScale } from 'chart.js'
-import { ref, reactive, computed } from 'vue'
-import { useImportStore } from '@/stores/import'
+import { useImportStore } from '@/stores/import';
+
+ChartJS.register(Title, Tooltip, Legend, PointElement,
+    LineElement, CategoryScale, LinearScale)
 
 const importStore: any = useImportStore()
 
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    PointElement,
-    LineElement,
-    Title,
-    Tooltip,
-    Legend
-)
 
 const props = defineProps({
     yMin: Number,
@@ -23,39 +23,10 @@ const props = defineProps({
     chartTitle: String
 })
 
-const chartData: any = reactive({
-    title: 'test',
-    //x op de grafiek
-    labels: [0, 0.25, 0.5, 0.75, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-    datasets: [
-        {
-            //naam van de data
-            label: 'Old',
-            data: [{ x: 0.25, y: 37 }, { x: 0.5, y: 38 }],
-            pointRadius: 0,
-            backgroundColor: [
-                'rgba(164, 154, 159, 1)',
-            ],
-            borderColor: [
-                'rgba(164, 154, 159, 1)',
-            ],
-        },
-        {
-            //naam van de data
-            label: 'New',
-            data: [{ x: 0.25, y: 37 }, { x: 0.5, y: 38 }],
-            pointRadius: 0,
-            backgroundColor: [
-                'rgba(255,99,132,1)',
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-            ],
-        },
-    ]
-})
-
-const chartOptions: any = reactive({
+const options: any = {
+    animation: false,
+    spanGaps: true,
+    normalized: true,
     responsive: true,
     plugins: {
         title: {
@@ -63,33 +34,54 @@ const chartOptions: any = reactive({
             text: props.chartTitle
         }
     },
+    datasets: {
+        line: {
+            pointRadius: 0 // disable for all `'line'` datasets
+        }
+    },
     scales: {
         y: {
-            min: props.yMax,
-            max: props.yMax,
+            type: 'linear',
+            min: 35, //39
+            max: 55, //43
             ticks: {
-                stepSize: props.yStepSize
+                stepSize: 5
             }
         },
         x: {
             type: 'linear',
             min: 0,
-            max: 15,
+            max: 12,
             ticks: {
                 stepSize: 1
             }
         }
     },
+    maintainAspectRatio: false,
+}
+const data: any = ref<ChartData<'line'>>({
+    datasets: []
+})
+
+onMounted(() => {
+    setInterval(() => {
+        data.value = {
+            datasets: [
+                {
+                    label: 'Data',
+                    backgroundColor: [
+                        'rgba(255,99,132,1)',
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                    ],
+                    data: importStore.fileContent,
+                }
+            ]
+        }
+    }, 3000)
 })
 </script>
-
-<template>
-    <div class="container">
-        <Line id="my-chart-id" :options="chartOptions" :data="chartData" />
-        {{ importStore.fileContent }}
-    </div>
-</template>
-
 
 <style scoped>
 .container {

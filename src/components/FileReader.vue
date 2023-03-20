@@ -36,7 +36,7 @@ function parseMatLabTxtData(): void {
         parsedContent.push(parsedValuesObject)
     }
     importFile.fileContent = parsedContent
-    setTimeout(() => (loading.value = false), 750)
+    setTimeout(() => (loading.value = false), 500)
 }
 
 const isFileEmpty = computed(() => {
