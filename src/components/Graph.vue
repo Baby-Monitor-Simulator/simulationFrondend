@@ -36,14 +36,14 @@ const options: any = {
     },
     datasets: {
         line: {
-            pointRadius: 0 // disable for all `'line'` datasets
+            pointRadius: 0
         }
     },
     scales: {
         y: {
             type: 'linear',
-            min: props.yMin, //35
-            max: props.yMax, //55
+            min: props.yMin,
+            max: props.yMax,
             ticks: {
                 stepSize: props.yStepSize
             }
