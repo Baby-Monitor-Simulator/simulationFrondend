@@ -3,10 +3,11 @@ import { ref, reactive, computed } from 'vue'
 import { useImportStore } from '@/stores/import'
 import type MatlabFile from "@/interfaces/IExpectedFileContent"
 
-const file: any = reactive({})
-const content: any = ref("")
 const docFile: any = ref(null)
 const importFile: any = useImportStore()
+
+const file: any = reactive({})
+const content: any = ref("")
 const loading: any = ref(false)
 
 function readMatlabTxtFile(): void {
