@@ -36,7 +36,7 @@ function parseMatLabTxtData(): void {
     for (let i = 0; i < pairs.length; i++) {
         const pair = pairs[i];
         const indexEndOfLeftValue = pair.indexOf("\t")
-        const indexEndOfRightValue = pair.indexOf("\r")
+        const indexEndOfRightValue = pair.length
         const parsedValuesObject = {
             x: Number(pair.substring(0, indexEndOfLeftValue)),
             y: Number(pair.substring((indexEndOfLeftValue + 1), indexEndOfRightValue))
