@@ -8,7 +8,7 @@
                 <p>Babymonitor CTG Simulator</p>
             </v-col>
             <v-col md-3>
-                <button class="handleiding-btn">Handleiding</button>
+                <button class="manual-btn">Handleiding</button>
             </v-col>
         </v-row>
     </div>
@@ -22,7 +22,7 @@
     padding: 1%;
     width: 100%;
 }
-.handleiding-btn{
+.manual-btn{
     float: right;
 }
 </style>
