@@ -20,6 +20,6 @@ import FileReader from '@/components/FileReader.vue';
 
 <style scoped>
 .container {
-    width: 10%;
+    margin-right: 15px;
 }
 </style>
