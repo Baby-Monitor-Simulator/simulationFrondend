@@ -18,8 +18,8 @@
 
 <style scoped>
 .container{
-    margin: 3%;
-    padding: 1%;
+    margin: 15px;
+    padding: 10px;
     width: 100%;
 }
 .manual-btn{
