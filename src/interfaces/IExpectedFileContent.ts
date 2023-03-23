@@ -1,6 +1,4 @@
-interface MatlabFile {
+export default interface MatlabFile {
     x: Number,
     y: Number
 }
-
-export default MatlabFile
