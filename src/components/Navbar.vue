@@ -4,7 +4,7 @@ import FileReader from '@/components/FileReader.vue';
 </script>
 <template>
     <div class="container">
-        <v-navigation-drawer theme="dark" :disable-resize-watcher="true">
+        <v-navigation-drawer theme="dark" :disable-resize-watcher="true" :permanent="true">
             <v-list>
                 <v-list-item title="Data importeren">
                     <RouterLink to="/"></RouterLink>
