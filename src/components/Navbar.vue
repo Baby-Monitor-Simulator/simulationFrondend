@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import FileReader from '@/components/FileReader.vue';
+import Form from '@/components/Form.vue';
 
 </script>
 <template>
@@ -13,6 +14,7 @@ import FileReader from '@/components/FileReader.vue';
                 <v-divider></v-divider>
                 <v-list-item title="Change Language"></v-list-item>
                 <FileReader></FileReader>
+                <Form></Form>
             </v-list>
         </v-navigation-drawer>
     </div>
