@@ -87,9 +87,9 @@ export default {
 
         const scenarios = ref([
             scenarioOption.Normal,
-            scenarioOption.EarlyDeclaration,
-            scenarioOption.LateDeclaration,
-            scenarioOption.VarDeclaration // requires umbilical 2
+            scenarioOption.EarlyDeceleration,
+            scenarioOption.LateDeceleration,
+            scenarioOption.VarDeceleration // requires umbilical 2
         ])
 
         const umbilicalOptions = ref([
