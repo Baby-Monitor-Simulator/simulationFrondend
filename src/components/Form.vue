@@ -26,7 +26,7 @@
             placeholder="330"></v-text-field>
 
         <v-text-field variant="outlined" v-model.number="extraOxygen.value.value"
-            :error-messages="extraOxygen.errorMessage.value" label="Extra Oxygen"  placeholder="??"></v-text-field>
+            :error-messages="extraOxygen.errorMessage.value" label="Extra Oxygen" placeholder="??"></v-text-field>
 
         <v-btn variant="outlined" class="me-4" type="submit">
             submit
@@ -59,15 +59,19 @@ export default {
                 timeBetweenContractions(value: number) {
                     return value > 0 ? true : 'Time between contractions must be larger than 0.'
                 },
+                nCycleMax(value: number) {
+                    return value > 0 ? true : 'Number of cycles must be larger than 0.'
+                },
+                bloodVolumeFetus(value: number) {
+                    return value > 0 ? true : 'Blood volume (fetus) must be larger than 0.'
+                },
+                extraOxygen(value: number) {
+                    return value > 0 ? true : 'Extra oxygen must be larger than 0.'
+                },
                 umbilicalOption(value: string) {
                     if (value) return true
 
                     return 'Must select an umbilical option.'
-                },
-                checkbox(value: string) {
-                    if (value === '1') return true
-
-                    return 'Must be checked.'
                 },
             },
         })
@@ -76,12 +80,10 @@ export default {
         const maxAmplitude = useField('maxAmplitude') // mmHg
         const contractionDuration = useField('contractionDuration') // seconds
         const timeBetweenContractions = useField('timeBetweenContractions') // seconds
-
         const nCycleMax = useField('nCycleMax') // heartbeats of mother measured
         const bloodVolumeFetus = useField('bloodVolumeFetus')
         const extraOxygen = useField('extraOxygen') // can be done in oxygen4 as scenario>4
         const umbilicalOption = useField('umbilicalOption') // umbilical options; 2 makes more calculations
-        const checkbox = useField('checkbox')
 
         const scenarios = ref([
             scenarioOption.Normal,
@@ -99,7 +101,7 @@ export default {
             alert(JSON.stringify(values, null, 2))
         })
 
-        return { scenario, scenarios, contractionDuration, timeBetweenContractions, maxAmplitude, umbilicalOption, nCycleMax, bloodVolumeFetus, extraOxygen, checkbox, umbilicalOptions, submit, handleReset }
+        return { scenario, scenarios, contractionDuration, timeBetweenContractions, maxAmplitude, umbilicalOption, nCycleMax, bloodVolumeFetus, extraOxygen, umbilicalOptions, submit, handleReset }
     },
 }
 </script>
