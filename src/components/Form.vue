@@ -122,6 +122,7 @@ export default {
 .form-input {
     max-width: 240px;
     margin-left: 7px;
+    margin-bottom: 10px;
 }
 
 .form-buttons {
