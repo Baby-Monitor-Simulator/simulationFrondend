@@ -115,7 +115,7 @@ export default {
 <style>
 .form-input {
     max-width: 240px;
-    margin-left: 5px;
+    margin-left: 7px;
 }
 .form-buttons {
     margin-left: 25px;
