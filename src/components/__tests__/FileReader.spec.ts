@@ -20,6 +20,6 @@ describe('FileReader', () => {
     test('that the fileContent starts with an empty array', () => {
         const store = useImportStore()
 
-        expect(store.fileContent).toStrictEqual([])
+        expect(store.graphData).toStrictEqual([])
     })
 })

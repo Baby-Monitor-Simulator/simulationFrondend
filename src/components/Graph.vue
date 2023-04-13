@@ -75,7 +75,7 @@ onMounted(() => {
                     borderColor: [
                         'rgba(255,99,132,1)',
                     ],
-                    data: importStore.fileContent,
+                    data: importStore.graphData,
                 }
             ]
         }
