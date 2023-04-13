@@ -1,22 +1,28 @@
 <template>
     <v-form @submit.prevent="submit">
-        <v-select variant="outlined" v-model="scenario.value.value" :items="scenarios"
-            :error-messages="scenario.errorMessage.value" label="Selected Scenario"></v-select>
-
-        <!-- <v-select variant="outlined" v-model="umbilicalOption.value.value" :items="umbilicalOptions"
+        <div class="form-input">
+            <v-select variant="outlined" v-model="scenario.value.value" :items="scenarios"
+                :error-messages="scenario.errorMessage.value" label="Selected Scenario"></v-select>
+        </div>
+        <div class="form-input">
+            <!-- <v-select variant="outlined" v-model="umbilicalOption.value.value" :items="umbilicalOptions"
             :error-messages="umbilicalOption.errorMessage.value" label="Umbilical Options"></v-select> -->
-
-        <v-text-field variant="outlined" v-model.number="maxAmplitude.value.value"
-            :error-messages="maxAmplitude.errorMessage.value" label="Max Contraction Amplitude" placeholder="70"
-            suffix="mmHg"></v-text-field>
-
-        <v-text-field variant="outlined" v-model.number="contractionDuration.value.value"
-            :error-messages="contractionDuration.errorMessage.value" label="Contraction Duration" placeholder="60"
-            suffix="s"></v-text-field>
-
-        <v-text-field variant="outlined" v-model.number="timeBetweenContractions.value.value"
-            :error-messages="timeBetweenContractions.errorMessage.value" label="Time Between Contractions" placeholder="180"
-            suffix="s"></v-text-field>
+        </div>
+        <div class="form-input">
+            <v-text-field variant="outlined" v-model.number="maxAmplitude.value.value"
+                :error-messages="maxAmplitude.errorMessage.value" label="Max Contraction Amplitude" placeholder="70"
+                suffix="mmHg"></v-text-field>
+        </div>
+        <div class="form-input">
+            <v-text-field variant="outlined" v-model.number="contractionDuration.value.value"
+                :error-messages="contractionDuration.errorMessage.value" label="Contraction Duration" placeholder="60"
+                suffix="s"></v-text-field>
+        </div>
+        <div class="form-input">
+            <v-text-field variant="outlined" v-model.number="timeBetweenContractions.value.value"
+                :error-messages="timeBetweenContractions.errorMessage.value" label="Time Between Contractions"
+                placeholder="180" suffix="s"></v-text-field>
+        </div>
 
         <!-- <v-text-field variant="outlined" v-model.number="nCycleMax.value.value"
             :error-messages="nCycleMax.errorMessage.value" label="NCycleMax" placeholder="??"></v-text-field>
@@ -27,14 +33,15 @@
 
         <v-text-field variant="outlined" v-model.number="extraOxygen.value.value"
             :error-messages="extraOxygen.errorMessage.value" label="Extra Oxygen" placeholder="??"></v-text-field> -->
+        <div class="form-buttons">
+            <v-btn variant="outlined" class="me-4" type="submit">
+                submit
+            </v-btn>
 
-        <v-btn variant="outlined" class="me-4" type="submit">
-            submit
-        </v-btn>
-
-        <v-btn variant="outlined" @click="handleReset">
-            clear
-        </v-btn>
+            <v-btn variant="outlined" @click="handleReset">
+                clear
+            </v-btn>
+        </div>
     </v-form>
 </template>
 
@@ -105,3 +112,12 @@ export default {
     },
 }
 </script>
+<style>
+.form-input {
+    max-width: 240px;
+    margin-left: 5px;
+}
+.form-buttons {
+    margin-left: 25px;
+}
+</style>
