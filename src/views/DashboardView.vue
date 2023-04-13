@@ -1,17 +1,20 @@
 <script lang="ts" setup>
 import GraphVue from '@/components/Graph.vue';
-import {onMounted, ref} from "vue";
+import {markRaw, onMounted, reactive, ref} from "vue";
 import { useImportStore } from '@/stores/import';
+import type MatlabFile from "@/interfaces/IExpectedFileContent";
 
-let data = ref<Array<Number>>([])
+const counter = ref(0)
+const data = markRaw<Array<MatlabFile>>([])
 const importStore: any = useImportStore()
 
 onMounted(() => {
     let source = new EventSource("http://localhost:8080/api/sse")
     source.onmessage = (event) => {
-        data.value.push(Number(event.data) + 10)
-        console.log(data.value)
+        let value = {x: counter.value, y: Number(event.data) + 10}
+        data.push(value)
         importStore.graphData = data
+        counter.value = counter.value + 0.25
     }
 })
 </script>
