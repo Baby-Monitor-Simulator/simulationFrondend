@@ -3,11 +3,11 @@
         <v-select variant="outlined" v-model="scenario.value.value" :items="scenarios"
             :error-messages="scenario.errorMessage.value" label="Selected Scenario"></v-select>
 
-        <v-select variant="outlined" v-model="umbilicalOption.value.value" :items="umbilicalOptions"
-            :error-messages="umbilicalOption.errorMessage.value" label="Umbilical Options"></v-select>
+        <!-- <v-select variant="outlined" v-model="umbilicalOption.value.value" :items="umbilicalOptions"
+            :error-messages="umbilicalOption.errorMessage.value" label="Umbilical Options"></v-select> -->
 
         <v-text-field variant="outlined" v-model.number="maxAmplitude.value.value"
-            :error-messages="maxAmplitude.errorMessage.value" label="Max Amplitude" placeholder="70"
+            :error-messages="maxAmplitude.errorMessage.value" label="Max Contraction Amplitude" placeholder="70"
             suffix="mmHg"></v-text-field>
 
         <v-text-field variant="outlined" v-model.number="contractionDuration.value.value"
@@ -18,7 +18,7 @@
             :error-messages="timeBetweenContractions.errorMessage.value" label="Time Between Contractions" placeholder="180"
             suffix="s"></v-text-field>
 
-        <v-text-field variant="outlined" v-model.number="nCycleMax.value.value"
+        <!-- <v-text-field variant="outlined" v-model.number="nCycleMax.value.value"
             :error-messages="nCycleMax.errorMessage.value" label="NCycleMax" placeholder="??"></v-text-field>
 
         <v-text-field variant="outlined" v-model.number="bloodVolumeFetus.value.value"
@@ -26,7 +26,7 @@
             placeholder="330"></v-text-field>
 
         <v-text-field variant="outlined" v-model.number="extraOxygen.value.value"
-            :error-messages="extraOxygen.errorMessage.value" label="Extra Oxygen" placeholder="??"></v-text-field>
+            :error-messages="extraOxygen.errorMessage.value" label="Extra Oxygen" placeholder="??"></v-text-field> -->
 
         <v-btn variant="outlined" class="me-4" type="submit">
             submit

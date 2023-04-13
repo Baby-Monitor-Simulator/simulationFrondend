@@ -84,9 +84,12 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.container {
-    height: 40vh;
-    width: 35vw;
-    padding: 1%;
-}
+   
+    .container {
+        height: 40vh;
+        padding: 1%;
+    } 
+
+
+
 </style>
