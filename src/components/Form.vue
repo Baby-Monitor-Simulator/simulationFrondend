@@ -109,7 +109,13 @@ export default {
         })
 
         return { scenario, scenarios, contractionDuration, timeBetweenContractions, maxAmplitude, umbilicalOption, nCycleMax, bloodVolumeFetus, extraOxygen, umbilicalOptions, submit, handleReset }
-    },
+    }, 
+    mounted() {
+        this.scenario.value.value = scenarioOption.Normal
+        this.maxAmplitude.value.value = 1
+        this.contractionDuration.value.value = 1
+        this.timeBetweenContractions.value.value = 1
+    }
 }
 </script>
 <style>
@@ -117,6 +123,7 @@ export default {
     max-width: 240px;
     margin-left: 7px;
 }
+
 .form-buttons {
     margin-left: 25px;
 }
