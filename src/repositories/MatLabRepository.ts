@@ -1,27 +1,28 @@
-const axios = require('axios').default;
+import { Repository } from "@/repositories/Repository"
+import type ExampleInterface from "@/interfaces/ExampleInterface"
 
-// Make a request for a user with a given ID
-axios.get('/user?ID=12345')
-  .then(function (response: any) {
-    // handle success
-    console.log(response);
-  })
-  .catch(function (error: any) {
-    // handle error
-    console.log(error);
-  })
-  .finally(function () {
-    // always executed
-  });
+export default class MatLabRepository extends Repository {
+    //get graph data from bbackend
+    async getGraphData(): Promise<ExampleInterface[]> {
+        const response = await this.client().get(this.getUrl("v1/matlab/example"))
+
+        if (!response.data) {
+            throw new Error("Some Err")
+        }
+
+        return response.data
+    }
+
+    // send all values to backend
+    async sendInput(): Promise<ExampleInterface[]> {
+        const response = await this.client().post(this.getUrl("v1/matlab/example"))
+
+        if (!response.data) {
+            throw new Error("Some Err")
+        }
+
+        return response.data
+    }
+}
 
 
-
-// Want to use async/await? Add the `async` keyword to your outer function/method.
-// async function getUser() {
-//   try {
-//     const response = await axios.get('/user?ID=12345');
-//     console.log(response);
-//   } catch (error) {
-//     console.error(error);
-//   }
-//}
