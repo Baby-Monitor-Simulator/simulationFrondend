@@ -44,7 +44,7 @@ function parseMatLabTxtData(): void {
         parsedContent.push(parsedValuesObject)
     }
 
-    importFile.fileContent = parsedContent
+    importFile.graphData = parsedContent
     content.value = ""
     setTimeout(() => (loading.value = false), 500)
 }

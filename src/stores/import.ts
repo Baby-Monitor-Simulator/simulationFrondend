@@ -3,6 +3,6 @@ import type MatlabFile from "@/interfaces/IExpectedFileContent"
 
 export const useImportStore = defineStore('import', {
   state: () => {
-    return { fileContent: [] as MatlabFile[] }
+    return { graphData: [] as MatlabFile[] }
   },
 })
