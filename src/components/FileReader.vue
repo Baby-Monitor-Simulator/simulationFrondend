@@ -59,12 +59,12 @@ const isFileEmpty = computed(() => {
     <v-container>
         <v-row no-gutters>
             <v-sheet class="ma-1 pa-2">
-                <v-btn :disabled="isFileEmpty" :loading="loading" color="blue-grey" icon="mdi-cloud-upload"
+                <v-btn variant="outlined" :disabled="isFileEmpty" :loading="loading" color="blue-grey" icon="mdi-cloud-upload"
                     @click="parseMatLabTxtData()">
                 </v-btn>
             </v-sheet>
             <v-sheet class="ma-1 pa-1 file-reader-input">
-                <v-file-input :disabled="loading" prepend-icon="" ref="docFile" clearable accept=".txt" label="File input"
+                <v-file-input variant="outlined" :disabled="loading" prepend-icon="" ref="docFile" clearable accept=".txt" label="File input"
                     @change="readGeneralFileInput()"></v-file-input>
             </v-sheet>
         </v-row>
