@@ -4,10 +4,10 @@
             <v-select variant="outlined" v-model="scenario.value.value" :items="scenarios"
                 :error-messages="scenario.errorMessage.value" label="Selected Scenario"></v-select>
         </div>
-        <div class="form-input">
-            <!-- <v-select variant="outlined" v-model="umbilicalOption.value.value" :items="umbilicalOptions"
-            :error-messages="umbilicalOption.errorMessage.value" label="Umbilical Options"></v-select> -->
-        </div>
+        <!-- <div class="form-input">
+            <v-select variant="outlined" v-model="umbilicalOption.value.value" :items="umbilicalOptions"
+            :error-messages="umbilicalOption.errorMessage.value" label="Umbilical Options"></v-select>
+        </div> -->
         <div class="form-input">
             <v-text-field variant="outlined" v-model.number="maxAmplitude.value.value"
                 :error-messages="maxAmplitude.errorMessage.value" label="Max Contraction Amplitude" placeholder="70"
@@ -58,13 +58,13 @@ export default {
                     return value ? true : 'Must select a scenario.'
                 },
                 maxAmplitude(value: number) {
-                    return value > 0 ? true : 'Max amplitude must be larger than 0.'
+                    return value > 0 && value < 120 ? true : 'Amplitude must lie between 0-120.'
                 },
                 contractionDuration(value: number) {
-                    return value > 0 ? true : 'Contraction duration must be larger than 0.'
+                    return value > 30 && value < 150 ? true : 'Duration must lie between 30-150s.'
                 },
                 timeBetweenContractions(value: number) {
-                    return value > 0 ? true : 'Time between contractions must be larger than 0.'
+                    return value > 0 && value < 600 ? true : 'Time must lie between 0-600s.'
                 },
                 nCycleMax(value: number) {
                     return value > 0 ? true : 'Number of cycles must be larger than 0.'
@@ -112,9 +112,9 @@ export default {
     }, 
     mounted() {
         this.scenario.value.value = scenarioOption.Normal
-        this.maxAmplitude.value.value = 1
-        this.contractionDuration.value.value = 1
-        this.timeBetweenContractions.value.value = 1
+        this.maxAmplitude.value.value = 70
+        this.contractionDuration.value.value = 60
+        this.timeBetweenContractions.value.value = 180
     }
 }
 </script>
@@ -122,7 +122,7 @@ export default {
 .form-input {
     max-width: 240px;
     margin-left: 7px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
 .form-buttons {
