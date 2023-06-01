@@ -1,9 +1,8 @@
 import { Repository } from "@/repositories/Repository"
-import type ExampleInterface from "@/interfaces/ExampleInterface"
 
 export default class MatLabRepository extends Repository {
     // get graph data from backend
-    async getGraphData(): Promise<ExampleInterface[]> {
+    async getGraphData(): Promise<any[]> {
         const response = await this.client().get(this.getUrl("v1/matlab/example"))
 
         if (!response.data) {
@@ -14,7 +13,7 @@ export default class MatLabRepository extends Repository {
     }
 
     // send all values to backend
-    async sendInput(): Promise<ExampleInterface[]> {
+    async sendInput(): Promise<any[]> {
         const response = await this.client().post(this.getUrl("v1/matlab/example"))
 
         if (!response.data) {
