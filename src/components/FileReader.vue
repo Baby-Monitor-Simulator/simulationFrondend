@@ -2,6 +2,9 @@
 import { ref, reactive, computed, type Ref } from 'vue'
 import { useImportStore } from '@/stores/import'
 import type MatlabFile from "@/interfaces/IExpectedFileContent"
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n() // call `useI18n`, and spread `t` from  `useI18n` returning
 
 const docFile: any = ref(null)
 const importFile: any = useImportStore()
@@ -53,6 +56,10 @@ const isFileEmpty = computed(() => {
     return content.value.length === 0
 })
 
+const fileReader = computed(() => {
+    return t("message.fileInput")
+})
+
 </script>
 
 <template>
@@ -64,8 +71,8 @@ const isFileEmpty = computed(() => {
                 </v-btn>
             </v-sheet>
             <v-sheet class="ma-1 pa-1 file-reader-input">
-                <v-file-input variant="outlined" :disabled="loading" prepend-icon="" ref="docFile" clearable accept=".txt" label="File input"
-                    @change="readGeneralFileInput()"></v-file-input>
+                <v-file-input variant="outlined" :disabled="loading" prepend-icon="" ref="docFile" clearable accept=".txt"
+                    :label="fileReader" @change="readGeneralFileInput()"></v-file-input>
             </v-sheet>
         </v-row>
     </v-container>

@@ -23,7 +23,6 @@
                 :error-messages="timeBetweenContractions.errorMessage.value" label="Time Between Contractions"
                 placeholder="180" suffix="s"></v-text-field>
         </div>
-
         <!-- <v-text-field variant="outlined" v-model.number="nCycleMax.value.value"
             :error-messages="nCycleMax.errorMessage.value" label="NCycleMax" placeholder="??"></v-text-field>
 
@@ -33,14 +32,19 @@
 
         <v-text-field variant="outlined" v-model.number="extraOxygen.value.value"
             :error-messages="extraOxygen.errorMessage.value" label="Extra Oxygen" placeholder="??"></v-text-field> -->
+        <v-divider></v-divider>
         <div class="form-buttons">
-            <v-btn variant="outlined" class="me-4" type="submit">
-                submit
-            </v-btn>
+                <v-sheet class="ma-1 pa-2">
+                    <v-btn block variant="outlined" class="me-4" type="submit">
+                        {{ $t("message.submit") }}
+                    </v-btn>
+                </v-sheet>
 
-            <v-btn variant="outlined" @click="handleReset">
-                clear
-            </v-btn>
+                <v-sheet class="ma-1 pa-2">
+                    <v-btn block variant="outlined" @click="handleReset">
+                        {{ $t("message.clear") }}
+                    </v-btn>
+                </v-sheet>
         </div>
     </v-form>
 </template>
@@ -130,9 +134,5 @@ export default {
     max-width: 240px;
     margin-left: 7px;
     margin-bottom: 20px;
-}
-
-.form-buttons {
-    margin-left: 25px;
 }
 </style>

@@ -3,14 +3,18 @@ export default {
       message: {
         fileInput: 'File Input',
         manual: 'Manual',
-        selectedScenario: 'Selected Scenario'
+        selectedScenario: 'Selected Scenario',
+        submit: 'Submit',
+        clear: 'Clear',
       }
     },
     nl: {
       message: {
-        fileInput: 'Bestands Invoer',
+        fileInput: 'Bestand',
         manual: 'Handleiding',
-        selectedScenario: 'Geselecteerd Scenario'
+        selectedScenario: 'Geselecteerd Scenario',
+        submit: 'Bevestigen',
+        clear: 'Wissen',
       }
     }
   }
