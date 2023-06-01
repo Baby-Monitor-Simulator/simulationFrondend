@@ -2,26 +2,32 @@
 import FileReader from '@/components/FileReader.vue';
 import Form from '@/components/Form.vue';
 import { useI18n } from 'vue-i18n'
+import { computed } from 'vue'
 
 const { t, locale, availableLocales } = useI18n() // call `useI18n`, and spread `t` from  `useI18n` returning
 
 const switchLanguage = () => {
     locale.value === "en" ? locale.value = "nl" : locale.value = "en"
 }
+
+const languageString = computed(() => {
+    return locale.value === "en" ? "English" : "Nederlands"
+})
+
 </script>
 <template>
     <div class="container">
         <v-navigation-drawer theme="dark" :disable-resize-watcher="true" :permanent="true">
             <v-list>
-                <v-list-item title="Import Data">
-                    <RouterLink to="/"></RouterLink>
-                </v-list-item>
-                <v-list-item title="Export Data"></v-list-item>
+                <v-sheet class="ma-1 pa-2">
+                    <v-btn block prepend-icon="mdi-web" :title="languageString" @click="switchLanguage()" variant="outlined"
+                        color="blue-grey">{{ languageString }}</v-btn>
+                </v-sheet>
+                <v-sheet class="ma-1 pa-2">
+                    <v-btn block prepend-icon="mdi-download" title="Export Data" @click="null" variant="outlined"
+                        color="blue-grey">Export Data</v-btn>
+                </v-sheet>
                 <v-divider></v-divider>
-                <v-list-item title="Change Language">
-                    <v-btn @click="switchLanguage()" variant="outlined" color="blue-grey" icon="mdi-web">
-                    </v-btn>
-                </v-list-item>
                 <FileReader></FileReader>
                 <Form></Form>
             </v-list>
