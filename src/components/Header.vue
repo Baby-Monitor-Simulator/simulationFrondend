@@ -8,7 +8,7 @@
                 <p>Babymonitor CTG Simulator</p>
             </v-col>
             <v-col md-3>
-                <button class="manual-btn">Manual</button>
+                <button class="manual-btn">{{ $t("message.manual")}}</button>
             </v-col>
         </v-row>
     </div>

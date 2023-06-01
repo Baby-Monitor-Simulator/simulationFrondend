@@ -2,7 +2,7 @@
     <v-form @submit.prevent="submit">
         <div class="form-input">
             <v-select variant="outlined" v-model="scenario.value.value" :items="scenarios"
-                :error-messages="scenario.errorMessage.value" label="Selected Scenario"></v-select>
+                :error-messages="scenario.errorMessage.value" :label="selectedScenario"></v-select>
         </div>
         <!-- <div class="form-input">
             <v-select variant="outlined" v-model="umbilicalOption.value.value" :items="umbilicalOptions"
@@ -46,12 +46,15 @@
 </template>
 
 <script lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import scenarioOption from '@/enums/scenarioOptions'
+import { useI18n } from 'vue-i18n'
 
 export default {
     setup() {
+        const { t } = useI18n() // call `useI18n`, and spread `t` from  `useI18n` returning
+
         const { handleSubmit, handleReset } = useForm({
             validationSchema: {
                 scenario(value: string) {
@@ -108,8 +111,12 @@ export default {
             alert(JSON.stringify(values, null, 2))
         })
 
-        return { scenario, scenarios, contractionDuration, timeBetweenContractions, maxAmplitude, umbilicalOption, nCycleMax, bloodVolumeFetus, extraOxygen, umbilicalOptions, submit, handleReset }
-    }, 
+        const selectedScenario = computed(() => {
+            return t("message.selectedScenario")
+        })
+
+        return { scenario, scenarios, contractionDuration, timeBetweenContractions, maxAmplitude, umbilicalOption, nCycleMax, bloodVolumeFetus, extraOxygen, umbilicalOptions, submit, handleReset, selectedScenario }
+    },
     mounted() {
         this.scenario.value.value = scenarioOption.Normal
         this.maxAmplitude.value.value = 70
