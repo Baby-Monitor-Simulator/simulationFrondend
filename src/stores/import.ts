@@ -13,7 +13,6 @@ export const useImportStore = defineStore('import', {
   },
   actions: {
     clearAll() {
-      console.log("IN STORE CLEAR")
       this.graphData = []
       this.fetalHeartRate = []
       this.fetalBloodPressure = []
