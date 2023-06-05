@@ -4,6 +4,7 @@ import { useImportStore } from '@/stores/import'
 import FileReader from '@/components/FileReader.vue'
 import { createTestingPinia } from '@pinia/testing'
 import { mount } from '@vue/test-utils'
+import { useI18n } from 'vue-i18n'
 
 describe('FileReader', () => {
     beforeEach(() => {
@@ -19,6 +20,7 @@ describe('FileReader', () => {
 
     test('that the fileContent starts with an empty array', () => {
         const store = useImportStore()
+        const { t } = useI18n() // call `useI18n`, and spread `t` from  `useI18n` returning
 
         expect(store.graphData).toStrictEqual([])
     })
