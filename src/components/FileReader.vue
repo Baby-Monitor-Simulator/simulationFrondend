@@ -12,6 +12,7 @@ const importFile: any = useImportStore()
 const file: any = reactive({})
 const content: any = ref("")
 const loading = ref(false)
+const inputHasError = ref(false)
 
 function readGeneralFileInput(): void {
     if (docFile.value.files.length > 0) {
@@ -47,7 +48,21 @@ function parseMatLabTxtData(): void {
         parsedContent.push(parsedValuesObject)
     }
 
+    for (let i = 0; i < parsedContent.length; i++) {
+        const dataPair = parsedContent[i];
+        if (!dataPair.x || !dataPair.y) {
+            resetFileInputField();
+            inputHasError.value = true
+            return
+        }
+    }
+
+    inputHasError.value = false
     importFile.graphData = parsedContent
+    resetFileInputField();
+}
+
+function resetFileInputField(): void { // TODO: Reset String in Field
     content.value = ""
     setTimeout(() => (loading.value = false), 500)
 }
@@ -58,6 +73,10 @@ const isFileEmpty = computed(() => {
 
 const fileReader = computed(() => {
     return t("message.fileInput")
+})
+
+const errorText = computed(() => {
+    return inputHasError.value ? t("message.fileInputErrorText") : ""
 })
 
 </script>
@@ -71,7 +90,7 @@ const fileReader = computed(() => {
                 </v-btn>
             </v-sheet>
             <v-sheet class="ma-1 pa-1 file-reader-input">
-                <v-file-input variant="outlined" :disabled="loading" prepend-icon="" ref="docFile" clearable accept=".txt"
+                <v-file-input :error-messages="errorText" :error="inputHasError" variant="outlined" :disabled="loading" prepend-icon="" ref="docFile" clearable accept=".txt"
                     :label="fileReader" @change="readGeneralFileInput()"></v-file-input>
             </v-sheet>
         </v-row>

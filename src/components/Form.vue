@@ -32,13 +32,13 @@
 
         <v-text-field variant="outlined" v-model.number="extraOxygen.value.value"
             :error-messages="extraOxygen.errorMessage.value" label="Extra Oxygen" placeholder="??"></v-text-field> -->
-        <v-divider></v-divider>
         <div class="form-buttons">
                 <v-sheet class="ma-1 pa-2">
                     <v-btn block variant="outlined" class="me-4" type="submit">
                         {{ $t("message.submit") }}
                     </v-btn>
                 </v-sheet>
+                <v-divider></v-divider>
 
                 <v-sheet class="ma-1 pa-2">
                     <v-btn block variant="outlined" @click="handleReset">
@@ -73,13 +73,13 @@ export default {
                     return value ? true : 'Must select a scenario.'
                 },
                 maxAmplitude(value: number) {
-                    return value > 0 && value < 120 ? true : 'Amplitude must lie between 0-120.'
+                    return value > 0 && value < 120 ? true : errStrs.value.maxAmplitude
                 },
                 contractionDuration(value: number) {
-                    return value > 30 && value < 150 ? true : 'Duration must lie between 30-150s.'
+                    return value > 30 && value < 150 ? true : errStrs.value.contractionDuration
                 },
                 timeBetweenContractions(value: number) {
-                    return value > 0 && value < 600 ? true : 'Time must lie between 0-600s.'
+                    return value > 0 && value < 600 ? true : errStrs.value.timeBetweenContractions
                 },
                 nCycleMax(value: number) {
                     return value > 0 ? true : 'Number of cycles must be larger than 0.'
@@ -125,6 +125,15 @@ export default {
 
         const selectedScenario = computed(() => {
             return t("message.selectedScenario")
+        })
+
+        const errStrs = computed(() => {
+            return {
+                scenario: t("message.scenario"),
+                maxAmplitude: t("message.maxAmplitude") + " 0-120",
+                contractionDuration: t("message.maxAmplitude") + " 30-150s",
+                timeBetweenContractions: t("message.maxAmplitude") + " 0-600s",
+            }
         })
 
         const resetGraphs = () => {

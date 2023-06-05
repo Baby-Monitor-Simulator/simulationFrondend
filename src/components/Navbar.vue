@@ -4,7 +4,7 @@ import Form from '@/components/Form.vue';
 import { useI18n } from 'vue-i18n'
 import { computed } from 'vue'
 
-const { t, locale, availableLocales } = useI18n() // call `useI18n`, and spread `t` from  `useI18n` returning
+const { locale } = useI18n() // call `useI18n`, and spread `t` from  `useI18n` returning
 
 const switchLanguage = () => {
     locale.value === "en" ? locale.value = "nl" : locale.value = "en"
