@@ -45,6 +45,12 @@
                         {{ $t("message.clear") }}
                     </v-btn>
                 </v-sheet>
+
+                <v-sheet class="ma-1 pa-2">
+                    <v-btn block variant="outlined" @click="resetGraphs">
+                        {{ $t("message.reset") }}
+                    </v-btn>
+                </v-sheet>
         </div>
     </v-form>
 </template>
@@ -54,9 +60,11 @@ import { ref, computed } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import scenarioOption from '@/enums/scenarioOptions'
 import { useI18n } from 'vue-i18n'
+import { useImportStore } from '@/stores/import';
 
 export default {
     setup() {
+        const importStore: any = useImportStore()
         const { t } = useI18n() // call `useI18n`, and spread `t` from  `useI18n` returning
 
         const { handleSubmit, handleReset } = useForm({
@@ -119,10 +127,14 @@ export default {
             return t("message.selectedScenario")
         })
 
-        return { scenario, scenarios, contractionDuration, timeBetweenContractions, maxAmplitude, umbilicalOption, nCycleMax, bloodVolumeFetus, extraOxygen, umbilicalOptions, submit, handleReset, selectedScenario }
+        const resetGraphs = () => {
+            importStore.clearAll()
+        }
+
+        return { resetGraphs, scenario, scenarios, contractionDuration, timeBetweenContractions, maxAmplitude, umbilicalOption, nCycleMax, bloodVolumeFetus, extraOxygen, umbilicalOptions, submit, handleReset, selectedScenario }
     },
     mounted() {
-        this.scenario.value.value = scenarioOption.Normal
+        this.scenario.value.value = scenarioOption.VarDeceleration
         this.maxAmplitude.value.value = 70
         this.contractionDuration.value.value = 60
         this.timeBetweenContractions.value.value = 180
