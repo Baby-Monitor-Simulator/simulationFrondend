@@ -3,8 +3,10 @@ import { ref, reactive, computed, type Ref } from 'vue'
 import { useImportStore } from '@/stores/import'
 import type MatlabFile from "@/interfaces/IExpectedFileContent"
 import { useI18n } from 'vue-i18n'
+import { useHoverStore } from '@/stores/hover';
 
 const { t } = useI18n() // call `useI18n`, and spread `t` from  `useI18n` returning
+const hoverStore: any = useHoverStore()
 
 const docFile: any = ref(null)
 const importFile: any = useImportStore()
@@ -85,13 +87,13 @@ const errorText = computed(() => {
     <v-container>
         <v-row no-gutters>
             <v-sheet class="ma-1 pa-2">
-                <v-btn variant="outlined" :disabled="isFileEmpty" :loading="loading" color="blue-grey" icon="mdi-upload"
-                    @click="parseMatLabTxtData()">
+                <v-btn variant="outlined" :disabled="isFileEmpty" :loading="loading" icon="mdi-upload" @click="parseMatLabTxtData()">
                 </v-btn>
             </v-sheet>
             <v-sheet class="ma-1 pa-1 file-reader-input">
-                <v-file-input :error-messages="errorText" :error="inputHasError" variant="outlined" :disabled="loading" prepend-icon="" ref="docFile" clearable accept=".txt"
-                    :label="fileReader" @change="readGeneralFileInput()"></v-file-input>
+                <v-file-input :error-messages="errorText" :error="inputHasError" variant="outlined" :disabled="loading"
+                    prepend-icon="" ref="docFile" clearable accept=".txt" :label="fileReader"
+                    @change="readGeneralFileInput()"></v-file-input>
             </v-sheet>
         </v-row>
     </v-container>

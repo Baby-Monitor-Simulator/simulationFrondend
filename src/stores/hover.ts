@@ -5,7 +5,7 @@ export const useHoverStore = defineStore('hover', {
     return {
       hoverLanguage: false as Boolean,
       hoverExport: false as Boolean,
-      hoverImport: false as Boolean,
+      import: false as Boolean,
       hoverScenario: false as Boolean,
       hoverInputs: false as Boolean,
       hoverSubmit: false as Boolean,

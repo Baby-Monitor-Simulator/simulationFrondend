@@ -27,10 +27,10 @@
 
                 <v-divider inset></v-divider>
 
-                <v-list-item prepend-icon="mdi-upload" title="Importing Data">
+                <v-list-item v-on:mouseenter="triggerHover(HoverItem.Import)"
+                    v-on:mouseleave="releaseHover(HoverItem.Import)" prepend-icon="mdi-upload" title="Importing Data">
                     <template v-slot:subtitle>
-                        <span class="font-weight-bold">Sandra Adams</span> &mdash; Do you have Paris recommendations?
-                        Have you ever been?
+                        Placeholder
                     </template>
                 </v-list-item>
             </v-list>
@@ -43,6 +43,7 @@ import HoverItem from "@/enums/hoverItems"
 
 const hoverStore: any = useHoverStore()
 
+// you can probably use `onmousemove` for both: https://www.w3schools.com/jsref/event_onmouseover.asp
 const triggerHover = (item: HoverItem) => {
     switch (item) {
         case HoverItem.Language:
@@ -50,6 +51,9 @@ const triggerHover = (item: HoverItem) => {
             break
         case HoverItem.Export:
             hoverStore.export = true
+            break
+        case HoverItem.Import:
+            hoverStore.import = true
             break
     }
 }
@@ -61,6 +65,9 @@ const releaseHover = (item: any) => {
             break
         case HoverItem.Export:
             hoverStore.export = false
+            break
+        case HoverItem.Import:
+            hoverStore.import = false
             break
     }
 }
