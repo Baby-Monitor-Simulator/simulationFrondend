@@ -1,8 +1,10 @@
 <script lang="ts" setup>
 import { useGlobalStore } from '@/stores/global';
-import { computed } from 'vue'
+import { ref, computed, watch } from 'vue'
+import Overlay from "@/components/Overlay.vue"
 
 const globalStore: any = useGlobalStore()
+const overlay = ref(false)
 
 const controlManual = () => {
     globalStore.showGraph = !globalStore.showGraph
@@ -20,10 +22,12 @@ const displayedIcon = computed(() => {
                 <p>Babymonitor CTG Simulator</p>
             </v-col>
             <v-col md-3>
-                <v-btn block :prepend-icon="displayedIcon" @click="controlManual()" variant="outlined" color="blue-grey">{{
-                    globalStore.showGraph ? $t("message.manual") : $t("message.showGraph") }}</v-btn>
+                <v-btn block :prepend-icon="displayedIcon" @click="overlay = !overlay" variant="outlined"
+                    color="blue-grey">{{ globalStore.showGraph ? $t("message.manual") : $t("message.showGraph") }}
+                </v-btn>
             </v-col>
         </v-row>
+        <Overlay />
     </div>
 </template>
 
