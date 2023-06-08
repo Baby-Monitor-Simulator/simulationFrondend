@@ -22,12 +22,12 @@ const displayedIcon = computed(() => {
                 <p>Babymonitor CTG Simulator</p>
             </v-col>
             <v-col md-3>
-                <v-btn block :prepend-icon="displayedIcon" @click="overlay = !overlay" variant="outlined"
+                <v-btn block :append-icon="displayedIcon" @click="overlay = !overlay" variant="outlined"
                     color="blue-grey">{{ globalStore.showGraph ? $t("message.manual") : $t("message.showGraph") }}
                 </v-btn>
+                <Overlay />
             </v-col>
         </v-row>
-        <Overlay />
     </div>
 </template>
 
