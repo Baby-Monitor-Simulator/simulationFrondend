@@ -1,4 +1,5 @@
 # Baby Monitor Simulator (frontend)
+Primitive frontend code for a baby monitor simulator.
 
 ## Recommended IDE Setup
 

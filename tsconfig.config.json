@@ -5,6 +5,6 @@
     "composite": true,
     "types": ["node"],
     "preserveValueImports": false,
-    "importsNotUsedAsValues": "remove",
+    "importsNotUsedAsValues": "remove"
   }
 }

@@ -1,6 +1,6 @@
 {
-  "name": "s6-baby-monitor-simulator-frontend",
-  "version": "0.0.0",
+  "name": "baby-monitor-simulator",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "vite",
