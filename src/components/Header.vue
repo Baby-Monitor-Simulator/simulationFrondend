@@ -1,11 +1,16 @@
 <script lang="ts" setup>
 import { useGlobalStore } from '@/stores/global';
+import { computed } from 'vue'
 
 const globalStore: any = useGlobalStore()
 
 const controlManual = () => {
     globalStore.showGraph = !globalStore.showGraph
 }
+
+const displayedIcon = computed(() => {
+    return globalStore.showGraph ? "mdi-help" : "mdi-chart-line"
+})
 
 </script>
 <template>
@@ -15,22 +20,21 @@ const controlManual = () => {
                 <p>Babymonitor CTG Simulator</p>
             </v-col>
             <v-col md-3>
-                <!--  <button class="manual-btn">{{ $t("message.manual")}}</button> -->
-                <button class="manual-btn" @click="controlManual()">{{ globalStore.showGraph ? $t("message.manual") : $t("message.showGraph")}}</button>
+                <v-btn block :prepend-icon="displayedIcon" @click="controlManual()" variant="outlined" color="blue-grey">{{
+                    globalStore.showGraph ? $t("message.manual") : $t("message.showGraph") }}</v-btn>
             </v-col>
         </v-row>
     </div>
-
 </template>
 
 <style scoped>
-
-.container{
+.container {
     margin: 15px;
     padding: 10px;
     width: 100%;
 }
-.manual-btn{
+
+.manual-btn {
     float: right;
 }
 </style>
