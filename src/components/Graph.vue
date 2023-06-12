@@ -32,8 +32,11 @@ const options: any = {
     responsive: true,
     plugins: {
         title: {
-            display: true,
+            display: false,
             text: props.chartTitle
+        },
+        legend: {
+            display: false
         }
     },
     datasets: {
@@ -49,6 +52,18 @@ const options: any = {
             ticks: {
                 stepSize: props.yStepSize
             },
+            title: {
+                display: true,
+                text: props.chartTitle,
+                color: '#911',
+                font: {
+                    family: 'Cascadia Mono',
+                    size: 16,
+                    weight: 'bold',
+                    lineHeight: 1.2,
+                },
+                padding: { top: 0, left: 0, right: 20, bottom: 0 }
+            }
         },
         x: {
             type: 'linear',
@@ -63,7 +78,7 @@ const options: any = {
                 color: '#911',
                 font: {
                     family: 'Cascadia Mono',
-                    size: 20,
+                    size: 16,
                     weight: 'bold',
                     lineHeight: 1.2,
                 },
@@ -84,7 +99,6 @@ onMounted(() => { // control individual graph properties
                 data.value = {
                     datasets: [
                         {
-                            label: 'Data',
                             backgroundColor: [
                                 'rgba(255,99,132,1)',
                             ],
@@ -102,7 +116,6 @@ onMounted(() => { // control individual graph properties
                 data.value = {
                     datasets: [
                         {
-                            label: 'Data',
                             backgroundColor: [
                                 'rgba(255,99,132,1)',
                             ],
@@ -120,7 +133,6 @@ onMounted(() => { // control individual graph properties
                 data.value = {
                     datasets: [
                         {
-                            label: 'Data',
                             backgroundColor: [
                                 'rgba(255,99,132,1)',
                             ],
