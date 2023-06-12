@@ -6,21 +6,32 @@ import type MatlabFile from "@/interfaces/IExpectedFileContent";
 import { useGlobalStore } from '@/stores/global';
 import GraphType from "@/enums/graphTypes"
 
-const counter = ref(0)
-const data = markRaw<Array<MatlabFile>>([])
 const importStore: any = useImportStore()
 const globalStore: any = useGlobalStore()
+const fetalBloodArr = markRaw<Array<MatlabFile>>([])
+const fetalBloodPressureArr = markRaw<Array<MatlabFile>>([])
+const UterineContractionsArr = markRaw<Array<MatlabFile>>([])
+const FetalHeartRateArr = markRaw<Array<MatlabFile>>([])
 
 onMounted(() => {
   let source = new EventSource("http://localhost:8080/api/sse")
-  source.onmessage = (event) => {
-    let value = { x: counter.value, y: Number(event.data) + 10 }
-    data.push(value)
-    importStore.fetalHeartRate = data
-    importStore.fetalBloodPressure = data
-    importStore.uterineContractions = data
-    importStore.fetalBlood = data
-    counter.value = counter.value + 0.25
+
+  source.onmessage = (event) => { // this is really ugly src
+    const body = JSON.parse(event.data)
+    let fetalBlood = { x: (body.x / 1000) / 60, y: body.fetalBlood }
+    let fetalBloodPressure = { x: (body.x / 1000) / 60, y: body.fetalBloodPressure }
+    let uterineContractions = { x: (body.x / 1000) / 60, y: body.uterineContractions }
+    let fetalHeartRate = { x: (body.x / 1000) / 60, y: body.fetalHeartRate }
+  
+    importStore.fetalBlood.push(fetalBlood)
+    fetalBloodPressureArr.push(fetalBloodPressure)
+    UterineContractionsArr.push(uterineContractions)
+    FetalHeartRateArr.push(fetalHeartRate)
+
+    importStore.fetalBlood = fetalBloodArr
+    importStore.fetalBloodPressure = fetalBloodPressureArr
+    importStore.uterineContractions = UterineContractionsArr
+    importStore.fetalHeartRate = FetalHeartRateArr
   }
 })
 </script>

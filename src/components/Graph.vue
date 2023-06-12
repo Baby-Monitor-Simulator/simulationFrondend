@@ -53,9 +53,9 @@ const options: any = {
         x: {
             type: 'linear',
             min: 0,
-            max: 12,
+            max: 1,
             ticks: {
-                stepSize: 1
+                stepSize: 0.01
             }
         }
     },
