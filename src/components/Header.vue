@@ -6,10 +6,6 @@ import Overlay from "@/components/Overlay.vue"
 const globalStore: any = useGlobalStore()
 const overlay = ref(false)
 
-const controlManual = () => {
-    globalStore.showGraph = !globalStore.showGraph
-}
-
 const displayedIcon = computed(() => {
     return globalStore.showGraph ? "mdi-help" : "mdi-chart-line"
 })

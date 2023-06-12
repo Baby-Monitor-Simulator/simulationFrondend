@@ -61,11 +61,13 @@ import { useField, useForm } from 'vee-validate'
 import scenarioOption from '@/enums/scenarioOptions'
 import { useI18n } from 'vue-i18n'
 import { useImportStore } from '@/stores/import';
+import { useRouter } from 'vue-router'
 
 export default {
     setup() {
         const importStore: any = useImportStore()
         const { t } = useI18n() // call `useI18n`, and spread `t` from  `useI18n` returning
+        const router = useRouter()
 
         const { handleSubmit, handleReset } = useForm({
             validationSchema: {
@@ -137,6 +139,7 @@ export default {
         })
 
         const resetGraphs = () => {
+            router.go(0)
             importStore.clearAll()
         }
 
