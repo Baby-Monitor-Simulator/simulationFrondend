@@ -48,14 +48,26 @@ const options: any = {
             max: props.yMax,
             ticks: {
                 stepSize: props.yStepSize
-            }
+            },
         },
         x: {
             type: 'linear',
             min: 0,
-            max: 1,
+            max: 60,
             ticks: {
-                stepSize: 0.01
+                stepSize: 1
+            },
+            title: {
+                display: true,
+                text: 'Time (s)',
+                color: '#911',
+                font: {
+                    family: 'Cascadia Mono',
+                    size: 20,
+                    weight: 'bold',
+                    lineHeight: 1.2,
+                },
+                padding: { top: 20, left: 0, right: 0, bottom: 0 }
             }
         }
     },

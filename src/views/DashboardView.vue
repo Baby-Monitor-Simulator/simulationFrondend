@@ -18,10 +18,10 @@ onMounted(() => {
 
   source.onmessage = (event) => { // this is really ugly src
     const body = JSON.parse(event.data)
-    let fetalBlood = { x: (body.x / 1000) / 60, y: body.fetalBlood }
-    let fetalBloodPressure = { x: (body.x / 1000) / 60, y: body.fetalBloodPressure }
-    let uterineContractions = { x: (body.x / 1000) / 60, y: body.uterineContractions }
-    let fetalHeartRate = { x: (body.x / 1000) / 60, y: body.fetalHeartRate }
+    let fetalBlood = { x: (body.x / 1000), y: body.fetalBlood }
+    let fetalBloodPressure = { x: (body.x / 1000), y: body.fetalBloodPressure }
+    let uterineContractions = { x: (body.x / 1000), y: body.uterineContractions }
+    let fetalHeartRate = { x: (body.x / 1000), y: body.fetalHeartRate }
   
     importStore.fetalBlood.push(fetalBlood)
     fetalBloodPressureArr.push(fetalBloodPressure)
