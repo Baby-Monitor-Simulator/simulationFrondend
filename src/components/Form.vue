@@ -165,12 +165,11 @@ export default {
 
         // watch works directly on a ref
         watch(template.value, (newTemplate, oldTemplate) => {
-            console.log(oldTemplate)
             if (!oldTemplate) {
                 globalStore.haltFetch = false
             } else {
                 globalStore.haltFetch = true
-                importStore.fillGraph(newTemplate)
+                importStore.fillGraph(template.value)
             }
         })
 

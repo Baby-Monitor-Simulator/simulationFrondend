@@ -2,7 +2,6 @@ import { defineStore } from 'pinia'
 import type MatlabFile from "../interfaces/IExpectedFileContent"
 import templateOptionV2 from '../enums/templateOptionsV2'
 import earlyDecelsCTG from "../templates/exports/json/early/earlyDecelsCTG.json"
-import { useGlobalStore } from './global';
 
 export const useImportStore = defineStore('import', {
 
@@ -24,10 +23,8 @@ export const useImportStore = defineStore('import', {
       this.fetalBlood = []
     },
     fillGraph(scenario) {
-      const globalStore: any = useGlobalStore()
       switch (scenario.value) {
-        case templateOptionV2.EarlyDecels:
-          globalStore.haltFetch = true
+        case "Early Decels":
           this.fetalBloodPressure = earlyDecelsCTG
       }
     },
