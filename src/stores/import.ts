@@ -1,7 +1,10 @@
 import { defineStore } from 'pinia'
 import type MatlabFile from "../interfaces/IExpectedFileContent"
 import templateOptionV2 from '../enums/templateOptionsV2'
-import earlyDecelsCTG from "../templates/exports/json/early/earlyDecelsCTG.json"
+import earlyDecelsMAP from "../templates/exports/json/early/earlyDecelsMAP.json"
+import earlyDecelsFHR from "../templates/exports/json/early/earlyDecelsFetalHeartRate.json"
+import earlyDecelsO2 from "../templates/exports/json/early/earlyDecelsO2.json"
+import earlyDecelsUT from "../templates/exports/json/early/earlyDecelsUterineContraction.json"
 
 export const useImportStore = defineStore('import', {
 
@@ -25,8 +28,11 @@ export const useImportStore = defineStore('import', {
     fillGraph(scenario) {
       switch (scenario.value) {
         case "Early Decels":
-          this.fetalBloodPressure = earlyDecelsCTG
-      }
+          this.fetalBloodPressure = earlyDecelsMAP
+          this.fetalHeartRate = earlyDecelsFHR
+          this.fetalBlood = earlyDecelsO2
+          this.uterineContractions = earlyDecelsUT
+      } 
     },
   }
 })
