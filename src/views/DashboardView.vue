@@ -36,7 +36,7 @@ const fetchData = () => {
 }
 
 onMounted(() => {
-    fetchData()
+    // fetchData()
 })
 </script>
 <template>

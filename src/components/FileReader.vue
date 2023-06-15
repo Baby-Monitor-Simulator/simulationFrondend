@@ -50,17 +50,19 @@ function parseMatLabTxtData(): void {
         parsedContent.push(parsedValuesObject)
     }
 
-    for (let i = 0; i < parsedContent.length; i++) {
-        const dataPair = parsedContent[i];
-        if (!dataPair.x || !dataPair.y) {
-            resetFileInputField();
-            inputHasError.value = true
-            return
-        }
-    }
+    // for (let i = 0; i < parsedContent.length; i++) {
+    //     const dataPair = parsedContent[i];
+    //     console.log(dataPair)
+    //     if (!dataPair.x || !dataPair.y) {
+    //         resetFileInputField();
+    //         inputHasError.value = true
+    //         return
+    //     }
+    // }
 
     inputHasError.value = false
     importFile.graphData = parsedContent
+    console.log(JSON.stringify(parsedContent))
     resetFileInputField();
 }
 
