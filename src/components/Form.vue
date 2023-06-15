@@ -54,7 +54,7 @@
         </div>
         <v-sheet class="ma-1 pa-2">
             <div class="form-input">
-                <v-select variant="outlined" v-model="template.value.value" :items="scenarios"
+                <v-select variant="outlined" v-model="template.value.value" :items="templates"
                     :error-messages="template.errorMessage.value" :label="selectedTemplate"></v-select>
             </div>
         </v-sheet>
@@ -65,6 +65,7 @@
 import { ref, computed } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import scenarioOption from '@/enums/scenarioOptions'
+import templateOption from '@/enums/templateOptions'
 import { useI18n } from 'vue-i18n'
 import { useImportStore } from '@/stores/import';
 import { useRouter } from 'vue-router'
@@ -126,6 +127,21 @@ export default {
             scenarioOption.VarDeceleration // requires umbilical 2
         ])
 
+        const templates = ref([
+            templateOption.EarlyDecelsMAP,
+            templateOption.EarlyDecelsFHR,
+            templateOption.EarlyDecelsPo2,
+            templateOption.EarlyDecelsUP,
+            templateOption.LateDecelsMAP,
+            templateOption.LateDecelsFHR,
+            templateOption.LateDecelsPo2,
+            templateOption.LateDecelsUP,
+            templateOption.NormalDecelsMAP,
+            templateOption.NormalDecelsFHR,
+            templateOption.NormalDecelsPo2,
+            templateOption.NormalDecelsUP,
+        ])
+
         const umbilicalOptions = ref([
             'Option 1',
             'Option 2',
@@ -161,11 +177,12 @@ export default {
         return {
             resetGraphs, template, scenario, scenarios, contractionDuration, timeBetweenContractions, maxAmplitude,
             umbilicalOption, nCycleMax, bloodVolumeFetus, extraOxygen, umbilicalOptions, submit, handleReset, selectedScenario,
-            selectedTemplate
+            selectedTemplate, templates
         }
     },
     mounted() {
         this.scenario.value.value = scenarioOption.VarDeceleration
+        this.template.value.value = templateOption.None
         this.maxAmplitude.value.value = 70
         this.contractionDuration.value.value = 60
         this.timeBetweenContractions.value.value = 180
