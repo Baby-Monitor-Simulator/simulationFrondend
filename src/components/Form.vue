@@ -164,12 +164,14 @@ export default {
         })
 
         // watch works directly on a ref
-        watch(template.value, (newScenario) => {
-            if (newScenario.value === templateOption.None) {
+        watch(template.value, (newTemplate, oldTemplate) => {
+            console.log(oldTemplate)
+            if (!oldTemplate) {
                 globalStore.haltFetch = false
+            } else {
+                globalStore.haltFetch = true
+                importStore.fillGraph(newTemplate)
             }
-            globalStore.haltFetch = false
-            importStore.fillGraph(newScenario)
         })
 
         const resetGraphs = () => {
