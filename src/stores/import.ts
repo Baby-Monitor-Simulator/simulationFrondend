@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import type MatlabFile from "../interfaces/IExpectedFileContent"
-import templateOptionV2 from '../enums/templateOptionsV2'
 import earlyDecelsMAP from "../templates/exports/json/early/earlyDecelsMAP.json"
 import earlyDecelsFHR from "../templates/exports/json/early/earlyDecelsFetalHeartRate.json"
 import earlyDecelsO2 from "../templates/exports/json/early/earlyDecelsO2.json"
