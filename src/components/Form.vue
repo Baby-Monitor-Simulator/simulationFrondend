@@ -62,10 +62,11 @@
 </template>
 
 <script lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import scenarioOption from '@/enums/scenarioOptions'
 import templateOption from '@/enums/templateOptions'
+import templateOptionV2 from '@/enums/templateOptionsV2'
 import { useI18n } from 'vue-i18n'
 import { useImportStore } from '@/stores/import';
 import { useRouter } from 'vue-router'
@@ -128,18 +129,9 @@ export default {
         ])
 
         const templates = ref([
-            templateOption.EarlyDecelsMAP,
-            templateOption.EarlyDecelsFHR,
-            templateOption.EarlyDecelsPo2,
-            templateOption.EarlyDecelsUP,
-            templateOption.LateDecelsMAP,
-            templateOption.LateDecelsFHR,
-            templateOption.LateDecelsPo2,
-            templateOption.LateDecelsUP,
-            templateOption.NormalDecelsMAP,
-            templateOption.NormalDecelsFHR,
-            templateOption.NormalDecelsPo2,
-            templateOption.NormalDecelsUP,
+            templateOptionV2.EarlyDecels,
+            templateOptionV2.LateDecels,
+            templateOptionV2.NormalDecels,
         ])
 
         const umbilicalOptions = ref([
@@ -167,6 +159,11 @@ export default {
                 contractionDuration: t("message.maxAmplitude") + " 30-150s",
                 timeBetweenContractions: t("message.maxAmplitude") + " 0-600s",
             }
+        })
+
+        // watch works directly on a ref
+        watch(template.value, (newScenario) => {
+            importStore.fillGraph(template.value)
         })
 
         const resetGraphs = () => {

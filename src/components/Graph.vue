@@ -5,7 +5,7 @@
 </template>
   
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUpdated } from 'vue'
 import { Chart as ChartJS, Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, type ChartData } from 'chart.js'
 import { Line } from 'vue-chartjs'
 import { useImportStore } from '@/stores/import';

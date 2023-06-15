@@ -5,6 +5,7 @@ export const useGlobalStore = defineStore('global', {
     return {
       showGraph: Boolean,
       resetGraph: false,
+      haltFetch: false,
     }
   },
 })
