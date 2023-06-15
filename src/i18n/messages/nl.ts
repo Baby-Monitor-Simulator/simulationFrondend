@@ -3,6 +3,7 @@ export default {
       fileInput: 'Bestand',
       manual: 'Handleiding',
       selectedScenario: 'Geselecteerd Scenario',
+      selectedTemplate: 'Geselecteerd Template',
       submit: 'Bevestigen',
       clear: 'Inputs Herstellen',
       reset: 'Grafieken Herstellen',

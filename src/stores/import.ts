@@ -5,7 +5,7 @@ import earlyDecelsCTG from "../templates/exports/json/early/earlyDecelsCTG.json"
 import { useGlobalStore } from './global';
 
 export const useImportStore = defineStore('import', {
-  
+
   state: () => {
     return {
       graphData: [] as MatlabFile[],
@@ -28,9 +28,8 @@ export const useImportStore = defineStore('import', {
       switch (scenario.value) {
         case templateOptionV2.EarlyDecels:
           globalStore.haltFetch = true
-          this.fetalBloodPressure = []
-          this.fetalBloodPressure.concat(earlyDecelsCTG)
+          this.fetalBloodPressure = earlyDecelsCTG
       }
-    }
+    },
   }
 })

@@ -17,26 +17,23 @@ const fetchData = () => {
   let source = new EventSource("http://localhost:8080/api/sse")
 
   source.onmessage = (event) => { // this is really ugly src
-    if (globalStore.haltFetch) {
-      console.log(importStore.fetalBlood)
-      return
+    if (!globalStore.haltFetch) {
+      const body = JSON.parse(event.data)
+      let fetalBlood = { x: (body.x / 1000), y: body.fetalBlood }
+      let fetalBloodPressure = { x: (body.x / 1000), y: body.fetalBloodPressure }
+      let uterineContractions = { x: (body.x / 1000), y: body.uterineContractions }
+      let fetalHeartRate = { x: (body.x / 1000), y: body.fetalHeartRate }
+
+      fetalBloodArr.push(fetalBlood)
+      fetalBloodPressureArr.push(fetalBloodPressure)
+      UterineContractionsArr.push(uterineContractions)
+      FetalHeartRateArr.push(fetalHeartRate)
+
+      importStore.fetalBlood = fetalBloodArr
+      importStore.fetalBloodPressure = fetalBloodPressureArr
+      importStore.uterineContractions = UterineContractionsArr
+      importStore.fetalHeartRate = FetalHeartRateArr
     }
-    const body = JSON.parse(event.data)
-    let fetalBlood = { x: (body.x / 1000), y: body.fetalBlood }
-    let fetalBloodPressure = { x: (body.x / 1000), y: body.fetalBloodPressure }
-    let uterineContractions = { x: (body.x / 1000), y: body.uterineContractions }
-    let fetalHeartRate = { x: (body.x / 1000), y: body.fetalHeartRate }
-
-    importStore.fetalBlood.push(fetalBlood)
-    importStore.fetalBloodPressure.push(fetalBloodPressure)
-    importStore.uterineContractions.push(uterineContractions)
-    importStore.fetalHeartRate.push(fetalHeartRate)
-
-    console.log(fetalBloodArr)
-    importStore.fetalBlood = fetalBloodArr
-    importStore.fetalBloodPressure = fetalBloodPressureArr
-    importStore.uterineContractions = UterineContractionsArr
-    importStore.fetalHeartRate = FetalHeartRateArr
   }
 }
 

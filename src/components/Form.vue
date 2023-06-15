@@ -70,10 +70,12 @@ import templateOptionV2 from '@/enums/templateOptionsV2'
 import { useI18n } from 'vue-i18n'
 import { useImportStore } from '@/stores/import';
 import { useRouter } from 'vue-router'
+import { useGlobalStore } from '@/stores/global';
 
 export default {
     setup() {
         const importStore: any = useImportStore()
+        const globalStore: any = useGlobalStore()
         const { t } = useI18n() // call `useI18n`, and spread `t` from  `useI18n` returning
         const router = useRouter()
 
@@ -163,7 +165,11 @@ export default {
 
         // watch works directly on a ref
         watch(template.value, (newScenario) => {
-            importStore.fillGraph(template.value)
+            if (newScenario.value === templateOption.None) {
+                globalStore.haltFetch = false
+            }
+            globalStore.haltFetch = false
+            importStore.fillGraph(newScenario)
         })
 
         const resetGraphs = () => {
