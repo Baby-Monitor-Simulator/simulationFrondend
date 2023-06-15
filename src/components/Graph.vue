@@ -10,11 +10,13 @@ import { Chart as ChartJS, Title, Tooltip, Legend, CategoryScale, LinearScale, P
 import { Line } from 'vue-chartjs'
 import { useImportStore } from '@/stores/import';
 import GraphType from "@/enums/graphTypes"
+import { useGlobalStore } from '@/stores/global';
 
 ChartJS.register(Title, Tooltip, Legend, PointElement,
     LineElement, CategoryScale, LinearScale)
 
 const importStore: any = useImportStore()
+const globalStore: any = useGlobalStore()
 
 
 const props = defineProps({
@@ -95,7 +97,7 @@ const data: any = ref<ChartData<'line'>>({
 onMounted(() => { // control individual graph properties
     switch (props.type) {
         case GraphType.FetalHeartRate:
-            setInterval(() => {
+            const intId = setInterval(() => {
                 data.value = {
                     datasets: [
                         {
@@ -105,14 +107,18 @@ onMounted(() => { // control individual graph properties
                             borderColor: [
                                 'rgba(255,99,132,1)',
                             ],
+                            pointRadius: 0,
                             data: importStore.fetalHeartRate,
                         }
                     ]
                 }
+                if (globalStore.haltFetch) {
+                    clearInterval(intId)
+                }
             }, 250)
             break;
         case GraphType.FetalBloodPressure:
-            setInterval(() => {
+            const fetalBloodPressureId = setInterval(() => {
                 data.value = {
                     datasets: [
                         {
@@ -122,14 +128,18 @@ onMounted(() => { // control individual graph properties
                             borderColor: [
                                 'rgba(255,99,132,1)',
                             ],
+                            pointRadius: 0,
                             data: importStore.fetalBloodPressure,
                         }
                     ]
                 }
+                if (globalStore.haltFetch) {
+                    clearInterval(fetalBloodPressureId)
+                }
             }, 250)
             break;
         case GraphType.UterineContractions:
-            setInterval(() => {
+            const utertineContractionsId = setInterval(() => {
                 data.value = {
                     datasets: [
                         {
@@ -139,14 +149,18 @@ onMounted(() => { // control individual graph properties
                             borderColor: [
                                 'rgba(255,99,132,1)',
                             ],
+                            pointRadius: 0,
                             data: importStore.uterineContractions,
                         }
                     ]
                 }
+                if (globalStore.haltFetch) {
+                    clearInterval(utertineContractionsId)
+                }
             }, 250)
             break;
         case GraphType.FetalBlood:
-            setInterval(() => {
+            const fetalBloodId = setInterval(() => {
                 data.value = {
                     datasets: [
                         {
@@ -157,9 +171,13 @@ onMounted(() => { // control individual graph properties
                             borderColor: [
                                 'rgba(255,99,132,1)',
                             ],
+                            pointRadius: 0,
                             data: importStore.fetalBlood,
                         }
                     ]
+                }
+                if (globalStore.haltFetch) {
+                    clearInterval(fetalBloodId)
                 }
             }, 250)
             break;
