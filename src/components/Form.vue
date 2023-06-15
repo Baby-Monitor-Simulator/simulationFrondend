@@ -33,25 +33,31 @@
         <v-text-field variant="outlined" v-model.number="extraOxygen.value.value"
             :error-messages="extraOxygen.errorMessage.value" label="Extra Oxygen" placeholder="??"></v-text-field> -->
         <div class="form-buttons">
-                <v-sheet class="ma-1 pa-2">
-                    <v-btn block variant="outlined" class="me-4" type="submit">
-                        {{ $t("message.submit") }}
-                    </v-btn>
-                </v-sheet>
-                <v-divider></v-divider>
+            <v-sheet class="ma-1 pa-2">
+                <v-btn block variant="outlined" class="me-4" type="submit">
+                    {{ $t("message.submit") }}
+                </v-btn>
+            </v-sheet>
+            <v-divider></v-divider>
 
-                <v-sheet class="ma-1 pa-2">
-                    <v-btn block variant="outlined" @click="handleReset">
-                        {{ $t("message.clear") }}
-                    </v-btn>
-                </v-sheet>
-
-                <v-sheet class="ma-1 pa-2">
-                    <v-btn block variant="outlined" @click="resetGraphs">
-                        {{ $t("message.reset") }}
-                    </v-btn>
-                </v-sheet>
+            <v-sheet class="ma-1 pa-2">
+                <v-btn block variant="outlined" @click="handleReset">
+                    {{ $t("message.clear") }}
+                </v-btn>
+            </v-sheet>
+            <!-- 
+            <v-sheet class="ma-1 pa-2">
+                <v-btn block variant="outlined" @click="resetGraphs">
+                    {{ $t("message.reset") }}
+                </v-btn>
+            </v-sheet> -->
         </div>
+        <v-sheet class="ma-1 pa-2">
+            <div class="form-input">
+                <v-select variant="outlined" v-model="template.value.value" :items="scenarios"
+                    :error-messages="template.errorMessage.value" :label="selectedTemplate"></v-select>
+            </div>
+        </v-sheet>
     </v-form>
 </template>
 
@@ -73,6 +79,9 @@ export default {
             validationSchema: {
                 scenario(value: string) {
                     return value ? true : 'Must select a scenario.'
+                },
+                template(value: string) {
+                    return value ? true : 'Must select a template.'
                 },
                 maxAmplitude(value: number) {
                     return value > 0 && value < 120 ? true : errStrs.value.maxAmplitude
@@ -101,6 +110,7 @@ export default {
         })
 
         const scenario = useField('scenario')
+        const template = useField('template')
         const maxAmplitude = useField('maxAmplitude') // mmHg
         const contractionDuration = useField('contractionDuration') // seconds
         const timeBetweenContractions = useField('timeBetweenContractions') // seconds
@@ -129,9 +139,14 @@ export default {
             return t("message.selectedScenario")
         })
 
+        const selectedTemplate = computed(() => {
+            return t("message.selectedTemplate")
+        })
+
         const errStrs = computed(() => {
             return {
                 scenario: t("message.scenario"),
+                template: t("message.template"),
                 maxAmplitude: t("message.maxAmplitude") + " 0-120",
                 contractionDuration: t("message.maxAmplitude") + " 30-150s",
                 timeBetweenContractions: t("message.maxAmplitude") + " 0-600s",
@@ -143,7 +158,11 @@ export default {
             importStore.clearAll()
         }
 
-        return { resetGraphs, scenario, scenarios, contractionDuration, timeBetweenContractions, maxAmplitude, umbilicalOption, nCycleMax, bloodVolumeFetus, extraOxygen, umbilicalOptions, submit, handleReset, selectedScenario }
+        return {
+            resetGraphs, template, scenario, scenarios, contractionDuration, timeBetweenContractions, maxAmplitude,
+            umbilicalOption, nCycleMax, bloodVolumeFetus, extraOxygen, umbilicalOptions, submit, handleReset, selectedScenario,
+            selectedTemplate
+        }
     },
     mounted() {
         this.scenario.value.value = scenarioOption.VarDeceleration

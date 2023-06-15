@@ -19,7 +19,7 @@ const languageString = computed(() => {
 </script>
 <template>
     <div class="container">
-        <v-navigation-drawer theme="dark" :disable-resize-watcher="true" :permanent="true">
+        <v-navigation-drawer theme="dark" :width="275" :disable-resize-watcher="true" :disable-route-watcher="true" :floating="true" :permanent="true">
             <v-list>
                 <v-sheet class="ma-1 pa-2">
                     <v-btn :elevation="hoverStore.language ? 16 : 2" :color="hoverStore.language ? '#00FF00' : 'white'"
