@@ -12,7 +12,7 @@ export const useImportStore = defineStore('import', {
       graphData: [] as MatlabFile[],
       fetalHeartRate: [] as MatlabFile[],
       fetalBloodPressure: [] as MatlabFile[],
-      uterineContractions: [] as MatlabFile[],
+      uterineContractions: [] as any, // type inferring messing up with large JSON no idea why
       fetalBlood: [] as MatlabFile[],
     }
   },
@@ -24,13 +24,13 @@ export const useImportStore = defineStore('import', {
       this.uterineContractions = []
       this.fetalBlood = []
     },
-    fillGraph(scenario) {
+    fillGraph(scenario: any) {
       switch (scenario.value) {
         case "Early Decels":
           this.fetalBloodPressure = earlyDecelsMAP
           this.fetalHeartRate = earlyDecelsFHR
-          this.fetalBlood = earlyDecelsO2
           this.uterineContractions = earlyDecelsUT
+          this.fetalBlood = earlyDecelsO2
       } 
     },
   }
