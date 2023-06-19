@@ -24,7 +24,7 @@ export const useImportStore = defineStore('import', {
       this.uterineContractions = []
       this.fetalBlood = []
     },
-    fillGraph(scenario) {
+    fillGraph(scenario: Number) {
       switch (scenario.value) {
         case "Early Decels":
           this.fetalBloodPressure = earlyDecelsMAP
