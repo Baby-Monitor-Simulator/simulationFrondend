@@ -43,13 +43,13 @@ export const useImportStore = defineStore('import', {
           this.fetalBlood = earlyDecelsO2
           break
         case "Late Decels":
-          // this.fetalBloodPressure = lateDecelsMAP
+          this.fetalBloodPressure = lateDecelsMAP
           this.fetalHeartRate = lateDecelsFHR
           this.uterineContractions = lateDecelsUT
           this.fetalBlood = lateDecelsO2
           break
         case "Normal Decels":
-          // this.fetalBloodPressure = normalDecelsMAP
+          this.fetalBloodPressure = normalDecelsMAP
           this.fetalHeartRate = normalDecelsFHR
           this.uterineContractions = normalDecelsUT
           this.fetalBlood = normalDecelsO2
