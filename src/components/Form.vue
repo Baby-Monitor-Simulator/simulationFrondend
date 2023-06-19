@@ -65,7 +65,6 @@
 import { ref, computed, watch } from 'vue'
 import { useField, useForm } from 'vee-validate'
 import scenarioOption from '@/enums/scenarioOptions'
-import templateOption from '@/enums/templateOptions'
 import templateOptionV2 from '@/enums/templateOptionsV2'
 import { useI18n } from 'vue-i18n'
 import { useImportStore } from '@/stores/import';
@@ -186,7 +185,7 @@ export default {
     },
     mounted() {
         this.scenario.value.value = scenarioOption.VarDeceleration
-        this.template.value.value = templateOption.None
+        this.template.value.value = templateOptionV2.None
         this.maxAmplitude.value.value = 70
         this.contractionDuration.value.value = 60
         this.timeBetweenContractions.value.value = 180
