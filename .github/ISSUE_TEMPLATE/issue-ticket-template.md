@@ -17,13 +17,12 @@ assignees: ''
 - 
 - 
 - 
-- 
 
 ## Proposed Solution
 [short description of how with the goals above you will reach the solution]
 
 ## Implemented Solution
-[the actual solutiol to be filled in after development]
+[the actual solution to be filled in after development]
 
 ## Attention Points
 [any misc. stuff to note]
