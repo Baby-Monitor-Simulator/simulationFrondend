@@ -4,7 +4,7 @@ export default class MatLabRepository extends Repository {
     // get graph data from backend
     async getGraphData(): Promise<any[]> {
         const response = await this.client().get(this.getUrl("v1/matlab/example"))
-
+        
         if (!response.data) {
             throw new Error("Some Err")
         }

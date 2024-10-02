@@ -1,23 +1,24 @@
 <template>
     <div class="container">
-        <Line :data="data" :options="options" />
+        <Line ref="myChart" :data="data" :options="options" />
     </div>
+    
 </template>
   
 <script lang="ts" setup>
-import { ref, onMounted, onUpdated } from 'vue'
+import { ref, onMounted, watch, nextTick } from 'vue'
 import { Chart as ChartJS, Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, type ChartData } from 'chart.js'
 import { Line } from 'vue-chartjs'
 import { useImportStore } from '@/stores/import';
 import GraphType from "@/enums/graphTypes"
 import { useGlobalStore } from '@/stores/global';
 
-ChartJS.register(Title, Tooltip, Legend, PointElement,
-    LineElement, CategoryScale, LinearScale)
+ChartJS.register(Title, Tooltip, Legend, PointElement, LineElement, CategoryScale, LinearScale)
+
+const lineChartRef = ref(null); 
 
 const importStore: any = useImportStore()
 const globalStore: any = useGlobalStore()
-
 
 const props = defineProps({
     type: Number,
@@ -30,7 +31,7 @@ const props = defineProps({
 const options: any = {
     animation: false,
     spanGaps: true,
-    normalized: true,
+    normalized: false,
     responsive: true,
     plugins: {
         title: {
@@ -70,7 +71,7 @@ const options: any = {
         x: {
             type: 'linear',
             min: 0,
-            max: 11,
+            max: 11, // Initial max
             ticks: {
                 stepSize: 1
             },
@@ -90,14 +91,35 @@ const options: any = {
     },
     maintainAspectRatio: false,
 }
+
 const data: any = ref<ChartData<'line'>>({
     datasets: []
 })
 
-onMounted(() => { // control individual graph properties
+const maxXValue = ref(11); // Reactive variable for the x-axis max value
+
+// Increment x-axis max value
+const incrementXMaxValue = () => {
+    maxXValue.value += 11; // Increase max by 10
+}
+
+const myChart = ref(null);
+
+onMounted(() => {
+    // Interval to increment x-axis max value
+    const xIntervalId = setInterval(() => {
+        incrementXMaxValue();
+        const chart = myChart.value.chart; 
+        chart.options.scales.x.min = maxXValue.value-11;
+        chart.options.scales.x.max = maxXValue.value; // Update the x-axis max value
+        chart.update();
+    }, 11500); // Every 11 seconds
+
+    // Control graph properties based on type
     switch (props.type) {
         case GraphType.FetalHeartRate:
-            const intId = setInterval(() => {
+            const heartRateId = setInterval(() => {
+                options.scales.x.max = maxXValue.value;
                 data.value = {
                     datasets: [
                         {
@@ -112,8 +134,10 @@ onMounted(() => { // control individual graph properties
                         }
                     ]
                 }
+                // Check if fetching should be halted
                 if (globalStore.haltFetch) {
-                    clearInterval(intId)
+                    clearInterval(heartRateId);
+                    clearInterval(xIntervalId); // Clear the x-axis increment interval
                 }
             }, 250)
             break;
@@ -133,8 +157,10 @@ onMounted(() => { // control individual graph properties
                         }
                     ]
                 }
+                // Check if fetching should be halted
                 if (globalStore.haltFetch) {
-                    clearInterval(fetalBloodPressureId)
+                    clearInterval(fetalBloodPressureId);
+                    clearInterval(xIntervalId); // Clear the x-axis increment interval
                 }
             }, 250)
             break;
@@ -154,8 +180,10 @@ onMounted(() => { // control individual graph properties
                         }
                     ]
                 }
+                // Check if fetching should be halted
                 if (globalStore.haltFetch) {
-                    clearInterval(utertineContractionsId)
+                    clearInterval(utertineContractionsId);
+                    clearInterval(xIntervalId); // Clear the x-axis increment interval
                 }
             }, 250)
             break;
@@ -176,8 +204,10 @@ onMounted(() => { // control individual graph properties
                         }
                     ]
                 }
+                // Check if fetching should be halted
                 if (globalStore.haltFetch) {
-                    clearInterval(fetalBloodId)
+                    clearInterval(fetalBloodId);
+                    clearInterval(xIntervalId); // Clear the x-axis increment interval
                 }
             }, 250)
             break;
@@ -191,3 +221,4 @@ onMounted(() => { // control individual graph properties
     padding: 1%;
 }
 </style>
+

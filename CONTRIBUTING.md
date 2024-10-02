@@ -3,7 +3,7 @@ Basic rules for branches and tickets within this project.
 
 # Project Board
 > Please move your ticket to the appropriate catagory whenever creating, updating or completing a task.
-[Project Board](https://github.com/orgs/Baby-Monitor-Simulator/projects/1)
+[https://github.com/users/WinteryFox/projects/1](https://github.com/orgs/Baby-Monitor-Simulator/projects/3)
 
 | Column      | Purpose | *Note* | 
 | ----------- | ----------- | ----------- |

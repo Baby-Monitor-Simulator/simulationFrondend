@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar.vue';
 import HeaderComponent from '@/components/Header.vue';
 </script>
 
+
 <template>
   <v-app>
       <v-layout>
@@ -20,6 +21,9 @@ import HeaderComponent from '@/components/Header.vue';
 </template>
 
 <style scoped>
+
+
+
 nav a.router-link-exact-active {
   color: var(--color-text);
 }
@@ -38,3 +42,4 @@ nav a:first-of-type {
   border: 0;
 }
 </style>
+
