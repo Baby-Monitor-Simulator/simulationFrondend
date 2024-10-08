@@ -97,10 +97,11 @@ const data: any = ref<ChartData<'line'>>({
 })
 
 const maxXValue = ref(11); // Reactive variable for the x-axis max value
+const waitForChange = ref(0); // Reactive variable for the x-axis max value
 
 // Increment x-axis max value
 const incrementXMaxValue = () => {
-    maxXValue.value += 11; // Increase max by 10
+    maxXValue.value += 0.1; // Increase max by 10
 }
 
 const myChart = ref(null);
@@ -108,12 +109,19 @@ const myChart = ref(null);
 onMounted(() => {
     // Interval to increment x-axis max value
     const xIntervalId = setInterval(() => {
-        incrementXMaxValue();
-        const chart = myChart.value.chart; 
-        chart.options.scales.x.min = maxXValue.value-11;
-        chart.options.scales.x.max = maxXValue.value; // Update the x-axis max value
-        chart.update();
-    }, 11500); // Every 11 seconds
+             
+        if (waitForChange.value > 11)
+        {    
+            incrementXMaxValue();
+            const chart = myChart.value.chart; 
+            chart.options.scales.x.min = maxXValue.value-11;
+            chart.options.scales.x.max = maxXValue.value; // Update the x-axis max value
+            chart.update();
+        }
+
+        waitForChange.value += 0.1;
+        
+    },100); // Every 1 seconds
 
     // Control graph properties based on type
     switch (props.type) {
