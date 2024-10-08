@@ -13,15 +13,20 @@
     "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false"
   },
   "dependencies": {
+    "@stomp/stompjs": "^7.0.0",
     "axios": "^1.3.5",
     "chart.js": "^4.2.1",
     "pinia": "^2.0.28",
+    "sockjs-client": "^1.6.1",
+    "stompjs": "^2.3.3",
     "vee-validate": "^4.8.4",
     "vue": "^3.2.45",
     "vue-chartjs": "^5.2.0",
     "vue-i18n": "^9.2.2",
     "vue-router": "^4.4.5",
-    "vuetify": "^3.1.8"
+    "vuetify": "^3.1.8",
+    "webstomp-client": "^1.2.6",
+    "ws": "^8.18.0"
   },
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^0.11.0",
