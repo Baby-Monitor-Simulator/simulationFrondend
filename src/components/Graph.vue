@@ -2,6 +2,9 @@
     <div class="container">
         <Line ref="myChart" :data="data" :options="options" />
     </div>
+    <div>
+        <button @click="moreAids">More things!!!</button>
+    </div>
     
 </template>
   
@@ -13,12 +16,84 @@ import { useImportStore } from '@/stores/import';
 import GraphType from "@/enums/graphTypes"
 import { useGlobalStore } from '@/stores/global';
 
+import { connectGraph, sendUserId } from "./websocket.js";
+import eventBusGraphData from "./eventBusGraphData.js";
+
+import MatlabTestExport from "./MatlabTestExport.json";
+
+
 ChartJS.register(Title, Tooltip, Legend, PointElement, LineElement, CategoryScale, LinearScale)
 
 const lineChartRef = ref(null); 
 
 const importStore: any = useImportStore()
 const globalStore: any = useGlobalStore()
+
+let coordinates = [];
+const myChart = ref(null);
+const basex = ref(0);
+const userId = "7dd58dee-9d44-4c63-b7aa-4ed3dec6293b";
+
+/*
+let upResults = [];
+let fhrResults = [];
+let mapResults = [];
+let o2PResults = [];
+
+
+upResults = MatlabTestExport.upResults;
+fhrResults = MatlabTestExport.fhrResults;
+mapResults = MatlabTestExport.mapResults;
+o2PResults = MatlabTestExport.o2PResults;
+*/
+
+const upResults = MatlabTestExport.upResult.map(item => ({
+    x: item.timeSpan,
+    y: item.uPressure
+  }));
+
+  const fhrResults = MatlabTestExport.fhrResult.map(item => ({
+    x: item.timeSpan,
+    y: item.heartRate
+  }));
+
+  const mapResults = MatlabTestExport.mapResult.map(item => ({
+    x: item.timeSpan,
+    y: item.MAP
+  }));
+
+  const o2PResults = MatlabTestExport.o2PResult.map(item => ({
+    x: item.timeSpan,
+    y: item.o2Pressure
+  }));
+
+
+const updateArray = (newArray) => {
+        //coordinates = newArray; // Update items with new dat
+}
+
+function moreAids()
+{
+    let first = true;
+
+    const waitForConnection = setInterval(() => {
+        if (first)
+        {
+            connectGraph(userId);
+            first = false;
+        }
+        else
+        {
+            sendUserId(userId);
+            clearInterval(waitForConnection);
+            console.log("connected baby!")
+        }
+        
+        
+    },1000);
+}
+
+
 
 const props = defineProps({
     type: Number,
@@ -104,28 +179,75 @@ const incrementXMaxValue = () => {
     maxXValue.value += 0.1; // Increase max by 10
 }
 
-const myChart = ref(null);
 
 onMounted(() => {
     // Interval to increment x-axis max value
+    
     const xIntervalId = setInterval(() => {
-             
+        /*
+        const arrayLength = coordinates.length;
+        const newestValue = coordinates[arrayLength - 1];  
+
+        if (typeof newestValue !== 'undefined')
+        {  
+            const newX = newestValue.x-11; 
+            const newXMax = newestValue.x;
+
+            const chart = myChart.value.chart; 
+            chart.options.scales.x.min = newX;
+            chart.options.scales.x.max = newXMax;
+            chart.update();
+        } 
+        */
         if (waitForChange.value > 11)
         {    
-            incrementXMaxValue();
             const chart = myChart.value.chart; 
-            chart.options.scales.x.min = maxXValue.value-11;
-            chart.options.scales.x.max = maxXValue.value; // Update the x-axis max value
-            chart.update();
-        }
 
-        waitForChange.value += 0.1;
+            //if (chart.options.scales.x.max < newestValue.x){
+                incrementXMaxValue();
+                chart.options.scales.x.min = maxXValue.value-11;
+                chart.options.scales.x.max = maxXValue.value; // Update the x-axis max value
+                chart.update();
+           // }
+            
+        }
+        
+
+        
+       waitForChange.value += 0.1;
+       
         
     },100); // Every 1 seconds
 
     // Control graph properties based on type
     switch (props.type) {
         case GraphType.FetalHeartRate:
+            const heartRateId = setInterval(() => {
+                options.scales.x.max = maxXValue.value;
+
+                eventBusGraphData.on('arrayUpdated', updateArray);
+
+                data.value = {
+                    datasets: [
+                        {
+                            backgroundColor: [
+                                'rgba(255,99,132,1)',
+                            ],
+                            borderColor: [
+                                'rgba(255,99,132,1)',
+                            ],
+                            pointRadius: 0,
+                            data: fhrResults,//coordinates,//importStore.fetalHeartRate,
+                        }
+                    ]
+                }
+                // Check if fetching should be halted
+                if (globalStore.haltFetch) {
+                    clearInterval(heartRateId);
+                    clearInterval(xIntervalId); // Clear the x-axis increment interval
+                }
+            }, 250)
+            /*
             const heartRateId = setInterval(() => {
                 options.scales.x.max = maxXValue.value;
                 data.value = {
@@ -148,6 +270,7 @@ onMounted(() => {
                     clearInterval(xIntervalId); // Clear the x-axis increment interval
                 }
             }, 250)
+            */
             break;
         case GraphType.FetalBloodPressure:
             const fetalBloodPressureId = setInterval(() => {
@@ -161,7 +284,7 @@ onMounted(() => {
                                 'rgba(255,99,132,1)',
                             ],
                             pointRadius: 0,
-                            data: importStore.fetalBloodPressure,
+                            data: upResults,//importStore.fetalBloodPressure,
                         }
                     ]
                 }
@@ -184,7 +307,7 @@ onMounted(() => {
                                 'rgba(255,99,132,1)',
                             ],
                             pointRadius: 0,
-                            data: importStore.uterineContractions,
+                            data: mapResults//importStore.uterineContractions,
                         }
                     ]
                 }
@@ -208,7 +331,7 @@ onMounted(() => {
                                 'rgba(255,99,132,1)',
                             ],
                             pointRadius: 0,
-                            data: importStore.fetalBlood,
+                            data: o2PResults,//importStore.fetalBlood,
                         }
                     ]
                 }

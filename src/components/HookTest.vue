@@ -26,7 +26,7 @@
 
 <script>
 // Import WebSocket functions from the external file
-import { connect, disconnect, sendUserId } from "./websocket.js";
+import { connect, disconnect, sendUserId} from "./websocket.js";
 
 export default {
   data() {

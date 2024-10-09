@@ -1,9 +1,11 @@
 import SockJS from "sockjs-client";
 import { Client as StompJsClient } from "@stomp/stompjs";
+import eventBusGraphData from "./eventBusGraphData.js";
 
 let stompClient = null;
 
 function setConnected(connected) {
+  /*
   document.getElementById("connect").disabled = connected;
   document.getElementById("disconnect").disabled = !connected;
   if (connected) {
@@ -15,10 +17,43 @@ function setConnected(connected) {
   }
   document.getElementById("lobbies").innerHTML = "";
   document.getElementById("coords").innerHTML = "";
+  */
 }
 
+export function connectGraph(userId) {
+  const webSocketUrl = "ws://localhost:8080/ws-lobby";
+
+  // Initialize stompClient using the `Client` class, pointing directly to the WebSocket URL.
+  stompClient = new StompJsClient({
+    brokerURL: webSocketUrl,
+    reconnectDelay: 5000, // Auto-reconnect after 5 seconds
+    //heartbeatIncoming: 4000, // Heartbeat every 4 seconds
+    //heartbeatOutgoing: 4000,
+    isTrusted: false,
+  });
+
+  stompClient.onConnect = (frame) => {
+    setConnected(true);
+    console.log("Connected: " + frame);
+    stompClient.subscribe(`/lobby/${userId}`, (lobby) => {
+      checkCoordinates(JSON.parse(lobby.body));
+    });
+  };
+
+  stompClient.onWebSocketError = (error) => {
+    console.error("WebSocket error", error);
+  };
+
+  stompClient.onStompError = (frame) => {
+    console.error("Stomp error: " + frame.headers["message"]);
+    console.error("Details: " + frame.body);
+  };
+
+  stompClient.activate();
+}
+
+
 export function connect(userId) {
-  console.log("hiero " + userId);
   const webSocketUrl = "ws://localhost:8080/ws-lobby";
 
   // Initialize stompClient using the `Client` class, pointing directly to the WebSocket URL.
@@ -35,6 +70,7 @@ export function connect(userId) {
     console.log("Connected: " + frame);
     stompClient.subscribe(`/lobby/${userId}`, (lobby) => {
       checkMessage(JSON.parse(lobby.body));
+      checkCoordinates(JSON.parse(lobby.body));
     });
   };
 
@@ -65,13 +101,40 @@ export function sendUserId(userId) {
   });
 }
 
+
+export let websocketCoordinates = [];
+
+function checkCoordinates(body) {
+  if (body.x && body.y) 
+  {
+    const x = body.x;
+    const y = body.y + 100;
+
+    
+    websocketCoordinates.push({ x, y });
+    
+    eventBusGraphData.emit('arrayUpdated', websocketCoordinates);
+  } 
+}
+
+export function desperation()
+{
+  return websocketCoordinates;
+}
+
 function checkMessage(body) {
-  if (body.message) {
+  if (body.message) 
+  {
     console.log("Message: " + body.message);
-    showLobbies(body.message);
-  } else if (body.x && body.y) {
-    console.log("Coords: " + body);
-    showCoords(body);
+    //showLobbies(body.message);
+  } 
+  else if (body.x && body.y) 
+  {
+   // console.log("Coords: " + body);
+    //showCoords(body);
+
+    
+
   } else {
     console.error("Unknown message received");
   }
