@@ -1,13 +1,12 @@
 <template>
-    <div class="container">
-        <Line ref="myChart" :data="data" :options="options" />
-    </div>
-    <div>
-        <button @click="moreAids">More things!!!</button>
-    </div>
-    
+  <div class="container">
+    <Line ref="myChart" :data="data" :options="options" />
+  </div>
+  <!-- <div>
+    <button @click="webhookConnect">More things!!!</button>
+  </div> -->
 </template>
-  
+
 <script lang="ts" setup>
 import { ref, onMounted, watch, nextTick } from 'vue'
 import { Chart as ChartJS, Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, type ChartData } from 'chart.js'
@@ -20,11 +19,17 @@ import { connectGraph, sendUserId } from "./websocket.js";
 import eventBusGraphData from "./eventBusGraphData.js";
 
 import MatlabTestExport from "./MatlabTestExport.json";
+import UPResult from '@/models/results/UPResult.js';
+import FHRResult from '@/models/results/FHRResult.js';
+import MAPResult from '@/models/results/MAPResult.js';
+import O2PResult from '@/models/results/O2PResult.js';
+import FMPResult from '@/models/results/FMPResult.js';
+import Response from '@/models/Response.js';
 
 
 ChartJS.register(Title, Tooltip, Legend, PointElement, LineElement, CategoryScale, LinearScale)
 
-const lineChartRef = ref(null); 
+const lineChartRef = ref(null);
 
 const importStore: any = useImportStore()
 const globalStore: any = useGlobalStore()
@@ -34,48 +39,75 @@ const myChart = ref(null);
 const basex = ref(0);
 const userId = "7dd58dee-9d44-4c63-b7aa-4ed3dec6293b";
 
+
+let upResults: UPResult[] = [];
+let fhrResults: FHRResult[] = [];
+let mapResults: MAPResult[] = [];
+let o2PResults: O2PResult[] = [];
+let updated: boolean = false;
+let first: boolean = true;
+
 /*
-let upResults = [];
-let fhrResults = [];
-let mapResults = [];
-let o2PResults = [];
-
-
 upResults = MatlabTestExport.upResults;
 fhrResults = MatlabTestExport.fhrResults;
 mapResults = MatlabTestExport.mapResults;
 o2PResults = MatlabTestExport.o2PResults;
 */
 
-const upResults = MatlabTestExport.upResult.map(item => ({
-    x: item.timeSpan,
-    y: item.uPressure
-  }));
+// const upResults = MatlabTestExport.upResult.map(item => ({
+//     x: item.timeSpan,
+//     y: item.uPressure
+//   }));
 
-  const fhrResults = MatlabTestExport.fhrResult.map(item => ({
-    x: item.timeSpan,
-    y: item.heartRate
-  }));
+//   const fhrResults = MatlabTestExport.fhrResult.map(item => ({
+//     x: item.timeSpan,
+//     y: item.heartRate
+//   }));
 
-  const mapResults = MatlabTestExport.mapResult.map(item => ({
-    x: item.timeSpan,
-    y: item.MAP
-  }));
+//   const mapResults = MatlabTestExport.mapResult.map(item => ({
+//     x: item.timeSpan,
+//     y: item.MAP
+//   }));
 
-  const o2PResults = MatlabTestExport.o2PResult.map(item => ({
-    x: item.timeSpan,
-    y: item.o2Pressure
-  }));
+//   const o2PResults = MatlabTestExport.o2PResult.map(item => ({
+//     x: item.timeSpan,
+//     y: item.o2Pressure
+//   }));
 
 
-const updateArray = (newArray) => {
-        //coordinates = newArray; // Update items with new dat
+const updateArray = (json) => {
+        //coordinates = newArray; // Update items with new data
+        console.log("test");
+        //let fmpResult: FMPResult = Object.assign(new FMPResult(), json)
+        //let response: Response = Object.assign(new Response(), json);
+        //console.log(response);
+        let res = json[0];
+        console.log(res);
+        if (res.fmp) {
+            if (res.fmp.upResult) {
+                upResults = res.fmp.upResult;  // Assigning nested fields manually if necessary
+            }
+            if (res.fmp.fhrResult) {
+                fhrResults = res.fmp.fhrResult;  // Assigning nested fields manually if necessary
+            }
+            if (res.fmp.mapResult) {
+                mapResults = res.fmp.mapResult;  // Assigning nested fields manually if necessary
+            }
+            if (res.fmp.o2PResult) {
+                o2PResults = res.fmp.o2PResult;  // Assigning nested fields manually if necessary
+            }
+        // Add more fields as necessary depending on what json contains.
+        }
+        updated = true;
+        console.log(upResults);
+        console.log(fhrResults);
+        console.log(mapResults);
+        console.log(o2PResults);
+        //upResults = response.fmp.upResult;
 }
 
-function moreAids()
+function webhookConnect()
 {
-    let first = true;
-
     const waitForConnection = setInterval(() => {
         if (first)
         {
@@ -88,8 +120,8 @@ function moreAids()
             clearInterval(waitForConnection);
             console.log("connected baby!")
         }
-        
-        
+
+
     },1000);
 }
 
@@ -181,42 +213,43 @@ const incrementXMaxValue = () => {
 
 
 onMounted(() => {
+    webhookConnect();
     // Interval to increment x-axis max value
-    
+
     const xIntervalId = setInterval(() => {
+        const chart = myChart.value.chart;
         /*
         const arrayLength = coordinates.length;
-        const newestValue = coordinates[arrayLength - 1];  
+        const newestValue = coordinates[arrayLength - 1];
 
         if (typeof newestValue !== 'undefined')
-        {  
-            const newX = newestValue.x-11; 
+        {
+            const newX = newestValue.x-11;
             const newXMax = newestValue.x;
 
-            const chart = myChart.value.chart; 
+            const chart = myChart.value.chart;
             chart.options.scales.x.min = newX;
             chart.options.scales.x.max = newXMax;
             chart.update();
-        } 
+        }
         */
-        if (waitForChange.value > 11)
-        {    
-            const chart = myChart.value.chart; 
-
-            //if (chart.options.scales.x.max < newestValue.x){
+       //console.log(myChart.value);
+        if (waitForChange.value > 11 && updated)
+        {
+            if (chart.options.scales.x.max < upResults[upResults.length-1].timeSpan){
                 incrementXMaxValue();
                 chart.options.scales.x.min = maxXValue.value-11;
                 chart.options.scales.x.max = maxXValue.value; // Update the x-axis max value
-                chart.update();
-           // }
-            
-        }
-        
+            }
 
-        
+        }
+        chart.update();
+
+
+
        waitForChange.value += 0.1;
-       
-        
+
+
     },100); // Every 1 seconds
 
     // Control graph properties based on type
@@ -348,8 +381,7 @@ onMounted(() => {
 
 <style scoped>
 .container {
-    height: 40vh;
-    padding: 1%;
+  height: 40vh;
+  padding: 1%;
 }
 </style>
-

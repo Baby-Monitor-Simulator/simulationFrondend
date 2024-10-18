@@ -105,16 +105,21 @@ export function sendUserId(userId) {
 export let websocketCoordinates = [];
 
 function checkCoordinates(body) {
-  if (body.x && body.y) 
-  {
-    const x = body.x;
-    const y = body.y + 100;
+  if (body.message != undefined) return;
+  // if (body.x && body.y) 
+  // {
+  //   const x = body.x;
+  //   const y = body.y + 100;
 
     
-    websocketCoordinates.push({ x, y });
+  //   websocketCoordinates.push({ x, y });
     
-    eventBusGraphData.emit('arrayUpdated', websocketCoordinates);
-  } 
+  //   eventBusGraphData.emit('arrayUpdated', websocketCoordinates);
+  // } 
+  console.log(body);
+  websocketCoordinates.push(body);
+    
+  eventBusGraphData.emit('arrayUpdated', websocketCoordinates);
 }
 
 export function desperation()
