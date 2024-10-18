@@ -1,0 +1,4 @@
+# Codeowners file itself
+CODEOWNERS  @dainank @patrickdb
+
+*/ @dainank @patrickdb
