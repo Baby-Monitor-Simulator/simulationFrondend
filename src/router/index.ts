@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HookTest from '../components/HookTest.vue'
+import Login from '../views/Login.vue'
+import Register from '../views/Register.vue'
 import DashboardView from '../views/DashboardView.vue'
 
 const router = createRouter({
@@ -11,9 +12,14 @@ const router = createRouter({
       component: DashboardView
     },
     {
-      path: '/hooktest', // Path for the homepage
-      name: 'test',
-      component: HookTest, // Set hooktest as the component for the home route
+      path: '/login', // Path for the homepage
+      name: 'login',
+      component: Login, // Set hooktest as the component for the home route
+    },
+    {
+      path: '/register', // Path for the homepage
+      name: 'register',
+      component: Register, // Set hooktest as the component for the home route
     },
   ]
 })

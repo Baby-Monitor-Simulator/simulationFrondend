@@ -25,7 +25,7 @@ const globalStore: any = useGlobalStore()
 let coordinates = [];
 const myChart = ref(null);
 const basex = ref(0);
-const userId = "7dd58dee-9d44-4c63-b7aa-4ed3dec6293b";
+const userId = import.meta.env.VITE_APP_TEMP_USERID; //TODO: make this unique for each user
 
 
 let upResults: UPResult[] = [];
@@ -39,6 +39,7 @@ let first: boolean = true;
 
 const updateArray = (json) => {
         //coordinates = newArray; // Update items with new data
+        //sdfsdf
         console.log("test");
         //let fmpResult: FMPResult = Object.assign(new FMPResult(), json)
         //let response: Response = Object.assign(new Response(), json);

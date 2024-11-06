@@ -4,7 +4,11 @@ import {markRaw, onMounted, ref} from "vue";
 import {useImportStore} from '@/stores/import';
 import type MatlabFile from "@/interfaces/IExpectedFileContent";
 import {useGlobalStore} from '@/stores/global';
-import GraphType from "@/enums/graphTypes"
+import GraphType from "@/enums/graphTypes";
+
+import Navbar from '@/components/Navbar.vue';
+import HeaderComponent from '@/components/Header.vue';
+import { RouterView } from 'vue-router'
 
 const importStore: any = useImportStore()
 const globalStore: any = useGlobalStore()
@@ -14,7 +18,7 @@ const UterineContractionsArr = markRaw<Array<MatlabFile>>([])
 const FetalHeartRateArr = markRaw<Array<MatlabFile>>([])
 
 const fetchData = () => {
-  let source = new EventSource("http://localhost:8080/api/sse")
+  let source = new EventSource(import.meta.env.VITE_APP_WEBSOCKET)
   console.log(Date.now());
 
   source.onmessage = (event) => { // this is really ugly src
@@ -51,6 +55,15 @@ onMounted(() => {
 })
 </script>
 <template>
+  <Navbar></Navbar>
+  <v-app-bar title="Application bar">
+    <HeaderComponent></HeaderComponent>
+  </v-app-bar>
+
+  <v-main>
+          <RouterView />
+  </v-main>
+
   <div v-show="globalStore.showGraph">
       <v-col md-6>
         <GraphVue :type="GraphType.FetalHeartRate" :y-min="60" :y-max="200" :xMin="0" :xMax="11" :y-step-size="1"
