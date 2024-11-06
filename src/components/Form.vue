@@ -153,6 +153,7 @@ export default {
         })
 
         const errStrs = computed(() => {
+           
             return {
                 scenario: t("message.scenario"),
                 template: t("message.template"),
@@ -169,8 +170,11 @@ export default {
             } else {
                 globalStore.haltFetch = true
                 importStore.fillGraph(template.value)
+                console.log(template.value);
             }
         })
+
+        
 
         const resetGraphs = () => {
             router.go(0)
@@ -184,6 +188,7 @@ export default {
         }
     },
     mounted() {
+        console.log("If you aren't reading this then the code is fucked beyond redemption.")
         this.scenario.value.value = scenarioOption.VarDeceleration
         this.template.value.value = templateOptionV2.None
         this.maxAmplitude.value.value = 70

@@ -25,14 +25,19 @@ function readGeneralFileInput(): void {
 
 function readMatlabFile(): void {
     const reader = new FileReader();
-
+    
     if (file.value.name.includes(".txt")) {
+        testFileExport(file);
         reader.onload = (res) => {
             content.value = res.target!.result;
         };
         reader.readAsText(file.value);
+
+        
     }
 }
+
+
 
 function parseMatLabTxtData(): void {
     loading.value = true
@@ -62,6 +67,7 @@ function parseMatLabTxtData(): void {
 
     inputHasError.value = false
     importFile.graphData = parsedContent
+    console.log(importFile);
     console.log(JSON.stringify(parsedContent))
     resetFileInputField();
 }
@@ -76,6 +82,7 @@ const isFileEmpty = computed(() => {
 })
 
 const fileReader = computed(() => {
+    
     return t("message.fileInput")
 })
 
