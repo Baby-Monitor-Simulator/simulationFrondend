@@ -1,4 +1,3 @@
-import SockJS from "sockjs-client";
 import { Client as StompJsClient } from "@stomp/stompjs";
 import eventBusGraphData from "./eventBusGraphData.js";
 

@@ -2,13 +2,10 @@
   <div class="container">
     <Line ref="myChart" :data="data" :options="options" />
   </div>
-  <!-- <div>
-    <button @click="webhookConnect">More things!!!</button>
-  </div> -->
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watch, nextTick } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Chart as ChartJS, Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, type ChartData } from 'chart.js'
 import { Line } from 'vue-chartjs'
 import { useImportStore } from '@/stores/import';
@@ -17,15 +14,6 @@ import { useGlobalStore } from '@/stores/global';
 
 import { connectGraph, sendUserId } from "./websocket.js";
 import eventBusGraphData from "./eventBusGraphData.js";
-
-import MatlabTestExport from "./MatlabTestExport.json";
-import UPResult from '@/models/results/UPResult.js';
-import FHRResult from '@/models/results/FHRResult.js';
-import MAPResult from '@/models/results/MAPResult.js';
-import O2PResult from '@/models/results/O2PResult.js';
-import FMPResult from '@/models/results/FMPResult.js';
-import Response from '@/models/Response.js';
-
 
 ChartJS.register(Title, Tooltip, Legend, PointElement, LineElement, CategoryScale, LinearScale)
 
@@ -58,7 +46,7 @@ const updateArray = (json) => {
         let res = json[0];
         console.log(res);
 
-        const chart = myChart.value.chart;
+        //const chart = myChart.value.chart;
         
         console.log(res.fmp);
 
@@ -277,11 +265,8 @@ onMounted(() => {
 
     // Control graph properties based on type
     switch (props.type) {
-        
         case GraphType.FetalHeartRate:
             const heartRateId = setInterval(() => {
-
-                //console.log(fhrResults);
                 data.value = {
                     datasets: [
                         {
@@ -302,9 +287,7 @@ onMounted(() => {
                     clearInterval(xIntervalId); // Clear the x-axis increment interval
                 }
             }, 250)
-   
-            break;
-            
+            break;       
         case GraphType.FetalBloodPressure:
             const fetalBloodPressureId = setInterval(() => {
                 data.value = {

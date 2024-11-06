@@ -2,10 +2,10 @@ import FMPResult from "./results/FMPResult";
 
 export default class Response {
 
-    userId: String | undefined;
+    userId: string | undefined;
     fmp: FMPResult | undefined;
 
-    constructor(userId: String, fmp: FMPResult) {
+    constructor(userId: string, fmp: FMPResult) {
         this.userId = userId;
         this.fmp = fmp;
     }

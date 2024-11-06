@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import GraphVue from '@/components/Graph.vue';
-import {markRaw, onMounted,getCurrentInstance, ref} from "vue";
+import {markRaw, onMounted, ref} from "vue";
 import {useImportStore} from '@/stores/import';
 import type MatlabFile from "@/interfaces/IExpectedFileContent";
 import {useGlobalStore} from '@/stores/global';

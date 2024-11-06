@@ -2,9 +2,9 @@ import Result from "./Result";
 
 export default class MAPResult extends Result {
 
-    MAP: Number;
+    MAP: number;
 
-    constructor(MAP: Number, timeSpan: Number) {
+    constructor(MAP: number, timeSpan: number) {
         super(timeSpan);
         this.MAP = MAP;
     }

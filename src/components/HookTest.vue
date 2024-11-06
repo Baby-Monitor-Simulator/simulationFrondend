@@ -1,26 +1,6 @@
 <template>
   <div>
     <h1>Webhook rest</h1>
-    <p v-if="response">{{ response }}</p>
-
-    <div>
-      <button id="connect" @click="connectToWebSocket">Connect</button>
-      <button id="disconnect" @click="disconnectFromWebSocket" disabled>
-        Disconnect
-      </button>
-      <button id="send" @click="sendUserIdToWebSocket">Send User ID</button>
-
-      <!-- Lobby and Coordinates -->
-      <div id="lobbyTraffic" style="display: none">
-        <h2>Lobbies</h2>
-        <table id="lobbies"></table>
-      </div>
-
-      <div id="simCoords" style="display: none">
-        <h2>Coordinates</h2>
-        <table id="coords"></table>
-      </div>
-    </div>
   </div>
 </template>
 

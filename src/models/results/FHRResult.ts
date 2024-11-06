@@ -2,9 +2,9 @@ import Result from "./Result";
 
 export default class FHRResult extends Result {
 
-    heartRate: Number;
+    heartRate: number;
 
-    constructor(heartRate: Number, timeSpan: Number) {
+    constructor(heartRate: number, timeSpan: number) {
         super(timeSpan);
         this.heartRate = heartRate;
     }

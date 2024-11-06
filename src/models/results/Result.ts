@@ -1,8 +1,8 @@
 export default class Result {
 
-    timeSpan: Number;
+    timeSpan: number;
 
-    constructor(timeSpan: Number) {
+    constructor(timeSpan: number) {
         this.timeSpan = timeSpan;
     }
 }

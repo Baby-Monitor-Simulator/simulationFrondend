@@ -2,9 +2,9 @@ import Result from "./Result";
 
 export default class UPResult extends Result {
 
-    uPressure: Number;
+    uPressure: number;
 
-    constructor(uPressure: Number, timeSpan: Number) {
+    constructor(uPressure: number, timeSpan: number) {
         super(timeSpan);
         this.uPressure = uPressure;
     }
