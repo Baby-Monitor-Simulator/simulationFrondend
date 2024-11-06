@@ -57,12 +57,12 @@ onMounted(() => {
                   :chart-title="'Fetal Heart Rate (FHR)'"></GraphVue>
       </v-col>
       <v-col md-6>
-        <GraphVue :type="GraphType.FetalBloodPressure" :y-min="35" :y-max="55" :xMin="0" :xMax="11" :y-step-size="5"
+        <GraphVue :type="GraphType.FetalBloodPressure" :y-min="35" :y-max="55" :xMin="0" :xMax="11" :y-step-size="1"
                   :chart-title="'Fetal Blood Pressure (MAP)'"></GraphVue>
       </v-col>
 
       <v-col md-6>
-        <GraphVue  :type="GraphType.UterineContractions" :y-min="0" :y-max="100"  :xMin="0" :xMax="11" :y-step-size="10"
+        <GraphVue  :type="GraphType.UterineContractions" :y-min="0" :y-max="100"  :xMin="0" :xMax="11" :y-step-size="1"
                   :chart-title="'Uterine Contractions (UP)'"></GraphVue>
       </v-col>
       <v-col md-6>

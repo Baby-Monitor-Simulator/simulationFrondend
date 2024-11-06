@@ -47,32 +47,6 @@ let o2PResults: O2PResult[] = [];
 let updated: boolean = false;
 let first: boolean = true;
 
-/*
-upResults = MatlabTestExport.upResults;
-fhrResults = MatlabTestExport.fhrResults;
-mapResults = MatlabTestExport.mapResults;
-o2PResults = MatlabTestExport.o2PResults;
-*/
-
-// const upResults = MatlabTestExport.upResult.map(item => ({
-//     x: item.timeSpan,
-//     y: item.uPressure
-//   }));
-
-//   const fhrResults = MatlabTestExport.fhrResult.map(item => ({
-//     x: item.timeSpan,
-//     y: item.heartRate
-//   }));
-
-//   const mapResults = MatlabTestExport.mapResult.map(item => ({
-//     x: item.timeSpan,
-//     y: item.MAP
-//   }));
-
-//   const o2PResults = MatlabTestExport.o2PResult.map(item => ({
-//     x: item.timeSpan,
-//     y: item.o2Pressure
-//   }));
 
 
 const updateArray = (json) => {
@@ -83,27 +57,71 @@ const updateArray = (json) => {
         //console.log(response);
         let res = json[0];
         console.log(res);
+
+        const chart = myChart.value.chart;
+        
+        console.log(res.fmp);
+
         if (res.fmp) {
+            
+
             if (res.fmp.upResult) {
-                upResults = res.fmp.upResult;  // Assigning nested fields manually if necessary
+                upResults = res.fmp.upResult.map(item => ({
+                x: item.timeSpan,
+                y: item.uPressure
+                }));  // Assigning nested fields manually if necessary
+                /*
+                const maxX = Math.max(...res.fmp.upResult.map(point => point.x));
+
+                chart.options.scales.x.min = maxX-11;
+                chart.options.scales.x.max = maxX;
+                
+               console.log("up");
+                console.log(upResults);
+                */
+
             }
             if (res.fmp.fhrResult) {
-                fhrResults = res.fmp.fhrResult;  // Assigning nested fields manually if necessary
+                fhrResults = res.fmp.fhrResult.map(item => ({
+                x: item.timeSpan,
+                y: item.heartRate
+                })); // Assigning nested fields manually if necessary
+                //console.log("fhr");
+                //console.log(fhrResults);
             }
             if (res.fmp.mapResult) {
-                mapResults = res.fmp.mapResult;  // Assigning nested fields manually if necessary
+                mapResults = res.fmp.mapResult.map(item => ({
+                x: item.timeSpan,
+                y: item.MAP
+                }));  // Assigning nested fields manually if necessary
+                //console.log("map");
+                //console.log(mapResults);
             }
             if (res.fmp.o2PResult) {
-                o2PResults = res.fmp.o2PResult;  // Assigning nested fields manually if necessary
+                o2PResults = res.fmp.o2PResult.map(item => ({
+                x: item.timeSpan,
+                y: item.o2Pressure
+                }));  // Assigning nested fields manually if necessary
+                //console.log("o2");
+                //console.log(o2PResults);
             }
         // Add more fields as necessary depending on what json contains.
+            console.log(upResults);
+            console.log(fhrResults);
+            console.log(mapResults);
+            console.log(o2PResults);
         }
+
+        
+
         updated = true;
+        /*
         console.log(upResults);
         console.log(fhrResults);
         console.log(mapResults);
         console.log(o2PResults);
         //upResults = response.fmp.upResult;
+        */
 }
 
 function webhookConnect()
@@ -157,8 +175,10 @@ const options: any = {
     scales: {
         y: {
             type: 'linear',
-            min: props.yMin,
-            max: props.yMax,
+            //min: props.yMin,
+            //max: props.yMax,
+            min: 0,
+            max: 300,
             ticks: {
                 stepSize: props.yStepSize
             },
@@ -215,9 +235,12 @@ const incrementXMaxValue = () => {
 onMounted(() => {
     webhookConnect();
     // Interval to increment x-axis max value
-
+    eventBusGraphData.on('arrayUpdated', updateArray);
+    
     const xIntervalId = setInterval(() => {
         const chart = myChart.value.chart;
+        
+        
         /*
         const arrayLength = coordinates.length;
         const newestValue = coordinates[arrayLength - 1];
@@ -250,16 +273,15 @@ onMounted(() => {
        waitForChange.value += 0.1;
 
 
-    },100); // Every 1 seconds
+    },100); // Every 0.1 seconds
 
     // Control graph properties based on type
     switch (props.type) {
+        
         case GraphType.FetalHeartRate:
             const heartRateId = setInterval(() => {
-                options.scales.x.max = maxXValue.value;
 
-                eventBusGraphData.on('arrayUpdated', updateArray);
-
+                //console.log(fhrResults);
                 data.value = {
                     datasets: [
                         {
@@ -280,31 +302,9 @@ onMounted(() => {
                     clearInterval(xIntervalId); // Clear the x-axis increment interval
                 }
             }, 250)
-            /*
-            const heartRateId = setInterval(() => {
-                options.scales.x.max = maxXValue.value;
-                data.value = {
-                    datasets: [
-                        {
-                            backgroundColor: [
-                                'rgba(255,99,132,1)',
-                            ],
-                            borderColor: [
-                                'rgba(255,99,132,1)',
-                            ],
-                            pointRadius: 0,
-                            data: importStore.fetalHeartRate,
-                        }
-                    ]
-                }
-                // Check if fetching should be halted
-                if (globalStore.haltFetch) {
-                    clearInterval(heartRateId);
-                    clearInterval(xIntervalId); // Clear the x-axis increment interval
-                }
-            }, 250)
-            */
+   
             break;
+            
         case GraphType.FetalBloodPressure:
             const fetalBloodPressureId = setInterval(() => {
                 data.value = {

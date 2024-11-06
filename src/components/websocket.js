@@ -120,6 +120,7 @@ function checkCoordinates(body) {
   websocketCoordinates.push(body);
     
   eventBusGraphData.emit('arrayUpdated', websocketCoordinates);
+  console.log("MessageBus triggered");
 }
 
 export function desperation()
