@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { useGlobalStore } from "@/stores/global";
 import { ref, computed, watch } from "vue";
-import Overlay from "@/components/Overlay.vue";
+import Overlay from "@/components/Manual.vue";
 import { useI18n } from "vue-i18n";
 import { useHoverStore } from "@/stores/hover";
 

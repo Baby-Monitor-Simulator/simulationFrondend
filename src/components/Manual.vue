@@ -8,30 +8,19 @@ const hoverStore: any = useHoverStore();
 const { t } = useI18n(); // call `useI18n`, and spread `t` from  `useI18n` returning
 
 // you can probably use `onmousemove` for both: https://www.w3schools.com/jsref/event_onmouseover.asp
-const triggerHover = (item: HoverItem) => {
+const changeHover = (item: HoverItem, bool: boolean) => {
   switch (item) {
     case HoverItem.Language:
-      hoverStore.language = true;
+      hoverStore.language = bool;
       break;
     case HoverItem.Export:
-      hoverStore.export = true;
+      hoverStore.export = bool;
       break;
     case HoverItem.Import:
-      hoverStore.import = true;
+      hoverStore.import = bool;
       break;
-  }
-};
-
-const releaseHover = (item: any) => {
-  switch (item) {
-    case HoverItem.Language:
-      hoverStore.language = false;
-      break;
-    case HoverItem.Export:
-      hoverStore.export = false;
-      break;
-    case HoverItem.Import:
-      hoverStore.import = false;
+    case HoverItem.Submit:
+      hoverStore.submit = bool;
       break;
   }
 };
@@ -49,6 +38,9 @@ const titleStrs = computed(() => {
 
     dataImportTitle: t("message.dataImportTitle"),
     dataImportDescription: t("message.dataImportDescription"),
+
+    submitTitle: t("message.submitTitle"),
+    submitDescription: t("message.submitDescription"),
   };
 });
 </script>
@@ -63,8 +55,8 @@ const titleStrs = computed(() => {
         <v-list-subheader>{{ titleStrs.hoverExplanation }}</v-list-subheader>
 
         <v-list-item
-          v-on:mouseenter="triggerHover(HoverItem.Language)"
-          v-on:mouseleave="releaseHover(HoverItem.Language)"
+          v-on:mouseenter="changeHover(HoverItem.Language, true)"
+          v-on:mouseleave="changeHover(HoverItem.Language, false)"
           prepend-icon="mdi-web"
         >
           <template v-slot:title>{{ titleStrs.Languagechange }}</template>
@@ -74,8 +66,8 @@ const titleStrs = computed(() => {
         <v-divider inset></v-divider>
 
         <v-list-item
-          v-on:mouseenter="triggerHover(HoverItem.Export)"
-          v-on:mouseleave="releaseHover(HoverItem.Export)"
+          v-on:mouseenter="changeHover(HoverItem.Export, true)"
+          v-on:mouseleave="changeHover(HoverItem.Export, false)"
           prepend-icon="mdi-download"
         >
           <template v-slot:title>{{ titleStrs.dataExportTitle }}</template>
@@ -85,12 +77,23 @@ const titleStrs = computed(() => {
         <v-divider inset></v-divider>
 
         <v-list-item
-          v-on:mouseenter="triggerHover(HoverItem.Import)"
-          v-on:mouseleave="releaseHover(HoverItem.Import)"
+          v-on:mouseenter="changeHover(HoverItem.Import, true)"
+          v-on:mouseleave="changeHover(HoverItem.Import, false)"
           prepend-icon="mdi-upload"
         >
           <template v-slot:title> {{ titleStrs.dataImportTitle }} </template>
           <template v-slot:subtitle> {{ titleStrs.dataImportDescription }} </template>
+        </v-list-item>
+
+        <v-divider inset></v-divider>
+
+        <v-list-item
+          v-on:mouseenter="changeHover(HoverItem.Submit, true)"
+          v-on:mouseleave="changeHover(HoverItem.Submit, false)"
+          prepend-icon="mdi-send"
+        >
+          <template v-slot:title> {{ titleStrs.submitTitle }} </template>
+          <template v-slot:subtitle> {{ titleStrs.submitDescription }} </template>
         </v-list-item>
       </v-list>
     </v-card>
