@@ -216,7 +216,12 @@ export default {
       <v-divider></v-divider>
 
       <v-sheet class="ma-1 pa-2">
-        <v-btn block variant="outlined" @click="handleReset">
+        <v-btn
+          block
+          variant="outlined"
+          @click="handleReset"
+          prepend-icon="mdi-trash-can-outline"
+        >
           {{ $t("message.clear") }}
         </v-btn>
       </v-sheet>
