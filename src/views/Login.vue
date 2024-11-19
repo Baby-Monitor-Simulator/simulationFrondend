@@ -6,9 +6,9 @@
       <div class="form-group">
         <label for="username">User name:</label>
         <input
-          type="email"
+          type="text"
           id="username"
-          v-model="email"
+          v-model="username"
           required
           placeholder="Enter your user name"
         />
@@ -51,16 +51,22 @@ export default {
   methods: {
     async login() {
       try {
-        const response = await axios.post(`${import.meta.env.VITE_APP_API_LOGIN}`, {
-          email: this.email,
+
+         const userData=
+        {
+          username: this.username,
           password: this.password,
-        });
+        }
+        console.log(userData);
+
+        const response = await axios.post(`${import.meta.env.VITE_APP_API_LOGIN}`, userData);
         
 
-        if (response.data.success) {
+        if (response.status == 200) {
           localStorage.setItem('token', response.data.token);
-          this.$router.push('/');
-        } else {
+          this.$router.push('/LobbyCreate');
+        } else 
+        {
           this.errorMessage = 'Invalid email or password.';
         }
       } catch (error) {
@@ -88,6 +94,7 @@ export default {
 }
 
 input[type="email"],
+input[type="text"],
 input[type="password"] {
   width: 100%;
   padding: 10px;
