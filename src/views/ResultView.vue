@@ -50,7 +50,7 @@ export default {
     methods: {
         async getAllResults() {
             try {
-                const response = await axios.get(`http://localhost:8080/api/results/${this.userId}`);
+                const response = await axios.get(`${import.meta.env.VITE_APP_API_RESULTS}${this.userId}`);
                 this.allResults = response.data;
             } catch (error) {
                 console.error(error);
@@ -58,7 +58,7 @@ export default {
         },
         async getResult() {
             try {
-                const response = await axios.get(`http://localhost:8080/api/results/${this.userId}/${this.sessionId}`);
+                const response = await axios.get(`${import.meta.env.VITE_APP_API_RESULTS}${this.userId}/${this.sessionId}`);
                 this.result = response.data;
             } catch (error) {
                 console.error(error);
@@ -66,7 +66,7 @@ export default {
         },
         async addResult() {
             try {
-                const response = await axios.post('http://localhost:8080/api/results', this.newResult);
+                const response = await axios.post(`${import.meta.env.VITE_APP_API_RESULTS}`, this.newResult);
                 console.log('Result added:', response.data);
             } catch (error) {
                 console.error(error);
