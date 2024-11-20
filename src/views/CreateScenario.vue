@@ -31,8 +31,8 @@
 
           <v-col cols="12" md="6">
             <v-text-field
-                v-model="scenario.Matlab.hartRate"
-                label="Hart Rate (Hz)"
+                v-model="scenario.Matlab.heartRate"
+                label="Heart Rate (Hz)"
                 type="number"
             ></v-text-field>
           </v-col>
@@ -47,8 +47,8 @@
 
           <v-col cols="12" md="6">
             <v-text-field
-                v-model="scenario.Matlab.bloodPresure"
-                label="Blood Presure"
+                v-model="scenario.Matlab.bloodPressure"
+                label="Blood Pressure"
                 type="number"
             ></v-text-field>
           </v-col>
@@ -92,8 +92,8 @@ export default {
         description: '',
         Matlab: {
           oxygenSaturation: null,
-          bloodPresure: null,
-          hartRate: null,
+          bloodPressure: null,
+          heartRate: null,
         }
       },
       saving: false
