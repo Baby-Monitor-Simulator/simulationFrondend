@@ -14,9 +14,17 @@ import Form from "./Form.vue";
       :permanent="true"
     >
       <v-list>
-        <v-btn class="ma-1 pa-2">Lorem Ipsum</v-btn>
+        <v-btn class="ma-1 pa-2" to="/">Lorem Ipsum</v-btn>
         <v-divider></v-divider>
-        <v-btn class="ma-1 pa-2">Lorem Ipsum</v-btn>
+
+        <v-btn
+            class="ma-1 pa-2"
+            to="/scenario"
+            :class="{ 'v-btn--active': $route.path === '/scenario' }"
+        >
+          Scenario
+        </v-btn>
+
         <v-divider></v-divider>
         <v-btn class="ma-1 pa-2">Lorem Ipsum</v-btn>
         <v-divider></v-divider>
@@ -31,3 +39,5 @@ import Form from "./Form.vue";
   margin-right: 15px;
 }
 </style>
+
+
