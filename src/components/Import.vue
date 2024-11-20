@@ -25,7 +25,7 @@ function readGeneralFileInput(): void {
 
 function readMatlabFile(): void {
     const reader = new FileReader();
-    
+
     if (file.value.name.includes(".txt")) {
         testFileExport(file);
         reader.onload = (res) => {
@@ -33,7 +33,7 @@ function readMatlabFile(): void {
         };
         reader.readAsText(file.value);
 
-        
+
     }
 }
 
@@ -82,34 +82,48 @@ const isFileEmpty = computed(() => {
 })
 
 const fileReader = computed(() => {
-    
+
     return t("message.fileInput")
 })
 
 const errorText = computed(() => {
     return inputHasError.value ? t("message.fileInputErrorText") : ""
 })
-
 </script>
 
 <template>
-    <v-container>
-        <v-row no-gutters>
-            <v-sheet class="ma-1 pa-2">
-                <v-btn variant="outlined" :disabled="isFileEmpty" :loading="loading" icon="mdi-upload" @click="parseMatLabTxtData()">
-                </v-btn>
-            </v-sheet>
-            <v-sheet class="ma-1 pa-1 file-reader-input">
-                <v-file-input :error-messages="errorText" :error="inputHasError" variant="outlined" :disabled="loading"
-                    prepend-icon="" ref="docFile" clearable accept=".txt" :label="fileReader"
-                    @change="readGeneralFileInput()"></v-file-input>
-            </v-sheet>
-        </v-row>
-    </v-container>
+  <v-container>
+    <v-row no-gutters>
+      <v-sheet class="ma-1 pa-2">
+        <v-btn
+          variant="outlined"
+          :disabled="isFileEmpty"
+          :loading="loading"
+          icon="mdi-upload"
+          @click="parseMatLabTxtData()"
+        >
+        </v-btn>
+      </v-sheet>
+      <v-sheet class="ma-1 pa-1 file-reader-input">
+        <v-file-input
+          :error-messages="errorText"
+          :error="inputHasError"
+          variant="outlined"
+          :disabled="loading"
+          prepend-icon=""
+          ref="docFile"
+          clearable
+          accept=".txt"
+          :label="fileReader"
+          @change="readGeneralFileInput()"
+        ></v-file-input>
+      </v-sheet>
+    </v-row>
+  </v-container>
 </template>
 
 <style scoped>
 .file-reader-input {
-    width: 142px
+  width: 142px;
 }
 </style>
