@@ -60,7 +60,7 @@ export default {
   methods: {
     async fetchScenarios() {
       try {
-        const response = await axios.get('http://localhost:8080/api/scenario/all');
+        const response = await axios.get(`${import.meta.env.VITE_APP_API_SCENARIO}/all`);
         this.scenarios = response.data;
         this.loading = false;
       } catch (err) {

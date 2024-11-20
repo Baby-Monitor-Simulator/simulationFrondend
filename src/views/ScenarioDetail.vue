@@ -56,7 +56,7 @@ export default {
     async fetchScenarioDetail() {
       try {
         const scenarioId = this.$route.params.id;
-        const response = await axios.get(`http://localhost:8080/api/scenario/${scenarioId}`);
+        const response = await axios.get(`${import.meta.env.VITE_APP_API_SCENARIO}/${scenarioId}`);
         this.scenario = response.data;
         this.loading = false;
       } catch (err) {

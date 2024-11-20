@@ -108,7 +108,7 @@ export default {
 
       this.saving = true;
       try {
-        const response = await axios.post('http://localhost:8080/api/scenario', this.scenario);
+        const response = await axios.post(`${import.meta.env.VITE_APP_API_SCENARIO}`, this.scenario);
 
         this.$router.push('/scenario');
       } catch (error) {
