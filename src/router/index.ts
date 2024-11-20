@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import LobbyCreate from '../views/LobbyCreate.vue'
+import ResultView from '@/views/ResultView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import Scenario from '@/views/Scenario.vue'
 import ScenarioDetail from "@/views/ScenarioDetail.vue";
@@ -44,6 +45,10 @@ const router = createRouter({
       path: '/scenario/create',
       name: 'CreateScenario',
       component: CreateScenario
+
+      path: '/results',
+      name: 'results',
+      component: ResultView
     }
   ]
 })
