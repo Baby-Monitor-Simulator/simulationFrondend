@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import LobbyCreate from '../views/LobbyCreate.vue'
+import ResultView from '@/views/ResultView.vue'
 import DashboardView from '../views/DashboardView.vue'
 
 const router = createRouter({
@@ -26,6 +27,11 @@ const router = createRouter({
       path: '/lobbyCreate', // Path for the homepage
       name: 'lobbyCreate',
       component: LobbyCreate, 
+    },
+    {
+      path: '/results',
+      name: 'results',
+      component: ResultView
     }
   ]
 })
