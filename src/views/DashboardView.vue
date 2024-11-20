@@ -55,11 +55,6 @@ onMounted(() => {
 })
 </script>
 <template>
-  <Navbar></Navbar>
-  <v-app-bar title="Application bar">
-    <HeaderComponent></HeaderComponent>
-  </v-app-bar>
-
   <v-main>
           <RouterView />
   </v-main>
