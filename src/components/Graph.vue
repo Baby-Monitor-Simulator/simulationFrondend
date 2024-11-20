@@ -14,6 +14,10 @@ import { useGlobalStore } from '@/stores/global';
 
 import { connectGraph, sendUserId } from "./websocket.js";
 import eventBusGraphData from "./eventBusGraphData.js";
+import UPResult from '@/models/results/UPResult.js';
+import FHRResult from '@/models/results/FMPResult.js';
+import MAPResult from '@/models/results/MAPResult.js';
+import O2PResult from '@/models/results/O2PResult.js';
 
 ChartJS.register(Title, Tooltip, Legend, PointElement, LineElement, CategoryScale, LinearScale)
 
@@ -48,11 +52,11 @@ const updateArray = (json) => {
         console.log(res);
 
         //const chart = myChart.value.chart;
-        
+
         console.log(res.fmp);
 
         if (res.fmp) {
-            
+
 
             if (res.fmp.upResult) {
                 upResults = res.fmp.upResult.map(item => ({
@@ -64,7 +68,7 @@ const updateArray = (json) => {
 
                 chart.options.scales.x.min = maxX-11;
                 chart.options.scales.x.max = maxX;
-                
+
                console.log("up");
                 console.log(upResults);
                 */
@@ -101,7 +105,7 @@ const updateArray = (json) => {
             console.log(o2PResults);
         }
 
-        
+
 
         updated = true;
         /*
@@ -225,11 +229,11 @@ onMounted(() => {
     webhookConnect();
     // Interval to increment x-axis max value
     eventBusGraphData.on('arrayUpdated', updateArray);
-    
+
     const xIntervalId = setInterval(() => {
         const chart = myChart.value.chart;
-        
-        
+
+
         /*
         const arrayLength = coordinates.length;
         const newestValue = coordinates[arrayLength - 1];
@@ -288,7 +292,7 @@ onMounted(() => {
                     clearInterval(xIntervalId); // Clear the x-axis increment interval
                 }
             }, 250)
-            break;       
+            break;
         case GraphType.FetalBloodPressure:
             const fetalBloodPressureId = setInterval(() => {
                 data.value = {

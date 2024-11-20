@@ -1,7 +1,7 @@
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, test, vitest } from 'vitest'
 import { useImportStore } from '@/stores/import'
-import FileReader from '@/components/FileReader.vue'
+import FileReader from '@/components/Import.vue'
 import { createTestingPinia } from '@pinia/testing'
 import { mount } from '@vue/test-utils'
 import { createI18n } from 'vue-i18n'

@@ -14,13 +14,10 @@ import Form from "./Form.vue";
       :permanent="true"
     >
       <v-list>
-        <v-btn class="ma-1 pa-2">Lorem Ipsum</v-btn>
+        <Export></Export>
+        <Import></Import>
         <v-divider></v-divider>
-        <v-btn class="ma-1 pa-2">Lorem Ipsum</v-btn>
-        <v-divider></v-divider>
-        <v-btn class="ma-1 pa-2">Lorem Ipsum</v-btn>
-        <v-divider></v-divider>
-        <v-btn class="ma-1 pa-2">Lorem Ipsum</v-btn>
+        <Form></Form>
       </v-list>
     </v-navigation-drawer>
   </div>
