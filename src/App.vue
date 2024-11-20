@@ -1,4 +1,5 @@
 <script setup lang="ts">
+
 import { ref, computed } from "vue";
 import { RouterView } from "vue-router";
 import Navbar from "@/components/Navbar.vue";
@@ -19,6 +20,7 @@ function toggleComponent() {
 
 <template>
   <v-app>
+
     <v-layout>
       <button class="toggle-button" @click="toggleComponent">
         <v-icon :icon="currentIcon">{{ currentIcon }}</v-icon>

@@ -20,7 +20,7 @@ function setConnected(connected) {
 }
 
 export function connectGraph(userId) {
-  const webSocketUrl = "ws://localhost:8080/ws-lobby";
+  const webSocketUrl = import.meta.env.VITE_APP_WEBSOCKET_LOBBY;
 
   // Initialize stompClient using the `Client` class, pointing directly to the WebSocket URL.
   stompClient = new StompJsClient({
