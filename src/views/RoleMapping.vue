@@ -1,38 +1,32 @@
 <!-- src/components/Login.vue -->
 <template>
   <div class="login">
-    <h2>Login</h2>
+    <h2>Role mapping bla bla</h2>
     <form @submit.prevent="login">
       <div class="form-group">
-        <label for="email">Email:</label>
+        <label for="userid">id</label>
         <input
           type="text"
-          id="email"
-          v-model="email"
+          id="userid"
+          v-model="userid"
           required
-          placeholder="Enter your email"
+          placeholder="enter id"
         />
       </div>
-      
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          v-model="password"
-          required
-          placeholder="Enter your password"
-        />
-      </div>
-      
-      <button type="submit">Login</button>
-      <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 
-      <!-- Register navigation button -->
-      <p>
-        Don’t have an account?
-        <button @click="goToRegister" class="link-button">Register here</button>
-      </p>
+      <div class="form-group">
+        <label for="roleName">id</label>
+        <input
+          type="text"
+          id="roleName"
+          v-model="roleName"
+          required
+          placeholder="Enter roleName"
+        />
+      </div>
+      
+      <button type="submit">map role</button>
+      <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
     </form>
   </div>
 </template>
@@ -43,9 +37,8 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      email: '',
-      password: '',
-      errorMessage: '',
+      userid: '',
+      roleName: '',
     };
   },
   methods: {
@@ -54,25 +47,17 @@ export default {
 
         const userData=
         {
-          email: this.email,
-          password: this.password,
+          userID: this.userid,
+          roleName: this.roleName
         }
         console.log(userData);
 
-        const response = await axios.post(`${import.meta.env.VITE_APP_API_LOGIN}`, userData);
+        const token = localStorage.getItem('token');
+        const response = await axios.post(`${import.meta.env.VITE_APP_API_ROLEMAPPING}`, userData, {
+        headers: {
+          Authorization: `Bearer ${token}` // Add JWT token in Authorization header
+        }});
 
-        if (response.status === 200) {
-          // Store the token in localStorage
-          const token = response.data.startsWith("Bearer ") ? response.data.split(" ")[1] : response.data;
-          console.log(token);
-          localStorage.setItem('token', token);
-
-          // Navigate to the LobbyCreate page
-          this.$router.push('/LobbyCreate');
-        } else {
-          // Handle cases where no token is returned
-          this.errorMessage = 'Login successful, but no token received.';
-        }
       } catch (error) {
         this.errorMessage = error.response ? error.response.data.message : 'An error occurred. Please try again.';
       }

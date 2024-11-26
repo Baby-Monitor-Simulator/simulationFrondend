@@ -7,6 +7,7 @@ import DashboardView from '../views/DashboardView.vue'
 import Scenario from '@/views/Scenario.vue'
 import ScenarioDetail from "@/views/ScenarioDetail.vue";
 import CreateScenario from "@/views/CreateScenario.vue";
+import RoleMapping from "@/views/RoleMapping.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -45,6 +46,11 @@ const router = createRouter({
       path: '/scenario/create',
       name: 'CreateScenario',
       component: CreateScenario
+    },
+    {
+      path: '/role',
+      name: 'role',
+      component: RoleMapping
     },
     {
 

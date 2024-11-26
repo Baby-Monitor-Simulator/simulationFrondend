@@ -7,11 +7,14 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), VueI18nPlugin({
-    /* options */
-    // locale messages resource pre-compile option
-    include: resolve(dirname(fileURLToPath(import.meta.url)), './path/to/src/locales/**'),
-  }),],
+  plugins: [
+    vue(),
+    VueI18nPlugin({
+      /* options */
+      // locale messages resource pre-compile option
+      include: resolve(dirname(fileURLToPath(import.meta.url)), './path/to/src/locales/**'),
+    }),
+  ],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
@@ -19,6 +22,9 @@ export default defineConfig({
   },
   server: {
     port: 4173,
+    headers: {
+      "Cache-Control": "no-store", // Voorkomt caching van bestanden
+    },
   },
   define: {
     global: {},
