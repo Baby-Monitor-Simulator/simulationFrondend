@@ -59,7 +59,7 @@ export default {
           email: this.email       
         }
 
-        const token: localStorage.getItem('token');
+        const token = localStorage.getItem('token');
         const response = await axios.post(`${import.meta.env.VITE_APP_API_LOBBY}`, userData, {
         headers: {
           Authorization: `Bearer ${token}` // Add JWT token in Authorization header
