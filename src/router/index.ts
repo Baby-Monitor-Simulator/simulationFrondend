@@ -14,7 +14,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: DashboardView
+      component: DashboardView,
     },
     {
       path: '/login', // Path for the homepage
@@ -34,17 +34,19 @@ const router = createRouter({
     {
       path: '/scenario',
       name: 'Scenario',
-      component: Scenario
+      component: Scenario,
     },
     {
       path: '/scenario/:id',
       name: 'ScenarioDetail',
-      component: ScenarioDetail
+      component: ScenarioDetail,
     },
     {
       path: '/scenario/create',
       name: 'CreateScenario',
       component: CreateScenario
+    },
+    {
 
       path: '/results',
       name: 'results',
