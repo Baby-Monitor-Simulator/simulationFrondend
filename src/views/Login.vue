@@ -52,7 +52,7 @@ export default {
     async login() {
       try {
 
-         const userData=
+        const userData=
         {
           username: this.username,
           password: this.password,
@@ -60,14 +60,17 @@ export default {
         console.log(userData);
 
         const response = await axios.post(`${import.meta.env.VITE_APP_API_LOGIN}`, userData);
-        
 
-        if (response.status == 200) {
-          localStorage.setItem('token', response.data.token);
+        if (response.status === 200 && response.data.token) {
+          // Store the token in localStorage
+          const token = response.data.startsWith("Bearer ") ? response.data.split(" ")[1] : response.data;
+          localStorage.setItem('token', token);
+
+          // Navigate to the LobbyCreate page
           this.$router.push('/LobbyCreate');
-        } else 
-        {
-          this.errorMessage = 'Invalid email or password.';
+        } else {
+          // Handle cases where no token is returned
+          this.errorMessage = 'Login successful, but no token received.';
         }
       } catch (error) {
         this.errorMessage = error.response ? error.response.data.message : 'An error occurred. Please try again.';
