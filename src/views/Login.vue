@@ -48,6 +48,12 @@ export default {
       errorMessage: '',
     };
   },
+
+  mounted(){
+      console.log("jwt cleared");
+      localStorage.clear();
+      },
+
   methods: {
     async login() {
       try {
@@ -68,7 +74,7 @@ export default {
           localStorage.setItem('token', token);
 
           // Navigate to the LobbyCreate page
-          this.$router.push('/LobbyCreate');
+          this.$router.push('/');
         } else {
           // Handle cases where no token is returned
           this.errorMessage = 'Login successful, but no token received.';
