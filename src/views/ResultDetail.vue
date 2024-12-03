@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>Result View</h1>
+        <h1>Result</h1>
         <div>
             <h2>Get All Results by User ID</h2>
             <input v-model="userId" placeholder="Enter User ID" />
@@ -34,6 +34,7 @@
 import axios from 'axios';
 
 export default {
+    name: "ResultDetail"
     data() {
         return {
             userId: '',
@@ -47,15 +48,10 @@ export default {
             }
         };
     },
+    created() {
+        this.getResult()
+    }
     methods: {
-        async getAllResults() {
-            try {
-                const response = await axios.get(`${import.meta.env.VITE_APP_API_RESULTS}${this.userId}`);
-                this.allResults = response.data;
-            } catch (error) {
-                console.error(error);
-            }
-        },
         async getResult() {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_APP_API_RESULTS}${this.userId}/${this.sessionId}`);

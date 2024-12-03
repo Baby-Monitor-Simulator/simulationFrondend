@@ -14,7 +14,9 @@ import Form from "./Form.vue";
       :permanent="true"
     >
       <v-list>
-        <v-btn class="ma-1 pa-2" to="/">Lorem Ipsum</v-btn>
+        <v-btn class="ma-1 pa-2" to="/results":class="{ 'v-btn--active': $route.path === '/scenario' }">
+          results
+        </v-btn>
         <v-divider></v-divider>
 
         <v-btn
