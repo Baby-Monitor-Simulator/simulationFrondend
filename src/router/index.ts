@@ -45,7 +45,8 @@ const router = createRouter({
       path: '/scenario/create',
       name: 'CreateScenario',
       component: CreateScenario
-
+    },
+    {
       path: '/results',
       name: 'results',
       component: ResultView
