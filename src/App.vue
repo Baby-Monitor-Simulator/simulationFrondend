@@ -1,10 +1,10 @@
 <script setup lang="ts">
-
 import { ref, computed } from "vue";
 import { RouterView } from "vue-router";
 import Navbar from "@/components/Navbar.vue";
 import Header from "@/components/Header.vue";
 import SideBar from "./components/SideBar.vue";
+import { hasRole, loadRoles, roles } from "./components/RoleManager";
 
 const showNavbar = ref(true);
 const currentIcon = computed(() =>
@@ -20,12 +20,15 @@ function toggleComponent() {
 
 <template>
   <v-app>
-
     <v-layout>
-      <button class="toggle-button" @click="toggleComponent">
+      <v-button
+        class="toggle-button"
+        @click="toggleComponent"
+        v-if="hasRole(['admin.deelnemer'])"
+      >
         <v-icon :icon="currentIcon">{{ currentIcon }}</v-icon>
-      </button>
-      <component :is="currentComponent"></component>
+      </v-button>
+      <component :is="currentComponent" v-if="hasRole(['admin.deelnemer'])"></component>
 
       <v-app-bar title="Application bar">
         <Header></Header>
