@@ -91,7 +91,6 @@ const router = createRouter({
       meta: { requiresAuth: true , allowedRoles: ['admin'] } // Protected route
     },
     {
-
       path: '/results',
       name: 'results',
       component: ResultView,
