@@ -56,11 +56,15 @@ export default {
         const userData=
         {
           username: this.username,
-          email: this.email,
-          token: localStorage.getItem('token')
+          email: this.email       
         }
 
-        const response = await axios.post(`${import.meta.env.VITE_APP_API_LOBBY}`, userData);
+        const token = localStorage.getItem('token');
+        const response = await axios.post(`${import.meta.env.VITE_APP_API_LOBBY}`, userData, {
+        headers: {
+          Authorization: `Bearer ${token}` // Add JWT token in Authorization header
+        }});
+
         if (response.data.success) {
           console.log("lobby has been created");
         } 
