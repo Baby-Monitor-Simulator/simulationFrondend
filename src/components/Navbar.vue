@@ -40,25 +40,31 @@
           class="ma-1 pa-2"
           to="/role"
           :class="{ 'v-btn--active': $route.path === '/role' }"
-          v-if="hasRole(['admin'])"
+          v-if="devMode ? true : hasRole(['admin'])"
           @click="onNavbarClick"
         >
           Rolemap
         </v-btn>
+
+        <v-divider></v-divider>
+
         <v-btn
           class="ma-1 pa-2"
-          to="/lobbyjoin"
-          :class="{ 'v-btn--active': $route.path === '/lobbyjoin' }"
-          v-if="hasRole(['deelnemer'])"
+          to="/join"
+          :class="{ 'v-btn--active': $route.path === '/join' }"
+          v-if="devMode ? true : hasRole(['deelnemer'])"
           @click="onNavbarClick"
         >
           Join Lobby
         </v-btn>
+
+        <v-divider></v-divider>
+
         <v-btn
           class="ma-1 pa-2"
           to="/login"
           :class="{ 'v-btn--active': $route.path === '/login' }"
-          v-if="hasRole(['admin', 'deelnemer', 'instructeur'])"
+          v-if="devMode ? true : hasRole(['admin', 'deelnemer', 'instructeur'])"
           @click="onNavbarClick"
         >
           logout
@@ -71,6 +77,7 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted, watch, nextTick } from "vue";
 import { hasRole, loadRoles, roles } from "./RoleManager";
+const devMode = import.meta.env.VITE_DEV_MODE === "true";
 
 // Declare a ref to store roles, which is an array of strings
 

@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar.vue";
 import Header from "@/components/Header.vue";
 import SideBar from "./components/SideBar.vue";
 import { hasRole, loadRoles, roles } from "./components/RoleManager";
+const devMode = import.meta.env.VITE_DEV_MODE === "true";
 
 const showNavbar = ref(true);
 const currentIcon = computed(() =>
@@ -24,11 +25,14 @@ function toggleComponent() {
       <v-button
         class="toggle-button"
         @click="toggleComponent"
-        v-if="hasRole(['admin.deelnemer'])"
+        v-if="devMode ? true : hasRole(['admin.deelnemer'])"
       >
         <v-icon :icon="currentIcon">{{ currentIcon }}</v-icon>
       </v-button>
-      <component :is="currentComponent" v-if="hasRole(['admin.deelnemer'])"></component>
+      <component
+        :is="currentComponent"
+        v-if="devMode ? true : hasRole(['admin.deelnemer'])"
+      ></component>
 
       <v-app-bar title="Application bar">
         <Header></Header>
