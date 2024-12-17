@@ -17,8 +17,8 @@ export default {
       maxAmplitude: "Amplitude must lie between",
       contractionDuration: "Duration must lie between",
       timeBetweenContractions: "Time must lie between",
-   
-      //Manual
+   },
+   manual: {
       manualTitle: "Manual",
       hoverExplanation: "Hover over items below to learn how this application works.",
       languageChangeTitle: "Changing Language",
@@ -32,5 +32,9 @@ export default {
 
       submitTitle: "Submit data",
       submitDescription: "Submit the change.",
+   },
+   lobby: {
+      joinTitle: "Enter lobby code",
+      joinLobby: "Join",
    }
 }
