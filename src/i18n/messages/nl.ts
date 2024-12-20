@@ -36,5 +36,8 @@ export default {
    lobby: {
       joinTitle: "Vul de lobby code in",
       joinLobby: "Deelnemen",
+      waitingForLobby: "Wachten tot lobby opgestart is...",
+      lobbyStarted: "Lobby is gestart",
+      simulationStarting: "Simulatie wordt opgestart, een moment geduld aub...",
    }
 }

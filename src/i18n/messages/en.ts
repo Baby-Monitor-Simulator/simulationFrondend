@@ -36,5 +36,8 @@ export default {
    lobby: {
       joinTitle: "Enter lobby code",
       joinLobby: "Join",
+      waitingForLobby: "Waiting for lobby to start...",
+      lobbyStarted: "Lobby started",
+      simulationStarting: "Simulation starting, one moment please...",
    }
 }
