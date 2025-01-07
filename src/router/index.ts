@@ -10,6 +10,7 @@ import CreateScenario from "@/views/CreateScenario.vue";
 import RoleMapping from "@/views/RoleMapping.vue";
 import HomePage from "@/views/HomePage.vue";
 import LobbyJoin from '@/views/LobbyJoin.vue';
+import Lobby from '@/views/Lobby.vue';
 
 const devMode = true;
 
@@ -73,6 +74,12 @@ const router = createRouter({
       path: '/join', // Path for the homepage
       name: 'lobbyJoin',
       component: LobbyJoin, 
+      meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['deelnemer']}
+    },
+    {
+      path: '/lobby', // Path for the homepage
+      name: 'lobby',
+      component: Lobby, 
       meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['deelnemer']}
     },
     {
