@@ -1,7 +1,8 @@
 import { Client as StompJsClient } from "@stomp/stompjs";
 import eventBusGraphData from "./eventBusGraphData.js";
 
-let stompClient = null;
+let lobbyClient = null;
+let graphClient = null;
 
 function setConnected(connected) {
   /*
@@ -22,84 +23,117 @@ function setConnected(connected) {
 export function connectGraph(userId) {
   const webSocketUrl = import.meta.env.VITE_APP_WEBSOCKET_LOBBY;
 
-  // Initialize stompClient using the `Client` class, pointing directly to the WebSocket URL.
-  stompClient = new StompJsClient({
+  graphClient = new StompJsClient({
     brokerURL: webSocketUrl,
-    reconnectDelay: 5000, // Auto-reconnect after 5 seconds
-    //heartbeatIncoming: 4000, // Heartbeat every 4 seconds
-    //heartbeatOutgoing: 4000,
+    reconnectDelay: 5000,
     isTrusted: false,
   });
 
-  stompClient.onConnect = (frame) => {
+  graphClient.onConnect = (frame) => {
     setConnected(true);
-    console.log("Connected: " + frame);
-    stompClient.subscribe(`/lobby/${userId}`, (lobby) => {
+    console.log("Graph Connected: " + frame);
+    graphClient.subscribe(`/lobby/${userId}`, (lobby) => {
       checkCoordinates(JSON.parse(lobby.body));
     });
   };
 
-  stompClient.onWebSocketError = (error) => {
-    console.error("WebSocket error", error);
+  graphClient.onWebSocketError = (error) => {
+    console.error("Graph WebSocket error", error);
   };
 
-  stompClient.onStompError = (frame) => {
-    console.error("Stomp error: " + frame.headers["message"]);
+  graphClient.onStompError = (frame) => {
+    console.error("Graph Stomp error: " + frame.headers["message"]);
     console.error("Details: " + frame.body);
   };
 
-  stompClient.activate();
+  graphClient.activate();
 }
 
+export function connectLobby(lobbyId) {
+  const webSocketUrl = import.meta.env.VITE_APP_WEBSOCKET_LOBBY;
+
+  graphClient = new StompJsClient({
+    brokerURL: webSocketUrl,
+    reconnectDelay: 5000,
+    isTrusted: false,
+  });
+
+  graphClient.onConnect = (frame) => {
+    setConnected(true);
+    console.log("Graph Connected: " + frame);
+    graphClient.subscribe(`/lobby/${lobbyId}`, (lobby) => {
+      checkCoordinates(JSON.parse(lobby.body));
+    });
+  };
+
+  graphClient.onWebSocketError = (error) => {
+    console.error("Graph WebSocket error", error);
+  };
+
+  graphClient.onStompError = (frame) => {
+    console.error("Graph Stomp error: " + frame.headers["message"]);
+    console.error("Details: " + frame.body);
+  };
+
+  graphClient.activate();
+}
 
 export function connect(userId) {
   const webSocketUrl = "ws://localhost:8080/ws-lobby";
 
-  // Initialize stompClient using the `Client` class, pointing directly to the WebSocket URL.
-  stompClient = new StompJsClient({
+  lobbyClient = new StompJsClient({
     brokerURL: webSocketUrl,
-    reconnectDelay: 5000, // Auto-reconnect after 5 seconds
-    //heartbeatIncoming: 4000, // Heartbeat every 4 seconds
-    //heartbeatOutgoing: 4000,
+    reconnectDelay: 5000,
     isTrusted: false,
   });
 
-  stompClient.onConnect = (frame) => {
+  lobbyClient.onConnect = (frame) => {
     setConnected(true);
-    console.log("Connected: " + frame);
-    stompClient.subscribe(`/lobby/${userId}`, (lobby) => {
+    console.log("Lobby Connected: " + frame);
+    lobbyClient.subscribe(`/lobby/${userId}`, (lobby) => {
       checkMessage(JSON.parse(lobby.body));
       checkCoordinates(JSON.parse(lobby.body));
     });
   };
 
-  stompClient.onWebSocketError = (error) => {
-    console.error("WebSocket error", error);
+  lobbyClient.onWebSocketError = (error) => {
+    console.error("Lobby WebSocket error", error);
   };
 
-  stompClient.onStompError = (frame) => {
-    console.error("Stomp error: " + frame.headers["message"]);
+  lobbyClient.onStompError = (frame) => {
+    console.error("Lobby Stomp error: " + frame.headers["message"]);
     console.error("Details: " + frame.body);
   };
 
-  stompClient.activate();
+  lobbyClient.activate();
 }
 
 export function disconnect() {
-  if (stompClient !== null) {
-    stompClient.deactivate();
+  if (lobbyClient !== null) {
+    lobbyClient.deactivate();
+  }
+  if (graphClient !== null) {
+    graphClient.deactivate();
   }
   setConnected(false);
-  console.log("Disconnected");
+  console.log("All connections disconnected");
 }
 
-export function sendUserId(userId) {
-  stompClient.publish({
-    destination: "/app/simulation",
-    body: JSON.stringify({ userId }),
-  });
+export function sendUserId(userId, lobbyId) {
+  if (lobbyClient !== null && lobbyClient.connected) {
+    lobbyClient.publish({
+      destination: "/app/simulation",
+      body: JSON.stringify({ userId }),
+    });
+  } else if (graphClient !== null && graphClient.connected) {
+    graphClient.publish({
+      destination: "/app/simulation",
+      body: JSON.stringify({ userId }),
+    });
+  } else {
+    console.error("No active connection available to send message");
+  }
 }
-
 
 export let websocketCoordinates = [];
 
