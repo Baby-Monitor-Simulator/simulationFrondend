@@ -12,7 +12,7 @@ import HomePage from "@/views/HomePage.vue";
 import LobbyJoin from '@/views/LobbyJoin.vue';
 import Lobby from '@/views/Lobby.vue';
 
-const devMode = true;
+const devMode = import.meta.env.VITE_DEV_MODE === "true";
 
 interface DecodedJWT 
 {
