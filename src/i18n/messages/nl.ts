@@ -17,8 +17,8 @@ export default {
       maxAmplitude: "Amplitude moet tussen",
       contractionDuration: "Contractieduur moet tussen",
       timeBetweenContractions: "Tijd moet tussen",
-
-      //Manual
+   },
+   manual: {
       manualTitle: "Handleiding",
       hoverExplanation: "Houd muis over de onderdelen hieronder om erachter te komen hoe de applicatie werkt.",
       languageChangeTitle: "Taal veranderen",
@@ -32,5 +32,12 @@ export default {
 
       submitTitle: "Verstuur data",
       submitDescription: "Verstuur de veranderingen.",
+   },
+   lobby: {
+      joinTitle: "Vul de lobby code in",
+      joinLobby: "Deelnemen",
+      waitingForLobby: "Wachten tot lobby opgestart is...",
+      lobbyStarted: "Lobby is gestart",
+      simulationStarting: "Simulatie wordt opgestart, een moment geduld aub...",
    }
 }

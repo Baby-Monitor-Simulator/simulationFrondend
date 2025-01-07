@@ -9,6 +9,10 @@ import ScenarioDetail from "@/views/ScenarioDetail.vue";
 import CreateScenario from "@/views/CreateScenario.vue";
 import RoleMapping from "@/views/RoleMapping.vue";
 import HomePage from "@/views/HomePage.vue";
+import LobbyJoin from '@/views/LobbyJoin.vue';
+import Lobby from '@/views/Lobby.vue';
+
+const devMode = import.meta.env.VITE_DEV_MODE === "true";
 
 interface DecodedJWT 
 {
@@ -42,13 +46,13 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomePage,
-      meta: { requiresAuth: true , allowedRoles: ['instructeur','deelnemer','admin']} // Protected route
+      meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['instructeur','deelnemer','admin']} // Protected route
     },
     {
       path: '/dashboard',
       name: 'dashboard',
       component: DashboardView,
-      meta: { requiresAuth: true , allowedRoles: ['deelnemer','admin']} // Protected route
+      meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['deelnemer','admin']} // Protected route
     },
     {
       path: '/login', // Path for the homepage
@@ -64,37 +68,49 @@ const router = createRouter({
       path: '/lobbyCreate', // Path for the homepage
       name: 'lobbyCreate',
       component: LobbyCreate, 
-      meta: { requiresAuth: true , allowedRoles: ['instructeur'] } // Protected route
+      meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['instructeur'] } // Protected route
+    },
+    {
+      path: '/join', // Path for the homepage
+      name: 'lobbyJoin',
+      component: LobbyJoin, 
+      meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['deelnemer']}
+    },
+    {
+      path: '/lobby', // Path for the homepage
+      name: 'lobby',
+      component: Lobby, 
+      meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['deelnemer']}
     },
     {
       path: '/scenario',
       name: 'Scenario',
       component: Scenario,
-      meta: { requiresAuth: true } // Protected route
+      meta: { requiresAuth: (devMode ? false : true ) } // Protected route
     },
     {
       path: '/scenario/:id',
       name: 'ScenarioDetail',
       component: ScenarioDetail,
-      meta: { requiresAuth: true } // Protected route
+      meta: { requiresAuth: (devMode ? false : true ) } // Protected route
     },
     {
       path: '/scenario/create',
       name: 'CreateScenario',
       component: CreateScenario,
-      meta: { requiresAuth: true } // Protected route
+      meta: { requiresAuth: (devMode ? false : true ) } // Protected route
     },
     {
       path: '/role',
       name: 'role',
       component: RoleMapping,
-      meta: { requiresAuth: true , allowedRoles: ['admin'] } // Protected route
+      meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['admin'] } // Protected route
     },
     {
       path: '/results',
       name: 'results',
       component: ResultView,
-      meta: { requiresAuth: true , allowedRoles: ['deelnemer'] } // Protected route
+      meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['deelnemer'] } // Protected route
     }
   ]
 })
@@ -113,7 +129,6 @@ router.beforeEach((to, from, next) => {
       // Role-based access check
       if (to.meta.allowedRoles && !to.meta.allowedRoles.some(role => roles.includes(role))) 
       {
-        console.log("I TRIED TO STOP HIM I SWEAR!!!");
         next({ name: 'unauthorized' }); // Redirect to an unauthorized page if needed
       } else {
 

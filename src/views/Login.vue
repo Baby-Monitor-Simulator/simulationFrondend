@@ -1,96 +1,110 @@
-<!-- src/components/Login.vue -->
+<!-- src/views/Login.vue -->
 <template>
-  <div class="login">
-    <h2>Login</h2>
-    <form @submit.prevent="login">
-      <div class="form-group">
-        <label for="email">Email:</label>
-        <input
-          type="text"
-          id="email"
-          v-model="email"
-          required
-          placeholder="Enter your email"
-        />
-      </div>
-      
-      <div class="form-group">
-        <label for="password">Password:</label>
-        <input
-          type="password"
-          id="password"
-          v-model="password"
-          required
-          placeholder="Enter your password"
-        />
-      </div>
-      
-      <button type="submit">Login</button>
-      <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+  <div class="login-container">
+    <div class="login">
+      <h2>Login</h2>
+      <form @submit.prevent="login">
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input
+            type="text"
+            id="email"
+            v-model="email"
+            required
+            placeholder="Enter your email"
+          />
+        </div>
 
-      <!-- Register navigation button -->
-      <p>
-        Don’t have an account?
-        <button @click="goToRegister" class="link-button">Register here</button>
-      </p>
-    </form>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input
+            type="password"
+            id="password"
+            v-model="password"
+            required
+            placeholder="Enter your password"
+          />
+        </div>
+
+        <button type="submit">Login</button>
+        <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
+
+        <!-- Register navigation button -->
+        <p>
+          Don’t have an account?
+          <button @click="goToRegister" class="link-button">Register here</button>
+        </p>
+      </form>
+    </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   data() {
     return {
-      email: '',
-      password: '',
-      errorMessage: '',
+      email: "",
+      password: "",
+      errorMessage: "",
     };
   },
 
-  mounted(){
-      console.log("jwt cleared");
-      localStorage.clear();
-      },
+  mounted() {
+    console.log("jwt cleared");
+    localStorage.clear();
+  },
 
   methods: {
     async login() {
       try {
-
-        const userData=
-        {
+        const userData = {
           email: this.email,
           password: this.password,
-        }
+        };
         console.log(userData);
 
-        const response = await axios.post(`${import.meta.env.VITE_APP_API_LOGIN}`, userData);
+        const response = await axios.post(
+          `${import.meta.env.VITE_APP_API_LOGIN}`,
+          userData
+        );
 
         if (response.status === 200) {
           // Store the token in localStorage
-          const token = response.data.startsWith("Bearer ") ? response.data.split(" ")[1] : response.data;
+          const token = response.data.startsWith("Bearer ")
+            ? response.data.split(" ")[1]
+            : response.data;
           console.log(token);
-          localStorage.setItem('token', token);
+          localStorage.setItem("token", token);
 
           // Navigate to the LobbyCreate page
-          this.$router.push('/');
+          this.$router.push("/");
         } else {
           // Handle cases where no token is returned
-          this.errorMessage = 'Login successful, but no token received.';
+          this.errorMessage = "Login successful, but no token received.";
         }
       } catch (error) {
-        this.errorMessage = error.response ? error.response.data.message : 'An error occurred. Please try again.';
+        this.errorMessage = error.response
+          ? error.response.data.message
+          : "An error occurred. Please try again.";
       }
     },
     goToRegister() {
-      this.$router.push('/register');
-    }
+      this.$router.push("/register");
+    },
   },
 };
 </script>
 
 <style scoped>
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  width: 100vw;
+}
 .login {
   max-width: 400px;
   margin: 0 auto;
