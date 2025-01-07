@@ -1,8 +1,7 @@
 import { Client as StompJsClient } from "@stomp/stompjs";
 import eventBusGraphData from "./eventBusGraphData.js";
 
-let lobbyClient = null;
-let graphClient = null;
+let client = null;
 
 function setConnected(connected) {
   /*
@@ -44,7 +43,7 @@ function connect(id, webSocketUrl) {
   client.onConnect = (frame) => {
     setConnected(true);
     console.log("Lobby Connected: " + frame);
-    lobbyClient.subscribe(`/lobby/${id}`, (lobby) => {
+    client.subscribe(`/lobby/${id}`, (lobby) => {
       checkMessage(JSON.parse(lobby.body));
       checkCoordinates(JSON.parse(lobby.body));
     });
@@ -71,8 +70,8 @@ export function disconnect() {
 }
 
 export function sendUserId(userId, lobbyId) {
-  if (lobbyClient !== null && lobbyClient.connected) {
-    lobbyClient.publish({
+  if (client !== null && client.connected) {
+    client.publish({
       destination: "/app/simulation",
       body: JSON.stringify({ userId }),
     });
