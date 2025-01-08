@@ -25,13 +25,13 @@ function toggleComponent() {
       <v-button
         class="toggle-button"
         @click="toggleComponent"
-        v-if="devMode ? true : hasRole(['admin.deelnemer'])"
+        v-if="devMode ? true : hasRole(['admin', 'deelnemer', 'instructeur'])"
       >
         <v-icon :icon="currentIcon">{{ currentIcon }}</v-icon>
       </v-button>
       <component
         :is="currentComponent"
-        v-if="devMode ? true : hasRole(['admin.deelnemer'])"
+        v-if="devMode ? true : hasRole(['admin', 'deelnemer', 'instructeur'])"
       ></component>
 
       <v-app-bar title="Application bar">
