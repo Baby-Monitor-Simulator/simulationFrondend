@@ -111,6 +111,29 @@ export function desperation()
   return websocketCoordinates;
 }
 
+export function closeWebSocket() {
+  if (client) {
+    if (client.connected) {
+      // Unsubscribe from all stored subscriptions
+      subscriptions.forEach((subscription) => {
+        subscription.unsubscribe();
+      });
+      subscriptions = []; // Clear subscriptions array after unsubscribing
+
+      // Deactivate the WebSocket connection
+      client.deactivate();
+
+      console.log("WebSocket connection successfully closed");
+    } else {
+      console.warn("WebSocket connection is not active or already closed");
+    }
+
+    client = null; // Reset client to null
+  } else {
+    console.warn("No active WebSocket client found to close");
+  }
+}
+
 function checkMessage(body) {
   if (body.message) 
   {

@@ -8,10 +8,12 @@ import GraphType from "@/enums/graphTypes";
 
 import Navbar from '@/components/Navbar.vue';
 import HeaderComponent from '@/components/Header.vue';
-import { RouterView } from 'vue-router'
+import { RouterView } from 'vue-router';
+import { useRouter } from "vue-router";
 
 //connect graphs to back-end imports
-import { connectGraph, sendUserId } from "@/components/websocket.js";
+import { connectGraph, sendUserId, disconnect } from "@/components/websocket.js";
+
 
 const importStore: any = useImportStore()
 const globalStore: any = useGlobalStore()
@@ -77,6 +79,25 @@ function webhookConnect()
     },1000);
 }
 
+const router = useRouter();
+//leave lobby
+const leaveLobby = async () => 
+{
+  try {
+    // Send a request to the back-end
+    await axios.post('/api/leave-lobby'); //TODO: Request to back-end to remove/stop the simulation that was assigend to the user id.
+
+    //close websocket
+    disconnect();
+
+    // Redirect to the home page
+    router.push("/");
+  } catch (error) {
+    console.error('Have you made the leave lobby back-end request functional? If not then comment it out or make it work!:', error);
+    alert('Failed to leave the lobby.');
+  }
+}
+
 onMounted(() => {
   webhookConnect();
   fetchData()
@@ -84,8 +105,14 @@ onMounted(() => {
 </script>
 <template>
   <v-main>
+          
+
           <RouterView />
+
+          <!-- Leave Lobby Button -->
+          <button class="leave-lobby-btn" @click="leaveLobby">Leave Lobby</button>
   </v-main>
+  
 
   <div v-show="globalStore.showGraph">
       <v-col md-6>
@@ -120,5 +147,22 @@ onMounted(() => {
   right: 15px;
   border: 3px;
   z-index: 9;
+}
+
+.leave-lobby-btn {
+  position: absolute;
+  top: 80px;
+  right: 45px;
+  padding: 10px 15px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.leave-lobby-btn:hover {
+  background-color: #d32f2f;
 }
 </style>
