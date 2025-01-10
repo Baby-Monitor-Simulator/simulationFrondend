@@ -53,10 +53,24 @@ export default {
         console.log(userData);
 
         const token = localStorage.getItem('token');
-        const response = await axios.post(`${import.meta.env.VITE_APP_API_ROLEMAPPING}`, userData, {
-        headers: {
-          Authorization: `Bearer ${token}` // Add JWT token in Authorization header
-        }});
+        if (token) {
+          const response = await fetch(`${import.meta.env.VITE_APP_API_ROLEMAPPING}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(userData)
+          });
+
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          const data = await response.json();
+        } else {
+          throw new Error('Authorization token is missing');
+        }
 
       } catch (error) {
         this.errorMessage = error.response ? error.response.data.message : 'An error occurred. Please try again.';

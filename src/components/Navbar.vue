@@ -50,6 +50,18 @@
 
         <v-btn
           class="ma-1 pa-2"
+          to="/lobbyCreate"
+          :class="{ 'v-btn--active': $route.path === '/lobbyCreate' }"
+          v-if="devMode ? true : hasRole(['instructeur'])"
+          @click="onNavbarClick"
+        >
+          Create Lobby
+        </v-btn>
+
+        <v-divider></v-divider>
+
+        <v-btn
+          class="ma-1 pa-2"
           to="/lobby/join"
           :class="{ 'v-btn--active': $route.path === '/join' }"
           v-if="devMode ? true : hasRole(['deelnemer'])"
