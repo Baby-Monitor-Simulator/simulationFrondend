@@ -20,19 +20,20 @@ function setConnected(connected) {
 }
 
 export function connectGraph(userId) {
-  //const webSocketUrl = import.meta.env.VITE_APP_WEBSOCKET_GRAPH;
-  const webSocketUrl = import.meta.env.VITE_APP_WEBSOCKET_LOBBY;
+  const webSocketUrl = import.meta.env.VITE_APP_WEBSOCKET_MATLAB;
+  const subscribeTag = import.meta.env.VITE_APP_WEBSOCKET_SIMULATION;
 
-  connect(userId, webSocketUrl);
+  connect(userId, webSocketUrl, subscribeTag);
 }
 
 export function connectLobby(lobbyId) {
   const webSocketUrl = import.meta.env.VITE_APP_WEBSOCKET_LOBBY;
+  const subscribeTag = import.meta.env.VITE_APP_WEBSOCKET_LOBBIES;
 
-  connect(lobbyId, webSocketUrl);
+  connect(lobbyId, webSocketUrl, subscribeTag);
 }
 
-function connect(id, webSocketUrl) {
+function connect(id, webSocketUrl, subscribeTag) {
 
   client = new StompJsClient({
     brokerURL: webSocketUrl,
@@ -43,7 +44,7 @@ function connect(id, webSocketUrl) {
   client.onConnect = (frame) => {
     setConnected(true);
     console.log("Lobby Connected: " + frame);
-    client.subscribe(`/lobby/${id}`, (lobby) => {
+    client.subscribe(`${subscribeTag}/${id}`, (lobby) => {
       checkMessage(JSON.parse(lobby.body));
       checkCoordinates(JSON.parse(lobby.body));
     });

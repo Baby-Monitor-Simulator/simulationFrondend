@@ -1,6 +1,8 @@
 <script>
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+import axios from "axios";
+
 export default {
   data() {
     const { t } = useI18n();
@@ -9,20 +11,40 @@ export default {
     };
   },
   methods: {
+    extractUUID() {
+      const token = localStorage.getItem("token");
+      if (!token) return null;
+
+      try {
+        const payload = token.split(".")[1];
+        const decodedPayload = JSON.parse(atob(payload));
+        return decodedPayload.sub;
+      } catch (error) {
+        console.error("Error decoding token:", error);
+        return null;
+      }
+    },
     async joinLobby() {
       try {
-        const userData = {
-          username: this.username,
-          email: this.email,
-          token: localStorage.getItem("token"),
+        const token = localStorage.getItem("token");
+        const participant = {
+          userId: this.extractUUID(),
+          lobbyId: this.lobbyCode,
         };
+        console.log(participant);
 
         const response = await axios.post(
-          `${import.meta.env.VITE_APP_API_LOBBY}`,
-          userData
+          `${import.meta.env.VITE_APP_API_PARTICIPANT}`,
+          participant,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
-        if (response.data.success) {
+        if (response.data.lobbyId != null) {
           console.log("lobby was joined");
+          this.$router.push(`/lobby/${this.lobbyCode}`);
         }
       } catch (error) {
         this.errorMessage = error.response

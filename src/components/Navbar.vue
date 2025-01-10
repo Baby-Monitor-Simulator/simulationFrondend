@@ -50,7 +50,7 @@
 
         <v-btn
           class="ma-1 pa-2"
-          to="/join"
+          to="/lobby/join"
           :class="{ 'v-btn--active': $route.path === '/join' }"
           v-if="devMode ? true : hasRole(['deelnemer'])"
           @click="onNavbarClick"

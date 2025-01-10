@@ -1,33 +1,58 @@
 <script>
-import { computed } from "vue";
+import { ref, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
+import { connectLobby, disconnect } from "@/components/websocket";
+import eventBusGraphData from "@/components/eventBusGraphData.js";
+import { hasRole } from "@/components/RoleManager";
+
 export default {
+  props: {
+    lobbyCode: {
+      type: Number,
+      required: true,
+    },
+  },
   data() {
     const { t } = useI18n();
     return {
-      lobbyCode: 1,
-      lobbyStarting: true,
+      lobbyStarting: false,
+      hasRole,
     };
   },
+  mounted() {
+    this.connectToLobby();
+    // Add event listener for websocket messages
+    eventBusGraphData.on("arrayUpdated", this.handleLobbyMessage);
+  },
+  beforeUnmount() {
+    // Clean up listeners and connection
+    eventBusGraphData.off("arrayUpdated", this.handleLobbyMessage);
+    disconnect();
+  },
   methods: {
-    async joinLobby() {
+    connectToLobby() {
       try {
-        const lobbyData = {
-          lobbyCode: this.lobbyCode,
-          token: localStorage.getItem("token"),
-        };
-
-        const response = await axios.post(
-          `${import.meta.env.VITE_APP_API_LOBBY}`,
-          lobbyData
-        );
-        if (response.data.success) {
-          console.log("lobby was joined");
-        }
+        connectLobby(this.lobbyCode);
+        console.log("Connected to lobby websocket");
       } catch (error) {
-        this.errorMessage = error.response
-          ? error.response.data.message
-          : "An error occurred. Please try again.";
+        console.error("Failed to connect to lobby:", error);
+      }
+    },
+    handleLobbyMessage(message) {
+      console.log("Received message:", message);
+
+      // Check if message is an array
+      if (Array.isArray(message)) {
+        console.log("Received array message");
+        // Handle array message if needed
+        return;
+      }
+
+      // Check for starting property
+      if (message && message.starting === true) {
+        console.log("Received start command");
+        this.lobbyStarting = true;
+        // You might want to redirect to simulation or handle the start in another way
       }
     },
   },
@@ -36,10 +61,11 @@ export default {
 
 <template>
   <div class="lobby-container">
-    <div class="lobby-form">
+    <div class="lobby-form" v-if="hasRole('deelnemer')">
       <h1 class="title">
         {{ lobbyStarting ? $t("lobby.lobbyStarted") : $t("lobby.waitingForLobby") }}
       </h1>
+      <h2 class="title">{{ lobbyCode }}</h2>
       <p class="lobby-text" v-if="lobbyStarting">
         {{ $t("lobby.simulationStarting") }}
       </p>
