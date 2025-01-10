@@ -117,24 +117,7 @@ const updateArray = (json) => {
         */
 }
 
-function webhookConnect()
-{
-    const waitForConnection = setInterval(() => {
-        if (first)
-        {
-            connectGraph(userId);
-            first = false;
-        }
-        else
-        {
-            sendUserId(userId);
-            clearInterval(waitForConnection);
-            console.log("connected baby!")
-        }
 
-
-    },1000);
-}
 
 
 
@@ -226,7 +209,6 @@ const incrementXMaxValue = () => {
 
 
 onMounted(() => {
-    webhookConnect();
     // Interval to increment x-axis max value
     eventBusGraphData.on('arrayUpdated', updateArray);
 

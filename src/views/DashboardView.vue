@@ -10,6 +10,9 @@ import Navbar from '@/components/Navbar.vue';
 import HeaderComponent from '@/components/Header.vue';
 import { RouterView } from 'vue-router'
 
+//connect graphs to back-end imports
+import { connectGraph, sendUserId } from "@/components/websocket.js";
+
 const importStore: any = useImportStore()
 const globalStore: any = useGlobalStore()
 const fetalBloodArr = markRaw<Array<MatlabFile>>([])
@@ -50,7 +53,32 @@ const updateCurrentTime = () => {
 };
 
 
+
+//connecting graphs to back-end
+let first: boolean = true;
+const userId = import.meta.env.VITE_APP_TEMP_USERID; //TODO: make this unique for each user
+
+function webhookConnect()
+{
+    const waitForConnection = setInterval(() => {
+        if (first)
+        {
+            connectGraph(userId);
+            first = false;
+        }
+        else
+        {
+            sendUserId(userId);
+            clearInterval(waitForConnection);
+            console.log("connected baby!")
+        }
+
+
+    },1000);
+}
+
 onMounted(() => {
+  webhookConnect();
   fetchData()
 })
 </script>
