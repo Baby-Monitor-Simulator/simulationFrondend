@@ -4,35 +4,12 @@
       <h1 class="title">Create Lobby</h1>
       <form @submit.prevent="createLobby">
         <div class="form-group">
-          <label for="lobby-name">Lobby Name</label>
-          <input
-            type="text"
-            id="lobby-name"
-            v-model="lobbyName"
-            placeholder="Enter Lobby Name"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="password">Password (Optional)</label>
-          <input
-            type="password"
-            id="password"
-            v-model="password"
-            placeholder="Enter Password (Optional)"
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="username">Your Name</label>
-          <input
-            type="text"
-            id="username"
-            v-model="username"
-            placeholder="Enter Your Name"
-            required
-          />
+          <label for="scenario">Scenario</label>
+          <select id="scenario" v-model="scenario" required>
+            <option v-for="scenario in scenarios" :key="scenario._id" :value="scenario._id">
+              {{ scenario.name }}
+            </option>
+          </select>
         </div>
 
         <button type="submit" class="submit-btn">Create Lobby</button>
@@ -42,31 +19,51 @@
 </template>
 
 <script>
+import axios from 'axios';
+
+
 export default {
   data() {
     return {
-      lobbyName: '',
-      password: '',
-      username: '',
+      scenario: "",
+      scenarios: []
     };
   },
+  mounted() {
+    this.fetchScenarios();
+  },
   methods: {
+    async fetchScenarios() {
+      console.log("Fetching the scenarios")
+      try {
+        const token = localStorage.getItem('token');
+
+        const response = await axios.get(`${import.meta.env.VITE_APP_API_SCENARIO}/all`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
+
+        this.scenarios = response.data;
+      } catch (error) {
+        console.error('Error fetching scenarios:', error);
+      }
+    },
     async createLobby() {
       try {
-        const userData=
-        {
-          username: this.username,
-          email: this.email       
-        }
-
         const token = localStorage.getItem('token');
-        const response = await axios.post(`${import.meta.env.VITE_APP_API_LOBBY}`, userData, {
+
+        const response = await axios.post(`${import.meta.env.VITE_APP_API_LOBBY}/NewLobby`, 
+        {scenarioid: this.scenario}, {
         headers: {
-          Authorization: `Bearer ${token}` // Add JWT token in Authorization header
+          Authorization: `Bearer ${token}` 
         }});
 
-        if (response.data.success) {
-          console.log("lobby has been created");
+        console.log(response)
+        if (response.status === 200) {
+          console.log("lobby has been created, received the following data", response.data);
+          const lobbyId = response.data.lobbyid; // Extract lobbyid from response
+          this.$router.push(`/lobby/${lobbyId}`); // Navigate to the new route
         } 
       } catch (error) {
         this.errorMessage = error.response ? error.response.data.message : 'An error occurred. Please try again.';
@@ -124,6 +121,21 @@ export default {
 }
 
 .form-group input:focus {
+  border-color: #4c9bf1;
+  outline: none;
+}
+
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease-in-out;
+}
+
+.form-group select:focus {
   border-color: #4c9bf1;
   outline: none;
 }

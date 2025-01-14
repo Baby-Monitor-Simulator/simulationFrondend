@@ -65,22 +65,23 @@ const router = createRouter({
       component: Register, 
     },
     {
-      path: '/lobbyCreate', // Path for the homepage
+      path: '/lobby/create', // Path for the homepage
       name: 'lobbyCreate',
       component: LobbyCreate, 
       meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['instructeur'] } // Protected route
     },
     {
-      path: '/join', // Path for the homepage
+      path: '/lobby/join', // Path for joining lobby
       name: 'lobbyJoin',
       component: LobbyJoin, 
       meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['deelnemer']}
     },
     {
-      path: '/lobby', // Path for the homepage
+      path: '/lobby/:lobbyCode', // Path for joined lobby with lobbycode
       name: 'lobby',
       component: Lobby, 
-      meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['deelnemer']}
+      meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['deelnemer', 'instructeur']},
+      props: true
     },
     {
       path: '/scenario',
