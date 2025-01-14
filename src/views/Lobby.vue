@@ -4,6 +4,8 @@ import { useI18n } from "vue-i18n";
 import { connectLobby, disconnect } from "@/components/websocket";
 import eventBusGraphData from "@/components/eventBusGraphData.js";
 import { hasRole } from "@/components/RoleManager";
+import axios from 'axios';
+
 
 export default {
   props: {
@@ -17,10 +19,13 @@ export default {
     return {
       lobbyStarting: false,
       hasRole,
+      participants: [],
+      lobbyCode: this.$route.params.lobbyCode,
     };
   },
   mounted() {
     this.connectToLobby();
+    this.getLobbyParticipants();
     // Add event listener for websocket messages
     eventBusGraphData.on("arrayUpdated", this.handleLobbyMessage);
   },
@@ -55,13 +60,57 @@ export default {
         // You might want to redirect to simulation or handle the start in another way
       }
     },
+    async getLobbyParticipants(lobbyCode) {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await axios.get(`${import.meta.env.VITE_APP_API_PARTICIPANT}/lobby/${this.$route.params.lobbyCode}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
+
+        if (response.status === 200) {
+          console.log("Participants received:", response.data);
+          // Assuming you want to store participants in a data property
+          this.participants = response.data;
+          this.getUserNames();
+          
+        }
+      } catch (error) {
+        console.error('Error fetching participants:', error);
+      }
+    },
+    async getUserNames() {
+
+      const updatedParticipants = [];
+      for (const participant of this.participants){
+        try {
+          const token = localStorage.getItem('token');
+          const response = await axios.get(`${import.meta.env.VITE_APP_API_USERS}/name/${participant.userId}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            }
+          });
+
+          if (response.status === 200) {
+            console.log("User name received:", response.data);
+            participant.userName = response.data;
+            updatedParticipants.push(participant);
+          }
+        } catch (error) {
+          console.error('Error fetching user name:', error);
+        }
+      } 
+      this.participants = updatedParticipants;
+      console.log("Updated participants:", updatedParticipants)
+    }
   },
 };
 </script>
 
 <template>
   <div class="lobby-container">
-    <div class="lobby-form" v-if="hasRole('deelnemer')">
+    <div class="lobby-form" v-if="hasRole(['deelnemer','instructeur'])">
       <h1 class="title">
         {{ lobbyStarting ? $t("lobby.lobbyStarted") : $t("lobby.waitingForLobby") }}
       </h1>
@@ -69,6 +118,13 @@ export default {
       <p class="lobby-text" v-if="lobbyStarting">
         {{ $t("lobby.simulationStarting") }}
       </p>
+      <!-- New section to display participants -->
+      <ul v-if="participants.length">
+        <h3>Active participants:</h3>
+        <li v-for="participant in participants" :key="participant.userId">
+          {{ participant.userName }}
+        </li>
+      </ul>
     </div>
   </div>
 </template>

@@ -80,7 +80,7 @@ const router = createRouter({
       path: '/lobby/:lobbyCode', // Path for joined lobby with lobbycode
       name: 'lobby',
       component: Lobby, 
-      meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['deelnemer']},
+      meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['deelnemer', 'instructeur']},
       props: true
     },
     {
