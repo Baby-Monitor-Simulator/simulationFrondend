@@ -85,7 +85,9 @@ const leaveLobby = async () =>
 {
   try {
     // Send a request to the back-end
-    await axios.post('/api/leave-lobby'); //TODO: Request to back-end to remove/stop the simulation that was assigend to the user id.
+    const id = localStorage.getItem('userId'); // could be that this isn't saved in the current front-end version. Save it in home or login.
+    axios.delete(`${import.meta.env.VITE_APP_API_LOBBY}/${id}`).then(response => {
+        console.log('Participant removed', response.data);}).catch(error => {console.error('Error removing participant:', error);});
 
     //close websocket
     disconnect();
