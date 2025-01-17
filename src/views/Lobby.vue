@@ -74,6 +74,7 @@ export default {
       }
     },
     async getUserNames() {
+      console.log("get Usernames....")
       const updatedParticipants = [];
       for (const participant of this.participants) {
         try {
