@@ -8,7 +8,12 @@ import GraphType from "@/enums/graphTypes";
 
 import Navbar from '@/components/Navbar.vue';
 import HeaderComponent from '@/components/Header.vue';
-import { RouterView } from 'vue-router'
+import { RouterView } from 'vue-router';
+import { useRouter } from "vue-router";
+
+//connect graphs to back-end imports
+import { connectGraph, sendUserId, disconnect } from "@/components/websocket.js";
+
 
 const importStore: any = useImportStore()
 const globalStore: any = useGlobalStore()
@@ -50,14 +55,66 @@ const updateCurrentTime = () => {
 };
 
 
+
+//connecting graphs to back-end
+let first: boolean = true;
+const userId = import.meta.env.VITE_APP_TEMP_USERID; //TODO: make this unique for each user
+
+function webhookConnect()
+{
+    const waitForConnection = setInterval(() => {
+        if (first)
+        {
+            connectGraph(userId);
+            first = false;
+        }
+        else
+        {
+            sendUserId(userId);
+            clearInterval(waitForConnection);
+            console.log("connected baby!")
+        }
+
+
+    },1000);
+}
+
+const router = useRouter();
+//leave lobby
+const leaveLobby = async () => 
+{
+  try {
+    // Send a request to the back-end
+    const id = localStorage.getItem('userId'); // could be that this isn't saved in the current front-end version. Save it in home or login.
+    axios.delete(`${import.meta.env.VITE_APP_API_LOBBY}/${id}`).then(response => {
+        console.log('Participant removed', response.data);}).catch(error => {console.error('Error removing participant:', error);});
+
+    //close websocket
+    disconnect();
+
+    // Redirect to the home page
+    router.push("/");
+  } catch (error) {
+    console.error('Have you made the leave lobby back-end request functional? If not then comment it out or make it work!:', error);
+    alert('Failed to leave the lobby.');
+  }
+}
+
 onMounted(() => {
+  webhookConnect();
   fetchData()
 })
 </script>
 <template>
   <v-main>
+          
+
           <RouterView />
+
+          <!-- Leave Lobby Button -->
+          <button class="leave-lobby-btn" @click="leaveLobby">Leave Lobby</button>
   </v-main>
+  
 
   <div v-show="globalStore.showGraph">
       <v-col md-6>
@@ -92,5 +149,22 @@ onMounted(() => {
   right: 15px;
   border: 3px;
   z-index: 9;
+}
+
+.leave-lobby-btn {
+  position: absolute;
+  top: 80px;
+  right: 45px;
+  padding: 10px 15px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.leave-lobby-btn:hover {
+  background-color: #d32f2f;
 }
 </style>

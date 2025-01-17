@@ -25,6 +25,7 @@
             <input v-model="newResult.userId" placeholder="Enter User ID" />
             <input v-model="newResult.sessionId" placeholder="Enter Session ID" />
             <textarea v-model="newResult.data" placeholder="Enter Result Data"></textarea>
+            <input v-model="newResult.simType" placeholder="Enter simulation type" />
             <button @click="addResult">Add Result</button>
         </div>
     </div>
@@ -43,14 +44,15 @@ export default {
             newResult: {
                 userId: '',
                 sessionId: '',
-                data: ''
+                data: '',
+                simType: ''
             }
         };
     },
     methods: {
         async getAllResults() {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_APP_API_RESULTS}${this.userId}`);
+                const response = await axios.get(`http://localhost:8080/api/results/${this.userId}`);
                 this.allResults = response.data;
             } catch (error) {
                 console.error(error);
@@ -58,7 +60,7 @@ export default {
         },
         async getResult() {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_APP_API_RESULTS}${this.userId}/${this.sessionId}`);
+                const response = await axios.get(`http://localhost:8080/api/results/${this.userId}/${this.sessionId}`);
                 this.result = response.data;
             } catch (error) {
                 console.error(error);
@@ -66,7 +68,7 @@ export default {
         },
         async addResult() {
             try {
-                const response = await axios.post(`${import.meta.env.VITE_APP_API_RESULTS}`, this.newResult);
+                const response = await axios.post(`http://localhost:8080/api/results/add`, this.newResult);
                 console.log('Result added:', response.data);
             } catch (error) {
                 console.error(error);
