@@ -1,7 +1,7 @@
 import { Client as StompJsClient } from "@stomp/stompjs";
 import eventBusGraphData from "./eventBusGraphData.js";
 
-let stompClient = null;
+let client = null;
 
 function setConnected(connected) {
   /*
@@ -20,86 +20,71 @@ function setConnected(connected) {
 }
 
 export function connectGraph(userId) {
-  const webSocketUrl = import.meta.env.VITE_APP_WEBSOCKET_LOBBY;
+  const webSocketUrl = import.meta.env.VITE_APP_WEBSOCKET_MATLAB;
+  const subscribeTag = import.meta.env.VITE_APP_WEBSOCKET_SIMULATION;
 
-  // Initialize stompClient using the `Client` class, pointing directly to the WebSocket URL.
-  stompClient = new StompJsClient({
-    brokerURL: webSocketUrl,
-    reconnectDelay: 5000, // Auto-reconnect after 5 seconds
-    //heartbeatIncoming: 4000, // Heartbeat every 4 seconds
-    //heartbeatOutgoing: 4000,
-    isTrusted: false,
-  });
-
-  stompClient.onConnect = (frame) => {
-    setConnected(true);
-    console.log("Connected: " + frame);
-    stompClient.subscribe(`/lobby/${userId}`, (lobby) => {
-      checkCoordinates(JSON.parse(lobby.body));
-    });
-  };
-
-  stompClient.onWebSocketError = (error) => {
-    console.error("WebSocket error", error);
-  };
-
-  stompClient.onStompError = (frame) => {
-    console.error("Stomp error: " + frame.headers["message"]);
-    console.error("Details: " + frame.body);
-  };
-
-  stompClient.activate();
+  connect(userId, webSocketUrl, subscribeTag);
 }
 
+export function connectLobby(lobbyId) {
+  const webSocketUrl = import.meta.env.VITE_APP_WEBSOCKET_LOBBY;
+  const subscribeTag = import.meta.env.VITE_APP_WEBSOCKET_LOBBIES;
 
-export function connect(userId) {
-  const webSocketUrl = "ws://localhost:8080/ws-lobby";
+  connect(lobbyId, webSocketUrl, subscribeTag);
+}
 
-  // Initialize stompClient using the `Client` class, pointing directly to the WebSocket URL.
-  stompClient = new StompJsClient({
+function connect(id, webSocketUrl, subscribeTag) {
+
+  client = new StompJsClient({
     brokerURL: webSocketUrl,
-    reconnectDelay: 5000, // Auto-reconnect after 5 seconds
-    //heartbeatIncoming: 4000, // Heartbeat every 4 seconds
-    //heartbeatOutgoing: 4000,
+    reconnectDelay: 5000,
     isTrusted: false,
   });
 
-  stompClient.onConnect = (frame) => {
+  client.onConnect = (frame) => {
     setConnected(true);
-    console.log("Connected: " + frame);
-    stompClient.subscribe(`/lobby/${userId}`, (lobby) => {
+    console.log("Lobby Connected: " + frame);
+    client.subscribe(`${subscribeTag}/${id}`, (lobby) => {
       checkMessage(JSON.parse(lobby.body));
       checkCoordinates(JSON.parse(lobby.body));
     });
   };
 
-  stompClient.onWebSocketError = (error) => {
-    console.error("WebSocket error", error);
+  client.onWebSocketError = (error) => {
+    console.error("Lobby WebSocket error", error);
   };
 
-  stompClient.onStompError = (frame) => {
-    console.error("Stomp error: " + frame.headers["message"]);
+  client.onStompError = (frame) => {
+    console.error("Lobby Stomp error: " + frame.headers["message"]);
     console.error("Details: " + frame.body);
   };
 
-  stompClient.activate();
+  client.activate();
 }
 
 export function disconnect() {
-  if (stompClient !== null) {
-    stompClient.deactivate();
+  if (client !== null) {
+    client.deactivate();
   }
   setConnected(false);
-  console.log("Disconnected");
+  console.log("All connections disconnected");
 }
 
-export function sendUserId(userId) {
-  stompClient.publish({
-    destination: "/app/simulation",
-    body: JSON.stringify({ userId }),
-  });
+export function sendUserId(userId, lobbyId) {
+  if (client !== null && client.connected) {
+    client.publish({
+      destination: "/app/simulation",
+      body: JSON.stringify({ userId }),
+    });
+  } else if (graphClient !== null && graphClient.connected) {
+    graphClient.publish({
+      destination: "/app/simulation",
+      body: JSON.stringify({ userId }),
+    });
+  } else {
+    console.error("No active connection available to send message");
+  }
 }
-
 
 export let websocketCoordinates = [];
 
