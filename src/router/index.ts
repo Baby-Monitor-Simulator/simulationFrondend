@@ -2,11 +2,12 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from '../views/Login.vue'
 import Register from '../views/Register.vue'
 import LobbyCreate from '../views/LobbyCreate.vue'
-import ResultView from '@/views/ResultView.vue'
+import ResultView from '@/views/Result.vue'
 import DashboardView from '../views/DashboardView.vue'
 import Scenario from '@/views/Scenario.vue'
 import ScenarioDetail from "@/views/ScenarioDetail.vue";
 import CreateScenario from "@/views/CreateScenario.vue";
+import ResultDetail from '@/views/ResultDetail.vue'
 import RoleMapping from "@/views/RoleMapping.vue";
 import HomePage from "@/views/HomePage.vue";
 import LobbyJoin from '@/views/LobbyJoin.vue';
@@ -107,11 +108,17 @@ const router = createRouter({
       component: RoleMapping,
       meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['admin'] } // Protected route
     },
+
     {
       path: '/results',
-      name: 'results',
+      name: 'Result',
       component: ResultView,
       meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['deelnemer'] } // Protected route
+    },
+    {
+      path: '/results/:id',
+      name: 'resultDetail',
+      component: ResultDetail
     }
   ]
 })
