@@ -1,4 +1,3 @@
-<!-- ScenarioDetail.vue -->
 <template>
   <div class="scenario-detail">
     <div class="header-container">
@@ -22,7 +21,7 @@
     <v-card v-if="!loading && !error" class="Scenario-bescrijving">
       <v-card-title>Beschrijving</v-card-title>
       <v-card-text>
-        {{scenario?.description}}
+        {{ scenario?.description }}
       </v-card-text>
     </v-card>
 
@@ -34,6 +33,12 @@
         </div>
       </v-card-text>
     </v-card>
+
+    <!-- New Buttons Section -->
+    <div class="action-buttons" v-if="!loading && !error">
+      <v-btn color="success" @click="navigateTo('examen')">Examen</v-btn>
+      <v-btn color="info" @click="navigateTo('training')">Training</v-btn>
+    </div>
   </div>
 </template>
 
@@ -46,8 +51,8 @@ export default {
     return {
       scenario: null,
       loading: true,
-      error: null
-    }
+      error: null,
+    };
   },
   created() {
     this.fetchScenarioDetail();
@@ -64,9 +69,16 @@ export default {
         this.loading = false;
         console.error('Error:', err);
       }
-    }
-  }
-}
+    },
+    navigateTo(page) {
+      const routes = {
+        examen: '/examen-simulation',
+        training: '/training-simulation',
+      };
+      this.$router.push(routes[page]);
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -99,5 +111,15 @@ export default {
 
 .error {
   color: red;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 30px;
+}
+
+.action-buttons .v-btn {
+  padding: 10px 20px;
 }
 </style>
