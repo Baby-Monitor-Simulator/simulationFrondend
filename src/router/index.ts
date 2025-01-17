@@ -11,6 +11,7 @@ import RoleMapping from "@/views/RoleMapping.vue";
 import HomePage from "@/views/HomePage.vue";
 import LobbyJoin from '@/views/LobbyJoin.vue';
 import Lobby from '@/views/Lobby.vue';
+import StartLobby from '@/views/StartLobby.vue';
 
 const devMode = import.meta.env.VITE_DEV_MODE === "true";
 
@@ -49,10 +50,11 @@ const router = createRouter({
       meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['instructeur','deelnemer','admin']} // Protected route
     },
     {
-      path: '/dashboard',
+      path: '/dashboard/:lobbyId',
       name: 'dashboard',
       component: DashboardView,
-      meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['deelnemer','admin']} // Protected route
+      //meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['deelnemer','admin']} // Protected route
+      props: true,
     },
     {
       path: '/login', // Path for the homepage
@@ -68,7 +70,7 @@ const router = createRouter({
       path: '/lobby/create', // Path for the homepage
       name: 'lobbyCreate',
       component: LobbyCreate, 
-      meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['instructeur'] } // Protected route
+      //meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['instructeur'] } // Protected route
     },
     {
       path: '/lobby/join', // Path for joining lobby
@@ -81,6 +83,12 @@ const router = createRouter({
       name: 'lobby',
       component: Lobby, 
       meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['deelnemer', 'instructeur']},
+      props: true
+    },
+    {
+      path: '/startlobby/:lobbyCode', // Path for joined lobby with lobbycode
+      name: 'startlobby',
+      component: StartLobby, 
       props: true
     },
     {

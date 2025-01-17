@@ -1,11 +1,11 @@
 <script>
 import { ref, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
-import { connectLobby, disconnect } from "@/components/websocket";
+import { connectLobby, disconnect, sendLobbyMessage } from "@/components/websocket";
 import eventBusGraphData from "@/components/eventBusGraphData.js";
 import { hasRole } from "@/components/RoleManager";
-import axios from 'axios';
-
+import axios from "axios";
+import { useRouter } from "vue-router";
 
 export default {
   props: {
@@ -13,6 +13,10 @@ export default {
       type: Number,
       required: true,
     },
+  },
+  setup() {
+    const router = useRouter();
+    return { router };
   },
   data() {
     const { t } = useI18n();
@@ -26,11 +30,9 @@ export default {
   mounted() {
     this.connectToLobby();
     this.getLobbyParticipants();
-    // Add event listener for websocket messages
     eventBusGraphData.on("arrayUpdated", this.handleLobbyMessage);
   },
   beforeUnmount() {
-    // Clean up listeners and connection
     eventBusGraphData.off("arrayUpdated", this.handleLobbyMessage);
     disconnect();
   },
@@ -45,68 +47,83 @@ export default {
     },
     handleLobbyMessage(message) {
       console.log("Received message:", message);
-
-      // Check if message is an array
       if (Array.isArray(message)) {
-        console.log("Received array message");
-        // Handle array message if needed
         return;
       }
-
-      // Check for starting property
       if (message && message.starting === true) {
-        console.log("Received start command");
         this.lobbyStarting = true;
-        // You might want to redirect to simulation or handle the start in another way
       }
     },
-    async getLobbyParticipants(lobbyCode) {
+    async getLobbyParticipants() {
       try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get(`${import.meta.env.VITE_APP_API_PARTICIPANT}/lobby/${this.$route.params.lobbyCode}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          `${import.meta.env.VITE_APP_API_PARTICIPANT}/lobby/${this.$route.params.lobbyCode}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
           }
-        });
-
+        );
         if (response.status === 200) {
-          console.log("Participants received:", response.data);
-          // Assuming you want to store participants in a data property
           this.participants = response.data;
           this.getUserNames();
-          
         }
       } catch (error) {
-        console.error('Error fetching participants:', error);
+        console.error("Error fetching participants:", error);
       }
     },
     async getUserNames() {
-
       const updatedParticipants = [];
-      for (const participant of this.participants){
+      for (const participant of this.participants) {
         try {
-          const token = localStorage.getItem('token');
-          const response = await axios.get(`${import.meta.env.VITE_APP_API_USERS}/name/${participant.userId}`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
+          const token = localStorage.getItem("token");
+          const response = await axios.get(
+            `${import.meta.env.VITE_APP_API_USERS}/name/${participant.userId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
             }
-          });
-
+          );
           if (response.status === 200) {
-            console.log("User name received:", response.data);
             participant.userName = response.data;
             updatedParticipants.push(participant);
           }
         } catch (error) {
-          console.error('Error fetching user name:', error);
+          console.error("Error fetching user name:", error);
         }
-      } 
+      }
       this.participants = updatedParticipants;
-      console.log("Updated participants:", updatedParticipants)
-    }
+    },
+    async startLobby() {
+      try {
+        const token = localStorage.getItem("token");
+        await axios.patch(
+          `${import.meta.env.VITE_APP_API_LOBBY}/${this.lobbyCode}/activate`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        sendLobbyMessage("LOBBY_STARTED", this.lobbyCode, {
+          message: "De lobby is gestart. Success!",
+        });
+        console.log("WebSocket-bericht verzonden.");
+        this.router.push({
+          name: "dashboard",
+          params: { lobbyId: this.lobbyCode },
+        });
+      } catch (error) {
+        console.error("Er is een fout opgetreden:", error);
+      }
+    },
   },
 };
 </script>
+
 
 <template>
   <div class="lobby-container">
@@ -114,7 +131,7 @@ export default {
       <h1 class="title">
         {{ lobbyStarting ? $t("lobby.lobbyStarted") : $t("lobby.waitingForLobby") }}
       </h1>
-      <h2 class="title">{{ lobbyCode }}</h2>
+      <h2 class="title">ID:{{ lobbyCode }}</h2>
       <p class="lobby-text" v-if="lobbyStarting">
         {{ $t("lobby.simulationStarting") }}
       </p>
@@ -125,6 +142,7 @@ export default {
           {{ participant.userName }}
         </li>
       </ul>
+      <button class="start-button" @click="startLobby">Start Lobby</button>
     </div>
   </div>
 </template>
@@ -155,54 +173,29 @@ export default {
   margin-bottom: 20px;
 }
 
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  font-size: 1rem;
-  margin-bottom: 5px;
-  color: #333;
-}
-
-.form-group input {
-  width: 100%;
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  transition: border-color 0.3s ease-in-out;
-}
-
-.form-group input:focus {
-  border-color: #4c9bf1;
-  outline: none;
-}
-
-.submit-btn {
-  width: 100%;
-  padding: 12px;
-  background-color: #4c9bf1;
-  border: none;
-  border-radius: 5px;
-  color: white;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.submit-btn:hover {
-  background-color: #3578d6;
-}
-
-.submit-btn:active {
-  background-color: #2d64a3;
-}
 .lobby-text {
   text-align: center;
   font-size: 1rem;
   color: #333;
+}
+
+.start-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  color: white;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.start-button:hover {
+  background-color: #0056b3;
+}
+
+.start-button:active {
+  background-color: #004494;
 }
 </style>
