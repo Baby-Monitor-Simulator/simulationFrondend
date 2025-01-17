@@ -1,34 +1,37 @@
 <template>
-    <div>
-        <h1>Result</h1>
-        <div>
-            <h2>Get All Results by User ID</h2>
-            <input v-model="userId" placeholder="Enter User ID" />
-            <button @click="getAllResults">Get All Results</button>
-            <div v-if="allResults">
-                <h3>Results:</h3>
-                <pre>{{ allResults }}</pre>
-            </div>
-        </div>
-        <div>
-            <h2>Get Specific Result by User ID and Session ID</h2>
-            <input v-model="userId" placeholder="Enter User ID" />
-            <input v-model="sessionId" placeholder="Enter Session ID" />
-            <button @click="getResult">Get Result</button>
-            <div v-if="result">
-                <h3>Result:</h3>
-                <pre>{{ result }}</pre>
-            </div>
-        </div>
-        <div>
-            <h2>Add Result</h2>
-            <input v-model="newResult.userId" placeholder="Enter User ID" />
-            <input v-model="newResult.sessionId" placeholder="Enter Session ID" />
-            <textarea v-model="newResult.data" placeholder="Enter Result Data"></textarea>
-            <button @click="addResult">Add Result</button>
-        </div>
+    <div class="result-container">
+      <div class="header-result">
+        <h1>Resultaten</h1>
+      </div>
+  
+      <!-- Loading state -->
+      <div v-if="loading" class="loading">
+        Loading results...
+      </div>
+  
+      <!-- Error state -->
+      <div v-if="error" class="error">
+        {{ error }}
+      </div>
+  
+      <!-- Scenarios grid -->
+      <div v-if="!loading && !error" class="result-grid">
+        <v-card
+            v-for="result in allResults"
+            :key="result.id"
+            class="scenario-block"
+            @click="goToResultDetail(result.id)"
+            elevation="2"
+            hover
+        >
+          <v-card-title>result for session: {{ result.session }}</v-card-title>
+          <v-card-text>
+            <p>{{ result.simType }}</p>
+          </v-card-text>
+        </v-card>
+      </div>
     </div>
-</template>
+  </template>
 
 <script>
 import axios from 'axios';
@@ -50,31 +53,60 @@ export default {
     methods: {
         async getAllResults() {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_APP_API_RESULTS}${this.userId}`);
+                const response = await axios.get(`http://localhost:8085/result/byUser`,{
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token'),
+                    }
+                });
                 this.allResults = response.data;
             } catch (error) {
                 console.error(error);
             }
         },
-        async getResult() {
-            try {
-                const response = await axios.get(`${import.meta.env.VITE_APP_API_RESULTS}${this.userId}/${this.sessionId}`);
-                this.result = response.data;
-            } catch (error) {
-                console.error(error);
-            }
-        },
-        async addResult() {
-            try {
-                const response = await axios.post(`${import.meta.env.VITE_APP_API_RESULTS}`, this.newResult);
-                console.log('Result added:', response.data);
-            } catch (error) {
-                console.error(error);
-            }
-        }
+        goToScenarioDetail(scenarioId) {
+          this.$router.push(`/result/${scenarioId}`);
+    },
     }
 };
 </script>
+
+<style scoped>
+.result-container {
+  padding: 20px;
+}
+
+.header-result {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.result-block {
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.scenario-block:hover {
+  transform: translateY(-5px);
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 20px;
+}
+
+.error {
+  color: red;
+}
+</style>
 
 <style scoped>
 input, textarea {

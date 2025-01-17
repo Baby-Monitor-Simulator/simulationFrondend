@@ -1,32 +1,7 @@
 <template>
     <div>
         <h1>Result</h1>
-        <div>
-            <h2>Get All Results by User ID</h2>
-            <input v-model="userId" placeholder="Enter User ID" />
-            <button @click="getAllResults">Get All Results</button>
-            <div v-if="allResults">
-                <h3>Results:</h3>
-                <pre>{{ allResults }}</pre>
-            </div>
-        </div>
-        <div>
-            <h2>Get Specific Result by User ID and Session ID</h2>
-            <input v-model="userId" placeholder="Enter User ID" />
-            <input v-model="sessionId" placeholder="Enter Session ID" />
-            <button @click="getResult">Get Result</button>
-            <div v-if="result">
-                <h3>Result:</h3>
-                <pre>{{ result }}</pre>
-            </div>
-        </div>
-        <div>
-            <h2>Add Result</h2>
-            <input v-model="newResult.userId" placeholder="Enter User ID" />
-            <input v-model="newResult.sessionId" placeholder="Enter Session ID" />
-            <textarea v-model="newResult.data" placeholder="Enter Result Data"></textarea>
-            <button @click="addResult">Add Result</button>
-        </div>
+        <pre>{{ result }}</pre>
     </div>
 </template>
 
@@ -34,7 +9,7 @@
 import axios from 'axios';
 
 export default {
-    name: "ResultDetail"
+    name: "ResultDetail",
     data() {
         return {
             userId: '',
@@ -50,11 +25,15 @@ export default {
     },
     created() {
         this.getResult()
-    }
+    },
     methods: {
         async getResult() {
             try {
-                const response = await axios.get(`${import.meta.env.VITE_APP_API_RESULTS}${this.userId}/${this.sessionId}`);
+                const response = await axios.get(`http://localhost:8085/result/${this.sessionId}`,{
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token'),
+                    }
+                });
                 this.result = response.data;
             } catch (error) {
                 console.error(error);
@@ -62,7 +41,11 @@ export default {
         },
         async addResult() {
             try {
-                const response = await axios.post(`${import.meta.env.VITE_APP_API_RESULTS}`, this.newResult);
+                const response = await axios.post(`http://localhost:8085/result/add`, this.newResult,{
+                    headers: {
+                        Authorization: 'Bearer ' + localStorage.getItem('token'),
+                    }
+                });
                 console.log('Result added:', response.data);
             } catch (error) {
                 console.error(error);
@@ -71,6 +54,7 @@ export default {
     }
 };
 </script>
+
 
 <style scoped>
 input, textarea {

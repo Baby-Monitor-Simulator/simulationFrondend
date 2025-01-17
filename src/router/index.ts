@@ -49,8 +49,7 @@ const router = createRouter({
     
     },
     {
-
-      path: '/result',
+      path: '/results',
       name: 'Result',
       component: ResultView
     },
