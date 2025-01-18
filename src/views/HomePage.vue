@@ -17,10 +17,12 @@ export default {
   },
   mounted() {
     const token = localStorage.getItem('token');
+    
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));
         this.roles = payload.realm_access?.roles || [];
+        localStorage.setItem("userId", payload.sub);
       } catch (error) {
         console.error('Error decoding token:', error);
       }

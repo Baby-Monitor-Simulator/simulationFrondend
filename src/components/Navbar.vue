@@ -9,9 +9,9 @@
       :permanent="true"
     >
       <v-list>
-        <v-btn class="ma-1 pa-2" to="/" :class="{ 'v-btn--active': $route.path === '/' }"
-          >Home</v-btn
-        >
+        <v-btn class="ma-1 pa-2" to="/results":class="{ 'v-btn--active': $route.path === '/scenario' }">
+          results
+        </v-btn>
         <v-divider></v-divider>
 
         <v-btn
