@@ -8,15 +8,24 @@ import GraphType from "@/enums/graphTypes";
 
 import Navbar from '@/components/Navbar.vue';
 import HeaderComponent from '@/components/Header.vue';
-import { RouterView } from 'vue-router';
-import { useRouter } from "vue-router";
+import { RouterView, useRouter } from 'vue-router';
+import axios from 'axios';
 
 //connect graphs to back-end imports
 import { connectGraph, sendUserId, disconnect } from "@/components/websocket.js";
 
+const props = defineProps({
+  lobbyId: {
+    type: String,
+    required: true,
+  },
+});
+
 
 const importStore: any = useImportStore()
 const globalStore: any = useGlobalStore()
+const router = useRouter();
+
 const fetalBloodArr = markRaw<Array<MatlabFile>>([])
 const fetalBloodPressureArr = markRaw<Array<MatlabFile>>([])
 const UterineContractionsArr = markRaw<Array<MatlabFile>>([])
@@ -54,6 +63,26 @@ const updateCurrentTime = () => {
   currentTime.value = new Date().toLocaleTimeString(); // Update the time
 };
 
+const stopLobby = async () => {
+  try {
+    const token = localStorage.getItem("token");
+    const response = await axios.delete(
+      `${import.meta.env.VITE_APP_API_LOBBY}/${props.lobbyId}/close`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log("Lobby successfully stopped:", response.data);
+    globalStore.showToast("Lobby successfully stopped", "success");
+    console.log("Navigating to /lobby/Create");
+    router.push("/lobby/create");
+  } catch (error) {
+    console.error("Error stopping the lobby:", error);
+    globalStore.showToast("Error stopping the lobby", "error");
+  }
+};
 
 
 //connecting graphs to back-end
@@ -139,6 +168,10 @@ onMounted(() => {
     <h1>Test Title</h1>
     <p>Test tekst</p>
   </div>
+
+  <div class="stop-lobby">
+    <button @click="stopLobby">Stop Lobby</button>
+  </div>
 </template>
 <style>
 #popup {
@@ -151,16 +184,32 @@ onMounted(() => {
   z-index: 9;
 }
 
+
+.stop-lobby {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.stop-lobby button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: red;
+
 .leave-lobby-btn {
   position: absolute;
   top: 80px;
   right: 45px;
   padding: 10px 15px;
   background-color: #f44336;
+
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.stop-lobby button:hover {
+  background-color: darkred;
   font-size: 14px;
 }
 

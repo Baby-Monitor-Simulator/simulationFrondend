@@ -170,3 +170,15 @@ function showCoords(body) {
   row.appendChild(cell);
   coords.appendChild(row);
 }
+
+export function sendLobbyMessage(type, lobbyId, payload = {}) {
+  if (client !== null && client.connected) {
+    console.log(`Sending WebSocket message: ${type}`, { lobbyId, ...payload }); // Log het verzonden bericht
+    client.publish({
+      destination: `/app/lobby/${lobbyId}`,
+      body: JSON.stringify({ type, lobbyId, ...payload }),
+    });
+  } else {
+    console.error("No active WebSocket connection to send message");
+  }
+}
