@@ -53,7 +53,7 @@ export default {
     methods: {
         async getAllResults() {
             try {
-                const response = await axios.get(`http://localhost:8085/result/byUser`,{
+                const response = await axios.get(`${import.meta.env.VITE_APP_API_RESULT}/byUser`,{
                     headers: {
                         Authorization: 'Bearer ' + localStorage.getItem('token'),
                     }

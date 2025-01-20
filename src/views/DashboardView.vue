@@ -108,7 +108,6 @@ function webhookConnect()
     },1000);
 }
 
-const router = useRouter();
 //leave lobby
 const leaveLobby = async () => 
 {
@@ -136,12 +135,9 @@ onMounted(() => {
 </script>
 <template>
   <v-main>
-          
-
-          <RouterView />
-
-          <!-- Leave Lobby Button -->
-          <button class="leave-lobby-btn" @click="leaveLobby">Leave Lobby</button>
+    <RouterView />
+    <!-- Leave Lobby Button -->
+    <button class="leave-lobby-btn" @click="leaveLobby">Leave Lobby</button>
   </v-main>
   
 
@@ -194,6 +190,7 @@ onMounted(() => {
   padding: 10px 20px;
   font-size: 16px;
   background-color: red;
+}
 
 .leave-lobby-btn {
   position: absolute;
@@ -207,6 +204,7 @@ onMounted(() => {
   border-radius: 5px;
   cursor: pointer;
 }
+
 
 .stop-lobby button:hover {
   background-color: darkred;

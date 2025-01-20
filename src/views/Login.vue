@@ -63,7 +63,8 @@ export default {
           email: this.email,
           password: this.password,
         };
-        console.log(userData);
+        //Why are we logging the password?????
+        //console.log(userData);
 
         const response = await axios.post(
           `${import.meta.env.VITE_APP_API_LOGIN}`,

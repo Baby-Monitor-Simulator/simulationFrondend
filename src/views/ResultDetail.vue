@@ -29,7 +29,7 @@ export default {
     methods: {
         async getResult() {
             try {
-                const response = await axios.get(`http://localhost:8085/result/${this.sessionId}`,{
+                const response = await axios.get(`${import.meta.env.VITE_APP_API_RESULT}/${this.sessionId}`,{
                     headers: {
                         Authorization: 'Bearer ' + localStorage.getItem('token'),
                     }
@@ -41,7 +41,7 @@ export default {
         },
         async addResult() {
             try {
-                const response = await axios.post(`http://localhost:8085/result/add`, this.newResult,{
+                const response = await axios.post(`${import.meta.env.VITE_APP_API_RESULT}/add`, this.newResult,{
                     headers: {
                         Authorization: 'Bearer ' + localStorage.getItem('token'),
                     }
