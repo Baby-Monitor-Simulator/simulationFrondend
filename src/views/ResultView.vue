@@ -1,86 +1,228 @@
-<template>
-    <div>
-        <h1>Result View</h1>
-        <div>
-            <h2>Get All Results by User ID</h2>
-            <input v-model="userId" placeholder="Enter User ID" />
-            <button @click="getAllResults">Get All Results</button>
-            <div v-if="allResults">
-                <h3>Results:</h3>
-                <pre>{{ allResults }}</pre>
-            </div>
-        </div>
-        <div>
-            <h2>Get Specific Result by User ID and Session ID</h2>
-            <input v-model="userId" placeholder="Enter User ID" />
-            <input v-model="sessionId" placeholder="Enter Session ID" />
-            <button @click="getResult">Get Result</button>
-            <div v-if="result">
-                <h3>Result:</h3>
-                <pre>{{ result }}</pre>
-            </div>
-        </div>
-        <div>
-            <h2>Add Result</h2>
-            <input v-model="newResult.userId" placeholder="Enter User ID" />
-            <input v-model="newResult.sessionId" placeholder="Enter Session ID" />
-            <textarea v-model="newResult.data" placeholder="Enter Result Data"></textarea>
-            <input v-model="newResult.simType" placeholder="Enter simulation type" />
-            <button @click="addResult">Add Result</button>
-        </div>
-    </div>
-</template>
-
-<script>
+<script lang="ts" setup>
+import { ref, computed, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import axios from 'axios';
 
-export default {
-    data() {
-        return {
-            userId: '',
-            sessionId: '',
-            allResults: null,
-            result: null,
-            newResult: {
-                userId: '',
-                sessionId: '',
-                data: '',
-                simType: ''
-            }
-        };
-    },
-    methods: {
-        async getAllResults() {
-            try {
-                const response = await axios.get(`http://localhost:8080/api/results/${this.userId}`);
-                this.allResults = response.data;
-            } catch (error) {
-                console.error(error);
-            }
-        },
-        async getResult() {
-            try {
-                const response = await axios.get(`http://localhost:8080/api/results/${this.userId}/${this.sessionId}`);
-                this.result = response.data;
-            } catch (error) {
-                console.error(error);
-            }
-        },
-        async addResult() {
-            try {
-                const response = await axios.post(`http://localhost:8080/api/results/add`, this.newResult);
-                console.log('Result added:', response.data);
-            } catch (error) {
-                console.error(error);
-            }
-        }
+// Types
+interface NewResult {
+  sessionId: string;
+  data: string;
+  simType: string;
+}
+
+// Reactive references
+const sessionId = ref('');
+const allResults = ref(null);
+const result = ref(null);
+const error = ref(null);
+const loading = ref(false);
+const newResult = ref<NewResult>({
+  sessionId: '',
+  data: '',
+  simType: ''
+});
+
+const router = useRouter();
+
+// Computed
+const userId = computed(() => {
+  const token = localStorage.getItem('token');
+  if (!token) return null;
+
+  try {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(window.atob(base64));
+    return payload.sub || payload.user_id;
+  } catch (e) {
+    console.error('Error parsing token:', e);
+    return null;
+  }
+});
+
+// Methods
+const getAuthConfig = () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('No authentication token found');
+  }
+  return {
+    headers: {
+      'Authorization': `Bearer ${token}`
     }
+  };
 };
+
+const getAllResults = async () => {
+  if (!userId.value) {
+    error.value = 'User ID not available';
+    return;
+  }
+
+  loading.value = true;
+  error.value = null;
+
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_APP_API_RESULT}/byUser`,
+      getAuthConfig()
+    );
+    allResults.value = response.data;
+  } catch (err: any) {
+    error.value = err.response?.data?.message || 'Failed to fetch results';
+    console.error('Error fetching results:', err);
+  } finally {
+    loading.value = false;
+  }
+};
+
+const getResult = async () => {
+  if (!userId.value || !sessionId.value) {
+    error.value = 'Both User ID and Session ID are required';
+    return;
+  }
+
+  loading.value = true;
+  error.value = null;
+
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_APP_API_RESULT}${sessionId.value}`,
+      getAuthConfig()
+    );
+    result.value = response.data;
+  } catch (err: any) {
+    error.value = err.response?.data?.message || 'Failed to fetch result';
+    console.error('Error fetching result:', err);
+  } finally {
+    loading.value = false;
+  }
+};
+
+const addResult = async () => {
+  if (!userId.value) {
+    error.value = 'User ID not available';
+    return;
+  }
+
+  loading.value = true;
+  error.value = null;
+
+  try {
+    const resultData = {
+      ...newResult.value,
+      userId: userId.value
+    };
+
+    const response = await axios.post(
+      `${import.meta.env.VITE_APP_API_RESULT}/add`,
+      resultData,
+      getAuthConfig()
+    );
+
+    console.log('Result added:', response.data);
+    // Clear form after successful submission
+    newResult.value = {
+      sessionId: '',
+      data: '',
+      simType: ''
+    };
+    // Refresh results list
+    await getAllResults();
+  } catch (err: any) {
+    error.value = err.response?.data?.message || 'Failed to add result';
+    console.error('Error adding result:', err);
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Lifecycle hooks
+onMounted(async () => {
+  try {
+    getAuthConfig(); // Verify token exists
+    await getAllResults(); // Load initial data
+  } catch (err: any) {
+    error.value = err.message;
+    router.push('/login');
+  }
+});
 </script>
 
+<template>
+  <div class="result-view-container p-4">
+    <!-- Error Messages -->
+    <div v-if="error" class="error-message mb-4 p-3 bg-red-100 text-red-700 rounded">
+      {{ error }}
+    </div>
+
+    <!-- Loading State -->
+    <div v-if="loading" class="loading-message mb-4 p-3 bg-blue-100 text-blue-700 rounded">
+      Loading...
+    </div>
+
+    <h1 class="text-2xl font-bold mb-6">Result View</h1>
+
+    <!-- Results List Section -->
+    <section class="results-list mb-8 p-4 border rounded">
+      <h2 class="text-xl font-semibold mb-4">All Results</h2>
+      <div v-if="allResults">
+        <h3 class="font-medium mb-2">Results:</h3>
+        <pre class="bg-gray-100 p-4 rounded overflow-x-auto">{{ allResults }}</pre>
+      </div>
+    </section>
+
+    <!-- Single Result Section -->
+    <section class="single-result mb-8 p-4 border rounded">
+      <h2 class="text-xl font-semibold mb-4">Get Specific Result</h2>
+      <div class="form-group">
+        <input v-model="sessionId" placeholder="Enter Session ID" class="w-full p-2 mb-3 border rounded" />
+        <button @click="getResult" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          :disabled="loading">
+          Get Result
+        </button>
+      </div>
+      <div v-if="result" class="mt-4">
+        <h3 class="font-medium mb-2">Result:</h3>
+        <pre class="bg-gray-100 p-4 rounded overflow-x-auto">{{ result }}</pre>
+      </div>
+    </section>
+
+    <!-- Add Result Form -->
+    <section class="add-result p-4 border rounded">
+      <h2 class="text-xl font-semibold mb-4">Add New Result</h2>
+      <form @submit.prevent="addResult" class="space-y-4">
+        <div class="form-group">
+          <input v-model="newResult.sessionId" placeholder="Enter Session ID" required
+            class="w-full p-2 border rounded" />
+        </div>
+        <div class="form-group">
+          <textarea v-model="newResult.data" placeholder="Enter Result Data" required
+            class="w-full p-2 border rounded h-32"></textarea>
+        </div>
+        <div class="form-group">
+          <input v-model="newResult.simType" placeholder="Enter simulation type" required
+            class="w-full p-2 border rounded" />
+        </div>
+        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          :disabled="loading">
+          Add Result
+        </button>
+      </form>
+    </section>
+  </div>
+</template>
+
 <style scoped>
-input, textarea {
-    display: block;
-    margin-bottom: 10px;
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  border: 1px solid #f56565;
+}
+
+.loading-message {
+  border: 1px solid #4299e1;
 }
 </style>

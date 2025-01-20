@@ -138,7 +138,7 @@ export default {
     };
   },
   mounted() {
-    console.log("If you aren't reading this then the code is fucked beyond redemption.");
+    console.log("Health check passed");
     this.scenario.value.value = scenarioOption.VarDeceleration;
     this.template.value.value = templateOptionV2.None;
     this.maxAmplitude.value.value = 70;
