@@ -59,8 +59,12 @@ export default {
   },
   methods: {
     async fetchScenarios() {
+      const token = localStorage.getItem('token');
       try {
-        const response = await axios.get(`${import.meta.env.VITE_APP_API_SCENARIO}/all`);
+        const response = await axios.get(`${import.meta.env.VITE_APP_API_SCENARIO}/all`,{          
+        headers: {
+            Authorization: `Bearer ${token}`,
+          }});
         this.scenarios = response.data;
         this.loading = false;
       } catch (err) {
