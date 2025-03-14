@@ -27,7 +27,7 @@ export default {
       lobbyCode: this.$route.params.lobbyCode,
     };
   },
-  mounted() {
+  onMounted() {
     this.connectToLobby();
     this.getLobbyParticipants();
     eventBusGraphData.on("arrayUpdated", this.handleLobbyMessage);
@@ -58,7 +58,9 @@ export default {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.get(
-          `${import.meta.env.VITE_APP_API_PARTICIPANT}/lobby/${this.$route.params.lobbyCode}`,
+          `${import.meta.env.VITE_APP_API_PARTICIPANT}/lobby/${
+            this.$route.params.lobbyCode
+          }`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -74,7 +76,7 @@ export default {
       }
     },
     async getUserNames() {
-      console.log("get Usernames....")
+      console.log("get Usernames....");
       const updatedParticipants = [];
       for (const participant of this.participants) {
         try {
@@ -125,10 +127,9 @@ export default {
 };
 </script>
 
-
 <template>
   <div class="lobby-container">
-    <div class="lobby-form" v-if="hasRole(['deelnemer','instructeur'])">
+    <div class="lobby-form">
       <h1 class="title">
         {{ lobbyStarting ? $t("lobby.lobbyStarted") : $t("lobby.waitingForLobby") }}
       </h1>
