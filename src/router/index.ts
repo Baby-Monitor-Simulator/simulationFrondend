@@ -12,6 +12,7 @@ import HomePage from "@/views/HomePage.vue";
 import LobbyJoin from '@/views/LobbyJoin.vue';
 import Lobby from '@/views/Lobby.vue';
 import Unauthorized from '@/views/Unauthorized.vue';
+import StartLobby from '@/views/StartLobby.vue';
 
 const devMode = import.meta.env.VITE_DEV_MODE === "true";
 
