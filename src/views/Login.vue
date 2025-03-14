@@ -35,8 +35,12 @@
           <button @click="goToRegister" class="link-button">Register here</button>
         </p>
       </form>
-      <p>
-        Tempuser
+      <!-- Only show temp users in dev mode -->
+      <div v-if="devMode">
+        <br />
+        <v-divider></v-divider>
+        <br />
+        <h2>Tempuser</h2>
         <button @click="fillTempUser('admin')" class="link-button">
           Temp login admin
         </button>
@@ -46,7 +50,7 @@
         <button @click="fillTempUser('instructeur')" class="link-button">
           Temp login instructeur
         </button>
-      </p>
+      </div>
     </div>
   </div>
 </template>
@@ -62,6 +66,7 @@ export default {
       email: "",
       password: "",
       errorMessage: "",
+      devMode: import.meta.env.VITE_DEV_MODE === "true",
     };
   },
 
