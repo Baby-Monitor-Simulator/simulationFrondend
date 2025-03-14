@@ -3,7 +3,7 @@
     <h1>Hello, Welcome to the Home Page!</h1>
     <p>Your roles:</p>
     <ul>
-      <li v-for="role in roles" :key="role">{{ role }}</li>
+      <li v-for="role in filteredRoles" :key="role">{{ role }}</li>
     </ul>
   </div>
 </template>
@@ -13,18 +13,25 @@ export default {
   data() {
     return {
       roles: [],
+      specificRolesList: ["admin", "deelnemer", "instructeur"],
     };
   },
+  computed: {
+    filteredRoles() {
+      // Filter out system roles and keep only specific roles
+      return this.roles.filter((role) => this.specificRolesList.includes(role));
+    },
+  },
   mounted() {
-    const token = localStorage.getItem('token');
-    
+    const token = localStorage.getItem("token");
+
     if (token) {
       try {
-        const payload = JSON.parse(atob(token.split('.')[1]));
+        const payload = JSON.parse(atob(token.split(".")[1]));
         this.roles = payload.realm_access?.roles || [];
         localStorage.setItem("userId", payload.sub);
       } catch (error) {
-        console.error('Error decoding token:', error);
+        console.error("Error decoding token:", error);
       }
     }
   },
