@@ -1,5 +1,5 @@
-import en from './messages/en'
-import nl from './messages/nl'
+import en from './languages/en'
+import nl from './languages/nl'
 
 export default {
     en,

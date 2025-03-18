@@ -6,6 +6,7 @@ import eventBusGraphData from "@/components/eventBusGraphData.js";
 import { hasRole } from "@/components/RoleManager";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import { useTranslations } from "@/composables/useTranslations";
 
 export default {
   props: {
@@ -19,12 +20,12 @@ export default {
     return { router };
   },
   data() {
-    const { t } = useI18n();
     return {
       lobbyStarting: false,
       hasRole,
       participants: [],
       lobbyCode: this.$route.params.lobbyCode,
+      translations: useTranslations(),
     };
   },
   onMounted() {
@@ -131,20 +132,26 @@ export default {
   <div class="lobby-container">
     <div class="lobby-form">
       <h1 class="title">
-        {{ lobbyStarting ? $t("lobby.lobbyStarted") : $t("lobby.waitingForLobby") }}
+        {{
+          lobbyStarting
+            ? translations.lobby.value.lobbyStarted
+            : translations.lobby.value.waitingForLobby
+        }}
       </h1>
       <h2 class="title">ID:{{ lobbyCode }}</h2>
-      <p class="lobby-text" v-if="lobbyStarting">
-        {{ $t("lobby.simulationStarting") }}
-      </p>
+      <h3 class="lobby-text" v-if="lobbyStarting">
+        {{ translations.lobby.value.simulationStarting }}
+      </h3>
       <!-- New section to display participants -->
       <ul v-if="participants.length">
-        <h3>Active participants:</h3>
+        <h3>{{ translations.lobby.value.activeParticipants }}:</h3>
         <li v-for="participant in participants" :key="participant.userId">
           {{ participant.userName }}
         </li>
       </ul>
-      <button class="start-button" @click="startLobby">Start Lobby</button>
+      <button class="start-button" @click="startLobby">
+        {{ translations.lobby.value.startLobby }}
+      </button>
     </div>
   </div>
 </template>

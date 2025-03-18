@@ -2,37 +2,39 @@
 <template>
   <div class="login-container">
     <div class="login">
-      <h2>Login</h2>
+      <h2>{{ translations.login.value.title }}</h2>
       <form @submit.prevent="login">
         <div class="form-group">
-          <label for="email">Email:</label>
+          <label for="email">{{ translations.login.value.email }}</label>
           <input
             type="text"
             id="email"
             v-model="email"
             required
-            placeholder="Enter your email"
+            :placeholder="translations.login.value.emailPlaceholder"
           />
         </div>
 
         <div class="form-group">
-          <label for="password">Password:</label>
+          <label for="password">{{ translations.login.value.password }}</label>
           <input
             type="password"
             id="password"
             v-model="password"
             required
-            placeholder="Enter your password"
+            :placeholder="translations.login.value.passwordPlaceholder"
           />
         </div>
 
-        <button type="submit">Login</button>
+        <button type="submit">{{ translations.login.value.loginButton }}</button>
         <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 
         <!-- Register navigation button -->
         <p>
-          Don't have an account?
-          <button @click="goToRegister" class="link-button">Register here</button>
+          {{ translations.login.value.noAccount }}
+          <button @click="goToRegister" class="link-button">
+            {{ translations.login.value.register }}
+          </button>
         </p>
       </form>
       <!-- Only show temp users in dev mode -->
@@ -40,15 +42,15 @@
         <br />
         <v-divider></v-divider>
         <br />
-        <h2>Tempuser</h2>
+        <h2>{{ translations.login.value.tempUsers }}</h2>
         <button @click="fillTempUser('admin')" class="link-button">
-          Temp login admin
+          {{ translations.login.value.tempAdmin }}
         </button>
         <button @click="fillTempUser('deelnemer')" class="link-button">
-          Temp login deelnemer
+          {{ translations.login.value.tempDeelnemer }}
         </button>
         <button @click="fillTempUser('instructeur')" class="link-button">
-          Temp login instructeur
+          {{ translations.login.value.tempInstructeur }}
         </button>
       </div>
     </div>
@@ -59,6 +61,7 @@
 import axios from "axios";
 import { dispatchTokenChangedEvent } from "../utils/events";
 import { loadRoles } from "../components/RoleManager";
+import { useTranslations } from "@/composables/useTranslations";
 
 export default {
   data() {
@@ -67,6 +70,7 @@ export default {
       password: "",
       errorMessage: "",
       devMode: import.meta.env.VITE_DEV_MODE === "true",
+      translations: useTranslations(),
     };
   },
 

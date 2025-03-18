@@ -1,63 +1,67 @@
 <!-- src/components/Register.vue -->
 <template>
   <div class="register">
-    <h2>Register</h2>
+    <h2>{{ translations.register.value.title }}</h2>
     <form @submit.prevent="register">
       <div class="form-group">
-        <label for="username">User name:</label>
+        <label for="username">{{ translations.register.value.username }}:</label>
         <input
           type="text"
           id="username"
           v-model="username"
           required
-          placeholder="Enter your user name"
+          :placeholder="translations.register.value.usernamePlaceholder"
         />
       </div>
 
       <div class="form-group">
-        <label for="email">Email:</label>
+        <label for="email">{{ translations.register.value.email }}:</label>
         <input
           type="email"
           id="email"
           v-model="email"
           required
-          placeholder="Enter your email"
+          :placeholder="translations.register.value.emailPlaceholder"
         />
       </div>
-      
+
       <div class="form-group">
-        <label for="password">Password:</label>
+        <label for="password">{{ translations.register.value.password }}:</label>
         <input
           type="password"
           id="password"
           v-model="password"
           required
-          placeholder="Enter your password"
+          :placeholder="translations.register.value.passwordPlaceholder"
         />
       </div>
 
-      <button type="submit">Register</button>
+      <button type="submit">{{ translations.register.value.registerButton }}</button>
       <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 
       <!-- Login navigation button -->
       <p>
-        Already have an account?
-        <button @click="goToLogin" class="link-button">Login here</button>
+        {{ translations.register.value.alreadyAccount }}
+        <button @click="goToLogin" class="link-button">
+          {{ translations.register.value.login }}
+        </button>
       </p>
     </form>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
+import { useTranslations } from "@/composables/useTranslations";
 
 export default {
   data() {
     return {
-      username: '',
-      email: '',
-      password: '',
-      errorMessage: '',
+      username: "",
+      email: "",
+      password: "",
+      errorMessage: "",
+      translations: useTranslations(),
     };
   },
   methods: {
@@ -66,29 +70,31 @@ export default {
         console.log("I reach here");
         console.log(this.password);
 
-        const userData=
-        {
+        const userData = {
           username: this.username,
           email: this.email,
           password: this.password,
-        }
+        };
 
-        const response = await axios.post(`${import.meta.env.VITE_APP_API_REGISTER}`, userData);
-
-        
+        const response = await axios.post(
+          `${import.meta.env.VITE_APP_API_REGISTER}`,
+          userData
+        );
 
         if (response.data.success) {
-          this.$router.push('/login');
+          this.$router.push("/login");
         } else {
-          this.errorMessage = 'Registration failed. Please try again.';
+          this.errorMessage = "Registration failed. Please try again.";
         }
       } catch (error) {
-        this.errorMessage = error.response ? error.response.data.message : 'An error occurred. Please try again.';
+        this.errorMessage = error.response
+          ? error.response.data.message
+          : "An error occurred. Please try again.";
       }
     },
     goToLogin() {
-      this.$router.push('/login');
-    }
+      this.$router.push("/login");
+    },
   },
 };
 </script>
