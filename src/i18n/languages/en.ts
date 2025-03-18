@@ -1,4 +1,23 @@
 export default {
+   header: {
+      title: "Babymonitor CTG Simulator",
+      showGraph: "Show Graph",
+
+      //Manual
+      manualTitle: "Manual",
+      hoverExplanation: "Hover over items below to learn how this application works.",
+      languageChangeTitle: "Changing Language",
+      languageChangeDescription: "You can change the language between Dutch and English here.",
+
+      dataExportTitle: "Exporting Data",
+      dataExportDescription: "You can export all data to CSV format.",
+
+      dataImportTitle: "Importing Data",
+      dataImportDescription: "Import data from CSV file.",
+
+      submitTitle: "Submit data",
+      submitDescription: "Submit the change.",
+   },
    message: {
       //Input field
       fileInput: "File Input",
