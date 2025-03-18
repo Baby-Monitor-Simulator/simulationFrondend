@@ -2,9 +2,10 @@
 import { useHoverStore } from "@/stores/hover";
 import HoverItem from "@/enums/hoverItems";
 import { computed } from "vue";
-import { useI18n } from "vue-i18n";
+import { useTranslations } from "@/composables/useTranslations";
 
 const hoverStore: any = useHoverStore();
+const { manual: manualTranslations } = useTranslations();
 
 // you can probably use `onmousemove` for both: https://www.w3schools.com/jsref/event_onmouseover.asp
 const changeHover = (item: HoverItem, bool: boolean) => {
@@ -23,22 +24,6 @@ const changeHover = (item: HoverItem, bool: boolean) => {
       break;
   }
 };
-
-const { t } = useI18n();
-const languageStrs = computed(() => {
-  return {
-    manualTitle: t("header.manualTitle"),
-    hoverExplanation: t("header.hoverExplanation"),
-    languageChangeTitle: t("header.languageChangeTitle"),
-    languageChangeDescription: t("header.languageChangeDescription"),
-    dataExportTitle: t("header.dataExportTitle"),
-    dataExportDescription: t("header.dataExportDescription"),
-    dataImportTitle: t("header.dataImportTitle"),
-    dataImportDescription: t("header.dataImportDescription"),
-    submitTitle: t("header.submitTitle"),
-    submitDescription: t("header.submitDescription"),
-  };
-});
 </script>
 
 <template>
@@ -46,18 +31,18 @@ const languageStrs = computed(() => {
     <v-card class="mx-auto" max-width="425">
       <v-list lines="two">
         <v-list-subheader
-          ><b>{{ languageStrs.manualTitle }}</b></v-list-subheader
+          ><b>{{ manualTranslations.manualTitle }}</b></v-list-subheader
         >
-        <v-list-subheader>{{ languageStrs.hoverExplanation }}</v-list-subheader>
+        <v-list-subheader>{{ manualTranslations.hoverExplanation }}</v-list-subheader>
 
         <v-list-item
           v-on:mouseenter="changeHover(HoverItem.Language, true)"
           v-on:mouseleave="changeHover(HoverItem.Language, false)"
           prepend-icon="mdi-web"
         >
-          <template v-slot:title>{{ languageStrs.languageChangeTitle }}</template>
+          <template v-slot:title>{{ manualTranslations.languageChangeTitle }}</template>
           <template v-slot:subtitle
-            >{{ languageStrs.languageChangeDescription }}
+            >{{ manualTranslations.languageChangeDescription }}
           </template>
         </v-list-item>
 
@@ -68,8 +53,10 @@ const languageStrs = computed(() => {
           v-on:mouseleave="changeHover(HoverItem.Export, false)"
           prepend-icon="mdi-download"
         >
-          <template v-slot:title>{{ languageStrs.dataExportTitle }}</template>
-          <template v-slot:subtitle>{{ languageStrs.dataExportDescription }} </template>
+          <template v-slot:title>{{ manualTranslations.dataExportTitle }}</template>
+          <template v-slot:subtitle
+            >{{ manualTranslations.dataExportDescription }}
+          </template>
         </v-list-item>
 
         <v-divider inset></v-divider>
@@ -79,8 +66,10 @@ const languageStrs = computed(() => {
           v-on:mouseleave="changeHover(HoverItem.Import, false)"
           prepend-icon="mdi-upload"
         >
-          <template v-slot:title> {{ languageStrs.dataImportTitle }} </template>
-          <template v-slot:subtitle> {{ languageStrs.dataImportDescription }} </template>
+          <template v-slot:title> {{ manualTranslations.dataImportTitle }} </template>
+          <template v-slot:subtitle>
+            {{ manualTranslations.dataImportDescription }}
+          </template>
         </v-list-item>
 
         <v-divider inset></v-divider>
@@ -90,8 +79,10 @@ const languageStrs = computed(() => {
           v-on:mouseleave="changeHover(HoverItem.Submit, false)"
           prepend-icon="mdi-send"
         >
-          <template v-slot:title> {{ languageStrs.submitTitle }} </template>
-          <template v-slot:subtitle> {{ languageStrs.submitDescription }} </template>
+          <template v-slot:title> {{ manualTranslations.submitTitle }} </template>
+          <template v-slot:subtitle>
+            {{ manualTranslations.submitDescription }}
+          </template>
         </v-list-item>
       </v-list>
     </v-card>

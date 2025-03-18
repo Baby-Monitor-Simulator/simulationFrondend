@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>Hello, Welcome to the Home Page!</h1>
-    <p>Your roles:</p>
+    <h1>{{ translations.home.welcome }}</h1>
+    <p>{{ translations.home.yourRoles }}:</p>
     <ul>
       <li v-for="role in filteredRoles" :key="role">{{ role }}</li>
     </ul>
@@ -9,11 +9,14 @@
 </template>
 
 <script>
+import { useTranslations } from "@/composables/useTranslations";
+
 export default {
   data() {
     return {
       roles: [],
       specificRolesList: ["admin", "deelnemer", "instructeur"],
+      translations: useTranslations(),
     };
   },
   computed: {

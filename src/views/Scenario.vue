@@ -2,20 +2,20 @@
 <template>
   <div class="scenarios-container">
     <div class="header-container">
-      <h1>Scenarios</h1>
+      <h1>{{ translations.scenario.value.title }}</h1>
       <v-btn
-          color="primary"
-          icon="mdi-plus"
-          size="large"
-          @click="goToCreateScenario"
-          class="create-btn"
+        color="primary"
+        icon="mdi-plus"
+        size="large"
+        @click="goToCreateScenario"
+        class="create-btn"
       >
       </v-btn>
     </div>
 
     <!-- Loading state -->
     <div v-if="loading" class="loading">
-      Loading scenarios...
+      {{ translations.common.value.loading }}
     </div>
 
     <!-- Error state -->
@@ -26,12 +26,12 @@
     <!-- Scenarios grid -->
     <div v-if="!loading && !error" class="scenarios-grid">
       <v-card
-          v-for="scenario in scenarios"
-          :key="scenario._id"
-          class="scenario-block"
-          @click="goToScenarioDetail(scenario._id)"
-          elevation="2"
-          hover
+        v-for="scenario in scenarios"
+        :key="scenario._id"
+        class="scenario-block"
+        @click="goToScenarioDetail(scenario._id)"
+        elevation="2"
+        hover
       >
         <v-card-title>{{ scenario.name }}</v-card-title>
         <v-card-text>
@@ -43,44 +43,47 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
+import { useTranslations } from "@/composables/useTranslations";
 
 export default {
-  name: 'Scenario',
+  name: "Scenario",
   data() {
     return {
       scenarios: [],
       loading: true,
-      error: null
-    }
+      error: null,
+      translations: useTranslations(),
+    };
   },
   created() {
     this.fetchScenarios();
   },
   methods: {
     async fetchScenarios() {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`${import.meta.env.VITE_APP_API_SCENARIO}/all`,{          
-        headers: {
+        const response = await axios.get(`${import.meta.env.VITE_APP_API_SCENARIO}/all`, {
+          headers: {
             Authorization: `Bearer ${token}`,
-          }});
+          },
+        });
         this.scenarios = response.data;
         this.loading = false;
       } catch (err) {
-        this.error = 'Er is een fout opgetreden bij het ophalen van de scenarios';
+        this.error = this.translations.scenario.value.errors.loadFailed;
         this.loading = false;
-        console.error('Error:', err);
+        console.error("Error:", err);
       }
     },
     goToScenarioDetail(scenarioId) {
       this.$router.push(`/scenario/${scenarioId}`);
     },
     goToCreateScenario() {
-      this.$router.push('/scenario/create');
-    }
-  }
-}
+      this.$router.push("/scenario/create");
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -111,7 +114,8 @@ export default {
   transform: translateY(-5px);
 }
 
-.loading, .error {
+.loading,
+.error {
   text-align: center;
   padding: 20px;
 }

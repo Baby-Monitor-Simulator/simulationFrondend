@@ -1,41 +1,44 @@
 <script lang="ts">
-import { ref, computed, watch } from "vue";
+import { ref, watch } from "vue";
 import { useField, useForm } from "vee-validate";
 import scenarioOption from "@/enums/scenarioOptions";
 import templateOptionV2 from "@/enums/templateOptionsV2";
-import { useI18n } from "vue-i18n";
 import { useImportStore } from "@/stores/import";
 import { useRouter } from "vue-router";
 import { useGlobalStore } from "@/stores/global";
 import { useHoverStore } from "@/stores/hover";
+import { useTranslations } from "@/composables/useTranslations";
 
 // Do need something like this for the change of color when hovering over in the manual, this includes: hovering = useHoverStore(); underneath this (line 21)
 //let hovering = undefined;
 
 export default {
   setup() {
+    const { form: formTranslations } = useTranslations();
     const importStore: any = useImportStore();
     const globalStore: any = useGlobalStore();
-    const { t } = useI18n(); // call `useI18n`, and spread `t` from  `useI18n` returning
     const router = useRouter();
-    //hovering = useHoverStore();
 
     const { handleSubmit, handleReset } = useForm({
       validationSchema: {
         scenario(value: string) {
-          return value ? true : "Must select a scenario.";
+          return value ? true : formTranslations.value.scenario;
         },
         template(value: string) {
-          return value ? true : "Must select a template.";
+          return value ? true : formTranslations.value.template;
         },
         maxAmplitude(value: number) {
-          return value > 0 && value < 120 ? true : errStrs.value.maxAmplitude;
+          return value > 0 && value < 120 ? true : formTranslations.value.maxAmplitude;
         },
         contractionDuration(value: number) {
-          return value > 30 && value < 150 ? true : errStrs.value.contractionDuration;
+          return value > 30 && value < 150
+            ? true
+            : formTranslations.value.contractionDuration;
         },
         timeBetweenContractions(value: number) {
-          return value > 0 && value < 600 ? true : errStrs.value.timeBetweenContractions;
+          return value > 0 && value < 600
+            ? true
+            : formTranslations.value.timeBetweenContractions;
         },
         nCycleMax(value: number) {
           return value > 0 ? true : "Number of cycles must be larger than 0.";
@@ -83,24 +86,6 @@ export default {
       alert(JSON.stringify(values, null, 2));
     });
 
-    const selectedScenario = computed(() => {
-      return t("message.selectedScenario");
-    });
-
-    const selectedTemplate = computed(() => {
-      return t("message.selectedTemplate");
-    });
-
-    const errStrs = computed(() => {
-      return {
-        scenario: t("message.scenario"),
-        template: t("message.template"),
-        maxAmplitude: t("message.maxAmplitude") + " 0-120",
-        contractionDuration: t("message.contractionDuration") + " 30-150s",
-        timeBetweenContractions: t("message.timeBetweenContractions") + " 0-600s",
-      };
-    });
-
     // watch works directly on a ref
     watch(template.value, (newTemplate, oldTemplate) => {
       if (!oldTemplate) {
@@ -132,9 +117,8 @@ export default {
       umbilicalOptions,
       submit,
       handleReset,
-      selectedScenario,
-      selectedTemplate,
       templates,
+      formTranslations,
     };
   },
   mounted() {
@@ -163,7 +147,7 @@ export default {
         v-model="scenario.value.value"
         :items="scenarios"
         :error-messages="scenario.errorMessage.value"
-        :label="selectedScenario"
+        :label="formTranslations.selectedScenario"
       ></v-select>
     </div>
     <!-- <div class="form-input">
@@ -175,9 +159,9 @@ export default {
         variant="outlined"
         v-model.number="maxAmplitude.value.value"
         :error-messages="maxAmplitude.errorMessage.value"
-        label="Max Contraction Amplitude"
+        :label="formTranslations.maxAmplitudeLabel"
         placeholder="70"
-        suffix="mmHg"
+        :suffix="formTranslations.mmHg"
       ></v-text-field>
     </div>
     <div class="form-input">
@@ -185,9 +169,9 @@ export default {
         variant="outlined"
         v-model.number="contractionDuration.value.value"
         :error-messages="contractionDuration.errorMessage.value"
-        label="Contraction Duration"
+        :label="formTranslations.contractionDurationLabel"
         placeholder="60"
-        suffix="s"
+        :suffix="formTranslations.seconds"
       ></v-text-field>
     </div>
     <div class="form-input">
@@ -195,9 +179,9 @@ export default {
         variant="outlined"
         v-model.number="timeBetweenContractions.value.value"
         :error-messages="timeBetweenContractions.errorMessage.value"
-        label="Time Between Contractions"
+        :label="formTranslations.timeBetweenContractionsLabel"
         placeholder="180"
-        suffix="s"
+        :suffix="formTranslations.seconds"
       ></v-text-field>
     </div>
     <div class="form-buttons">
@@ -210,7 +194,7 @@ export default {
           type="submit"
           prepend-icon="mdi-send"
         >
-          {{ $t("message.submit") }}
+          {{ formTranslations.submit }}
         </v-btn>
       </v-sheet>
       <v-divider></v-divider>
@@ -222,7 +206,7 @@ export default {
           @click="handleReset"
           prepend-icon="mdi-trash-can-outline"
         >
-          {{ $t("message.clear") }}
+          {{ formTranslations.clear }}
         </v-btn>
       </v-sheet>
     </div>
@@ -233,7 +217,7 @@ export default {
           v-model="template.value.value"
           :items="templates"
           :error-messages="template.errorMessage.value"
-          :label="selectedTemplate"
+          :label="formTranslations.selectedTemplate"
         ></v-select>
       </div>
     </v-sheet>
