@@ -9,7 +9,6 @@ const globalStore: any = useGlobalStore();
 const overlay = ref(false);
 const hoverStore: any = useHoverStore();
 const { locale } = useI18n(); // call `useI18n`, and spread `t` from  `useI18n` returning
-const { t } = useI18n();
 
 const switchLanguage = () => {
   locale.value === "en" ? (locale.value = "nl") : (locale.value = "en");
@@ -21,6 +20,7 @@ const languageString = computed(() => {
 const displayedIcon = computed(() => {
   return globalStore.showGraph ? "mdi-help" : "mdi-chart-line";
 });
+const { t } = useI18n();
 const languageStrs = computed(() => {
   return {
     title: t("header.title"),
