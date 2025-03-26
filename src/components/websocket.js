@@ -34,11 +34,12 @@ export function connectLobby(lobbyId) {
 }
 
 function connect(id, webSocketUrl, subscribeTag) {
-
+  const userid = localStorage.getItem('userId');
   client = new StompJsClient({
     brokerURL: webSocketUrl,
     reconnectDelay: 5000,
     isTrusted: false,
+    connectHeaders: { userId: userid },
   });
 
   client.onConnect = (frame) => {
