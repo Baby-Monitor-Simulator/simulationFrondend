@@ -41,18 +41,17 @@ export default {
             : formTranslations.value.timeBetweenContractions;
         },
         nCycleMax(value: number) {
-          return value > 0 ? true : "Number of cycles must be larger than 0.";
+          return value > 0 ? true : formTranslations.validation.nCycleMax;
         },
         bloodVolumeFetus(value: number) {
-          return value > 0 ? true : "Blood volume (fetus) must be larger than 0.";
+          return value > 0 ? true : formTranslations.validation.bloodVolumeFetus;
         },
         extraOxygen(value: number) {
-          return value > 0 ? true : "Extra oxygen must be larger than 0.";
+          return value > 0 ? true : formTranslations.validation.extraOxygen;
         },
         umbilicalOption(value: string) {
           if (value) return true;
-
-          return "Must select an umbilical option.";
+          return formTranslations.validation.umbilicalOption;
         },
       },
     });

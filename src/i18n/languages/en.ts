@@ -11,6 +11,12 @@ export default {
       edit: "Edit",
       close: "Close",
    },
+   validation: {
+      nCycleMax: "Number of cycles must be larger than 0.",
+      bloodVolumeFetus: "Blood volume (fetus) must be larger than 0.",
+      extraOxygen: "Extra oxygen must be larger than 0.",
+      umbilicalOption: "Must select an umbilical option.",
+   },
    home: {
       welcome: "Hello, Welcome to the Home Page!",
       yourRoles: "Your roles",

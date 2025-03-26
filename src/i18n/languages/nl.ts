@@ -11,6 +11,12 @@ export default {
       edit: "Bewerken",
       close: "Sluiten",
    },
+   validation: {
+      nCycleMax: "Aantal cycli moet groter zijn dan 0.",
+      bloodVolumeFetus: "Bloedvolume (foetus) moet groter zijn dan 0.",
+      extraOxygen: "Extra zuurstof moet groter zijn dan 0.",
+      umbilicalOption: "Er moet een navelstreng optie worden geselecteerd.",
+   },
    home: {
       welcome: "Hallo, Welkom op de Startpagina!",
       yourRoles: "Je rollen",

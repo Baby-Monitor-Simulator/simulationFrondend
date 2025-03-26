@@ -22,6 +22,14 @@ export function useTranslations() {
     close: t('common.close'),
   }));
 
+  // Validation messages
+  const validation = computed(() => ({
+    nCycleMax: t('validation.nCycleMax'),
+    bloodVolumeFetus: t('validation.bloodVolumeFetus'),
+    extraOxygen: t('validation.extraOxygen'),
+    umbilicalOption: t('validation.umbilicalOption'),
+  }));
+
   // Form-related translations
   const form = computed(() => ({
     fileInput: t('form.fileInput'),
@@ -300,6 +308,7 @@ export function useTranslations() {
 
   return {  
     common,
+    validation,
     form,
     header,
     navbar,
