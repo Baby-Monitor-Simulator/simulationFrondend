@@ -27,7 +27,7 @@ export default {
       lobbyCode: this.$route.params.lobbyCode,
     };
   },
-  onMounted() {
+  mounted() {
     this.connectToLobby();
     this.getLobbyParticipants();
     eventBusGraphData.on("arrayUpdated", this.handleLobbyMessage);
@@ -136,10 +136,11 @@ export default {
       <h2 class="title">ID:{{ lobbyCode }}</h2>
       <p class="lobby-text" v-if="lobbyStarting">
         {{ $t("lobby.simulationStarting") }}
+        
       </p>
       <!-- New section to display participants -->
       <ul v-if="participants.length">
-        <h3>Active participants:</h3>
+        <h3>Active participants:</h3> 
         <li v-for="participant in participants" :key="participant.userId">
           {{ participant.userName }}
         </li>
