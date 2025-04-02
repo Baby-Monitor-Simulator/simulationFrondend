@@ -12,7 +12,7 @@
           </select>
         </div>
 
-        <button type="submit" class="submit-btn">Create Lobby</button>
+        <button type="submit" class="submit-btn" data-cy="submit">Create Lobby</button>
       </form>
     </div>
   </div>
@@ -43,7 +43,7 @@ export default {
             Authorization: `Bearer ${token}`,
           }
         });
-
+        console.log(response.data)
         this.scenarios = response.data;
       } catch (error) {
         console.error('Error fetching scenarios:', error);
