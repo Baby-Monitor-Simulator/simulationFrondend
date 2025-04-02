@@ -23,6 +23,7 @@
 
         <v-btn
           class="ma-1 pa-2"
+          data-cy="scenario"
           to="/scenario"
           :class="{ 'v-btn--active': $route.path === '/scenario' }"
           @click="onNavbarClick"
@@ -57,6 +58,7 @@
 
         <v-btn
           class="ma-1 pa-2"
+          data-cy="createLobby"
           to="/lobby/Create"
           :class="{ 'v-btn--active': $route.path === '/lobby/Create' }"
           v-if="devMode ? true : hasRole(['instructeur'])"
@@ -69,6 +71,7 @@
 
         <v-btn
           class="ma-1 pa-2"
+          data-cy="joinLobby"
           to="/lobby/join"
           :class="{ 'v-btn--active': $route.path === '/join' }"
           v-if="devMode ? true : hasRole(['deelnemer'])"
@@ -81,6 +84,7 @@
 
         <v-btn
           class="ma-1 pa-2"
+          data-cy="logout"
           to="/login"
           :class="{ 'v-btn--active': $route.path === '/login' }"
           v-if="devMode ? true : hasRole(['admin', 'deelnemer', 'instructeur'])"

@@ -12,6 +12,7 @@
             v-model="email"
             required
             placeholder="Enter your email"
+            data-cy="email"
           />
         </div>
 
@@ -23,10 +24,11 @@
             v-model="password"
             required
             placeholder="Enter your password"
+            data-cy="password"
           />
         </div>
 
-        <button type="submit">Login</button>
+        <button type="submit" data-cy="submit">Login</button>
         <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
 
         <!-- Register navigation button -->
