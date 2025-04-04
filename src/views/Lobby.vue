@@ -28,7 +28,7 @@ export default {
       translations: useTranslations(),
     };
   },
-  onMounted() {
+  mounted() {
     this.connectToLobby();
     this.getLobbyParticipants();
     eventBusGraphData.on("arrayUpdated", this.handleLobbyMessage);
@@ -145,6 +145,7 @@ export default {
       <!-- New section to display participants -->
       <ul v-if="participants.length">
         <h3>{{ translations.lobby.value.activeParticipants }}:</h3>
+
         <li v-for="participant in participants" :key="participant.userId">
           {{ participant.userName }}
         </li>
