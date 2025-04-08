@@ -16,15 +16,14 @@ jobs:
           node-version: 18
           cache: 'npm'
       - run: npm ci
+      - name: List installed node modules
+        run: ls -R node_modules/vue-i18n/dist
 
-      - name: Install vue-i18n 
-        run: npm install vue-i18n
-
-      - name: Debug installed packages
-        run: npm list
       # and run all Cypress tests
-      - name: Build project
-        run: npm run build
-        env:
-          NODE_ENV: production
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          build: npm run build
+          start: npm start
+
 
