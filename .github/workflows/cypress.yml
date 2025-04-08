@@ -17,6 +17,10 @@ jobs:
       
       - name: Install dependencies
         run: npm ci
+
+      - name: Copy env.example to .env
+        run: cp .env.example .env
+
       
       - name: List installed node modules
         run: ls -R node_modules/vue-i18n/dist
