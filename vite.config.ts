@@ -28,6 +28,6 @@ export default defineConfig({
     },
   },
   define: {
-    'global': '"globalThis"',
+    '__GLOBAL__': 'window',
   },
 })
