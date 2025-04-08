@@ -8,22 +8,19 @@ export default defineConfig({
   plugins: [
     vue(),
     VueI18nPlugin({
-      include: resolve(dirname(fileURLToPath(import.meta.url)), './src/locales/**'), // Ensure correct path
+      include: resolve(dirname(fileURLToPath(import.meta.url)), './path/to/src/locales/**'),
     }),
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
-    extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json'], // Ensure Rollup handles .mjs
+    extensions: ['.mjs', '.js', '.ts', '.vue', '.json'], // Ensure .mjs is recognized
   },
-  server: {
-    port: 4173,
-    headers: {
-      "Cache-Control": "no-store",
-    },
+  optimizeDeps: {
+    include: ['vue-i18n'],
   },
   define: {
-    global: {},
+    global: {}, 
   },
-})
+});
