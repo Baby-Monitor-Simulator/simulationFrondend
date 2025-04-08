@@ -18,11 +18,11 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install npm-run-all
+        run: npm install --save-dev npm-run-all
+
       - name: List installed node modules
         run: ls -R node_modules/vue-i18n/dist
-
-      - name: Install Cypress dependencies
-        run: npm install --save-dev cypress
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
