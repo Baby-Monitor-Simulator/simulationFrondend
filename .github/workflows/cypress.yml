@@ -19,10 +19,15 @@ jobs:
 
       - name: Install vue-i18n 
         run: npm install vue-i18n
+
+      - name: Debug installed packages
+        run: npm list
       # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
           build: NODE_ENV=production npm run build
           start: npm start
+          env:
+            NODE_ENV: production
 
