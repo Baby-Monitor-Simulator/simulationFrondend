@@ -23,9 +23,13 @@ jobs:
       
       - name: List installed node modules
         run: ls -R node_modules/vue-i18n/dist
+
+      - name: Build with increased memory
+        run: |
+          export NODE_OPTIONS="--max-old-space-size=4096"
+          npm run build
       
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          build: NODE_OPTIONS="--max-old-space-size=4096" npm run build
           start: npm start
