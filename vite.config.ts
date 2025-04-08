@@ -1,6 +1,7 @@
 import { fileURLToPath, URL } from 'node:url'
 import { resolve, dirname } from 'node:path'
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite'
+
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
@@ -10,8 +11,8 @@ export default defineConfig({
     vue(),
     VueI18nPlugin({
       /* options */
-      // Make sure this path is correct
-      include: resolve(dirname(fileURLToPath(import.meta.url)), './src/locales/**'),
+      // locale messages resource pre-compile option
+      include: resolve(dirname(fileURLToPath(import.meta.url)), './path/to/src/locales/**'),
     }),
   ],
   resolve: {
@@ -23,16 +24,10 @@ export default defineConfig({
   server: {
     port: 4173,
     headers: {
-      "Cache-Control": "no-store",
+      "Cache-Control": "no-store", // Voorkomt caching van bestanden
     },
   },
   define: {
-    // Change this to use globalThis
-    global: 'globalThis',
-  },
-  build: {
-    commonjsOptions: {
-      transformMixedEsModules: true,
-    },
+    global: '({})',
   },
 })
