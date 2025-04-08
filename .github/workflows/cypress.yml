@@ -22,7 +22,7 @@ jobs:
         run: ls -R node_modules/vue-i18n/dist
 
       - name: Type check
-        run: NODE_OPTIONS="--max-old-space-size=4096" npm run type-check
+        run: NODE_OPTIONS="--max-old-space-size=8192" npm run type-check
 
       - name: Build only
         run: NODE_OPTIONS="--max-old-space-size=8192" npm run build-only
