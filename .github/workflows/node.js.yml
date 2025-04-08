@@ -5,7 +5,7 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "Cypress-end-to-end" ]
   pull_request:
     branches: [ "main" ]
 
