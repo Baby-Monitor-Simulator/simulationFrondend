@@ -16,6 +16,7 @@
           run: |
             # Start containers in detached mode
             cd temp
+            cp .env.example .env
             docker compose up -d
         
         - name: Set up Node.js
