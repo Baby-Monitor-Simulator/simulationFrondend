@@ -86,13 +86,13 @@ services:
     image: quay.io/keycloak/keycloak:23.0.6
     command: start-dev --import-realm
     environment:
-      KC_HOSTNAME: localhost
+      KC_HOSTNAME: keycloak
       KC_HOSTNAME_PORT: 8080
       KC_HOSTNAME_STRICT_BACKCHANNEL: false
       KC_HTTP_ENABLED: true
       KC_HOSTNAME_STRICT_HTTPS: false
       KC_HEALTH_ENABLED: true
-      KC_HOSTNAME_ADMIN: localhost
+      KC_HOSTNAME_ADMIN: keycloak
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       KC_ADMIN_URL: http://localhost:8080/admin
