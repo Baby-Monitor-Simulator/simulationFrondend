@@ -1,12 +1,12 @@
 describe('Lobby', () => {
     it("Send to lobby create screen",()=>{
-        cy.login("Adminbm@example.com","myadminpassword")
+        cy.login("testadmin@example.com","adminpassword")
         cy.get('[data-cy="createLobby"]').click()
         cy.url().should('include', '/lobby/Create')
     })
 
     it('Should select a scenario and submit the form', () => {
-        cy.login("Adminbm@example.com","myadminpassword")
+        cy.login("testadmin@example.com","adminpassword")
         cy.get('[data-cy="createLobby"]').click()
         
         // Select a scenario by its value
