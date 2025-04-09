@@ -1,6 +1,6 @@
 {
     "realm": "Babymonitor",
-    "id": "Babymonitor",
+    "id": "415c0e4f-b5a1-4947-a4a3-43f26050b86b",
     "notBefore": 0,
     "defaultSignatureAlgorithm": "RS256",
     "revokeRefreshToken": false,
