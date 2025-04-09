@@ -3,6 +3,7 @@ describe('Lobby', () => {
         cy.login()
         cy.wait(2000)
         cy.get('[data-cy="createLobby"]').click()
+        cy.wait(2000)
         cy.url().should('include', '/lobby/Create')
     })
 
