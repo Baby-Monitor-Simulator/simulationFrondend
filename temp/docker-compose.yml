@@ -1,0 +1,158 @@
+services:
+  gateway:
+    container_name: gateway
+    image: babymonitors/gateway:latest-dev  
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    networks:
+      - babymonitor
+
+  identity:
+    container_name: identityService
+    image: babymonitors/identityservice:latest-dev 
+    ports:
+      - "8082:8082"
+    env_file:
+      - .env
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    networks:
+      - babymonitor
+
+  lobby:
+    container_name: lobbyService
+    image: babymonitors/lobbyservice:latest-dev
+    ports:
+      - "8083:8083"
+    env_file:
+      - .env
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    networks:
+      - babymonitor
+
+  scenario:
+    container_name: scenarioService
+    image: babymonitors/scenarioservice:latest-dev
+    ports:
+      - "8084:8084"
+    env_file:
+      - .env
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+    networks:
+      - babymonitor
+
+  # result:
+  #   container_name: resultService
+  #   image: babymonitors/resultservice:latest-dev
+  #   ports:
+  #     - "8085:8085"
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     SPRING_PROFILES_ACTIVE: dev
+  #   networks:
+  #     - babymonitor
+
+  # examination:
+  #   container_name: examinationService
+  #   image: babymonitors/examinationservice:latest-dev
+  #   ports:
+  #     - "8086:8086"
+  #   environment:
+  #     SPRING_PROFILES_ACTIVE: dev
+  #   networks:
+  #     - babymonitor
+
+  postgres:
+    container_name: keycloakDB
+    image: postgres:16.2
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${POSTGRES_KC_DB}
+      POSTGRES_USER: ${POSTGRES_KC_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_KC_PASSWORD}
+    networks:
+      - keycloak_network
+    env_file:
+      - .env
+
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:23.0.6
+    command: start-dev --import-realm
+    environment:
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8080
+      KC_HOSTNAME_STRICT_BACKCHANNEL: false
+      KC_HTTP_ENABLED: true
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_HEALTH_ENABLED: true
+      KC_HOSTNAME_ADMIN: localhost
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_ADMIN_URL: http://localhost:8080/admin
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres/${POSTGRES_KC_DB}
+      KC_DB_USERNAME: ${POSTGRES_KC_USER}
+      KC_DB_PASSWORD: ${POSTGRES_KC_PASSWORD}
+    ports:
+      - 8080:8080
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+      - ./keycloak-realm-config:/opt/keycloak/data/import
+    networks:
+      - keycloak_network
+      - babymonitor
+
+  participants_db:
+    image: postgres:15
+    container_name: participants-db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: participants
+    ports:
+      - "5432:5432"
+    volumes:
+      - participants_data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - babymonitor
+
+  activelobbies_db:
+    image: postgres:15
+    container_name: activelobbies-db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: active_lobbies
+    ports:
+      - "5420:5432"
+    volumes:
+      - activelobbies_data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - babymonitor
+
+volumes:
+  participants_data:
+  activelobbies_data:
+  postgres_data: {}
+  keycloak_data: {}
+
+networks:
+  keycloak_network:
+    driver: bridge
+  babymonitor:
+    driver: bridge
+  test:
+    driver: bridge
