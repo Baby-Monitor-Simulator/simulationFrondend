@@ -39,7 +39,7 @@
 
 
 Cypress.Commands.add('login', () => {
-    cy.visit('http://localhost:4173');  // Adjust the URL to your login page
+    cy.visit('http://localhost:4173');
     const email = Cypress.env('EMAIL');
     const password = Cypress.env('PASSWORD');
 
@@ -51,7 +51,7 @@ Cypress.Commands.add('login', () => {
 declare global {
     namespace Cypress {
         interface Chainable {
-            login(): Chainable<void>; // No parameters needed
+            login(): Chainable<void>; 
         }
     }
 }
