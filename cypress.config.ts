@@ -6,8 +6,8 @@ export default defineConfig({
     baseUrl: "http://localhost:4173/",
     experimentalStudio: true,
     env: {
-      EMAIL: "testadmin@example.com",
-      PASSWORD: "adminpassword"
+      EMAIL: "Adminbm@example.com",
+      PASSWORD: "myadminpassword"
     }
   },
 
