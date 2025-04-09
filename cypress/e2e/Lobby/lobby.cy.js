@@ -9,7 +9,7 @@ describe('Lobby', () => {
     it('Should select a scenario and submit the form', () => {
         cy.login()
         cy.get('[data-cy="createLobby"]').click()
-        
+        cy.wait(2000)
         // Select a scenario by its value
         cy.get('select#scenario').select('6737477f3e8f67658a3fc674');  // Replace with the actual ID you want to select
         
@@ -18,7 +18,7 @@ describe('Lobby', () => {
         
         // Click the submit button
         cy.get('[data-cy="submit"]').click();
-        
+        cy.wait(2000)
         // assert go to lobby with id
         cy.url().should('match', /\/lobby\/\d+/);
       })
