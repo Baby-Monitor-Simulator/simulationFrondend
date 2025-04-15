@@ -1,9 +1,11 @@
 <script lang="ts" setup>
 import { useGlobalStore } from "@/stores/global";
 import { ref, computed, watch } from "vue";
-import Overlay from "@/components/Manual.vue";
+import Manual from "@/components/Manual.vue";
 import { useI18n } from "vue-i18n";
 import { useHoverStore } from "@/stores/hover";
+import HoverItem from "@/enums/hoverItems";
+import { HomeItems } from "./Manual/manual_items";
 
 const globalStore: any = useGlobalStore();
 const overlay = ref(false);
@@ -44,7 +46,11 @@ const languageStrs = computed(() => {
           color="blue-grey"
           >{{ globalStore.showGraph ? languageStrs.manualTitle : languageStrs.showGraph }}
         </v-btn>
-        <Overlay />
+        <Manual 
+          :items="HomeItems"
+          :title="'Manual'"
+          :explanation="'This manual will help you use the application.'"
+        />
       </v-col>
       <v-col class="md-3">
         <v-btn
