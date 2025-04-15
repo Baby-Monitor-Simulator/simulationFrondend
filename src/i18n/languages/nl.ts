@@ -145,17 +145,27 @@ export default {
    manual: {
       manualTitle: "Handleiding",
       hoverExplanation: "Houd muis over de onderdelen hieronder om erachter te komen hoe de applicatie werkt.",
-      languageChangeTitle: "Taal veranderen",
-      languageChangeDescription: "Je kunt de taal veranderen tussen Nederlands en Engels.",
+      
+      home: {
+         languageChangeTitle: "Taal veranderen",
+         languageChangeDescription: "Je kunt de taal veranderen tussen Nederlands en Engels.",
 
-      dataExportTitle: "Data exporteren",
-      dataExportDescription: "Alle data is naar CSV te exporteren.",
+         dataExportTitle: "Data exporteren",
+         dataExportDescription: "Alle data is naar CSV te exporteren.",
 
-      dataImportTitle: "Data importeren",
-      dataImportDescription: "Data importeren vanuit een CSV.",
+         dataImportTitle: "Data importeren",
+         dataImportDescription: "Data importeren vanuit een CSV.",
 
-      submitTitle: "Verstuur data",
-      submitDescription: "Verstuur de veranderingen.",
+         submitTitle: "Verstuur data",
+         submitDescription: "Verstuur de veranderingen.",
+      },
+      results: {
+         exampleTitle: "Dit is een voorbeeld titel",
+         exampleDescription: "Dit is een voorbeeld beschrijving",
+         
+         graphTitle: "Hoe moet ik de grafiek lezen",
+         graphDescription: "Deze grafiek laat zien hoe blabla."
+      }
    },
    lobby: {
       joinTitle: "Vul de lobby code in",

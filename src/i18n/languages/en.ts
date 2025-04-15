@@ -149,6 +149,13 @@ export default {
 
          submitTitle: "Submit data",
          submitDescription: "Submit the change.",
+      },
+      results: {
+         exampleTitle: "This is an example title",
+         exampleDescription: "This is an example description",
+         
+         graphTitle: "How to read graph",
+         graphDescription: "This graph show how blablabla."
       }
    },
    lobby: {

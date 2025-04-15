@@ -5,7 +5,7 @@ import Manual from "@/components/Manual.vue";
 import { useI18n } from "vue-i18n";
 import { useHoverStore } from "@/stores/hover";
 import HoverItem from "@/enums/hoverItems";
-import { HomeItems } from "./Manual/manual_items";
+import { GetManualItems } from "./Manual/manual_items";
 
 const globalStore: any = useGlobalStore();
 const overlay = ref(false);
@@ -47,7 +47,7 @@ const languageStrs = computed(() => {
           >{{ globalStore.showGraph ? languageStrs.manualTitle : languageStrs.showGraph }}
         </v-btn>
         <Manual 
-          :items="HomeItems"
+          :items="GetManualItems()"
           :title="'Manual'"
           :explanation="'This manual will help you use the application.'"
         />
