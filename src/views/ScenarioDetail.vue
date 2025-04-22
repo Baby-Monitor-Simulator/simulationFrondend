@@ -1,17 +1,13 @@
 <template>
   <div class="scenario-detail">
     <div class="header-container">
-      <h1>{{ scenario?.name || 'Scenario Details' }}</h1>
-      <v-btn
-          color="primary"
-          icon="mdi-arrow-left"
-          @click="$router.push('/scenario')"
-      >
+      <h1>{{ scenario?.name || translations.scenario.value.detail.title }}</h1>
+      <v-btn color="primary" icon="mdi-arrow-left" @click="$router.push('/scenario')">
       </v-btn>
     </div>
 
     <div v-if="loading" class="loading">
-      Loading scenario details...
+      {{ translations.common.value.loading }}
     </div>
 
     <div v-if="error" class="error">
@@ -19,14 +15,14 @@
     </div>
 
     <v-card v-if="!loading && !error" class="Scenario-bescrijving">
-      <v-card-title>Beschrijving</v-card-title>
+      <v-card-title>{{ translations.scenario.value.create.description }}</v-card-title>
       <v-card-text>
         {{ scenario?.description }}
       </v-card-text>
     </v-card>
 
     <v-card v-if="!loading && !error" class="matlab-settings">
-      <v-card-title>MATLAB Instellingen</v-card-title>
+      <v-card-title>{{ translations.scenario.value.create.parameters }}</v-card-title>
       <v-card-text>
         <div v-for="(value, key) in scenario?.matlab" :key="key" class="setting-item">
           <strong>{{ key }}:</strong> {{ value }}
@@ -43,15 +39,17 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
+import { useTranslations } from "@/composables/useTranslations";
 
 export default {
-  name: 'ScenarioDetail',
+  name: "ScenarioDetail",
   data() {
     return {
       scenario: null,
       loading: true,
       error: null,
+      translations: useTranslations(),
     };
   },
   created() {
@@ -61,19 +59,21 @@ export default {
     async fetchScenarioDetail() {
       try {
         const scenarioId = this.$route.params.id;
-        const response = await axios.get(`${import.meta.env.VITE_APP_API_SCENARIO}/${scenarioId}`);
+        const response = await axios.get(
+          `${import.meta.env.VITE_APP_API_SCENARIO}/${scenarioId}`
+        );
         this.scenario = response.data;
         this.loading = false;
       } catch (err) {
-        this.error = 'Er is een fout opgetreden bij het ophalen van de scenario details';
+        this.error = this.translations.scenario.value.errors.loadFailed;
         this.loading = false;
-        console.error('Error:', err);
+        console.error("Error:", err);
       }
     },
     navigateTo(page) {
       const routes = {
-        examen: '/examen-simulation',
-        training: '/training-simulation',
+        examen: "/examen-simulation",
+        training: "/training-simulation",
       };
       this.$router.push(routes[page]);
     },
@@ -104,7 +104,8 @@ export default {
   border-bottom: 1px solid #eee;
 }
 
-.loading, .error {
+.loading,
+.error {
   text-align: center;
   padding: 20px;
 }

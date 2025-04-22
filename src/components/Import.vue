@@ -2,10 +2,10 @@
 import { ref, reactive, computed, type Ref } from 'vue'
 import { useImportStore } from '@/stores/import'
 import type MatlabFile from "@/interfaces/IExpectedFileContent"
-import { useI18n } from 'vue-i18n'
 import { useHoverStore } from '@/stores/hover';
+import { useTranslations } from "@/composables/useTranslations";
 
-const { t } = useI18n() // call `useI18n`, and spread `t` from  `useI18n` returning
+const { import: importTranslations } = useTranslations();
 const hoverStore: any = useHoverStore()
 
 const docFile: any = ref(null)
@@ -27,13 +27,10 @@ function readMatlabFile(): void {
     const reader = new FileReader();
 
     if (file.value.name.includes(".txt")) {
-        testFileExport(file);
         reader.onload = (res) => {
             content.value = res.target!.result;
         };
         reader.readAsText(file.value);
-
-
     }
 }
 
@@ -82,12 +79,11 @@ const isFileEmpty = computed(() => {
 })
 
 const fileReader = computed(() => {
-
-    return t("message.fileInput")
+    return importTranslations.value.selectFile
 })
 
 const errorText = computed(() => {
-    return inputHasError.value ? t("message.fileInputErrorText") : ""
+    return inputHasError.value ? importTranslations.value.errors.invalidFile : ""
 })
 </script>
 

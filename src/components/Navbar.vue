@@ -9,15 +9,19 @@
       :permanent="true"
     >
       <v-list v-if="rolesLoaded">
-        <v-btn class="ma-1 pa-2" to="/" :class="{ 'v-btn--active': $route.path === '/' }"
-          >Home</v-btn
+        <v-btn
+          class="ma-1 pa-2"
+          to="/"
+          :class="{ 'v-btn--active': $route.path === '/' }"
+          >{{ translations.navbar.value.home }}</v-btn
         >
+        <v-divider></v-divider>
         <v-btn
           class="ma-1 pa-2"
           to="/results"
           :class="{ 'v-btn--active': $route.path === '/scenario' }"
         >
-          results
+          {{ translations.navbar.value.results }}
         </v-btn>
         <v-divider></v-divider>
 
@@ -27,7 +31,7 @@
           :class="{ 'v-btn--active': $route.path === '/scenario' }"
           @click="onNavbarClick"
         >
-          Scenario
+          {{ translations.navbar.value.scenario }}
         </v-btn>
 
         <v-divider></v-divider>
@@ -37,7 +41,7 @@
           :class="{ 'v-btn--active': $route.path === '/Dashboard' }"
           @click="onNavbarClick"
         >
-          Dashboard
+          {{ translations.navbar.value.dashboard }}
         </v-btn>
 
         <v-divider></v-divider>
@@ -50,7 +54,7 @@
           v-if="devMode ? true : hasRole(['admin'])"
           @click="onNavbarClick"
         >
-          Rolemap
+          {{ translations.navbar.value.rolemap }}
         </v-btn>
 
         <v-divider></v-divider>
@@ -62,7 +66,7 @@
           v-if="devMode ? true : hasRole(['instructeur'])"
           @click="onNavbarClick"
         >
-          Create Lobby
+          {{ translations.navbar.value.createLobby }}
         </v-btn>
 
         <v-divider></v-divider>
@@ -74,7 +78,7 @@
           v-if="devMode ? true : hasRole(['deelnemer'])"
           @click="onNavbarClick"
         >
-          Join Lobby
+          {{ translations.navbar.value.joinLobby }}
         </v-btn>
 
         <v-divider></v-divider>
@@ -86,7 +90,7 @@
           v-if="devMode ? true : hasRole(['admin', 'deelnemer', 'instructeur'])"
           @click="onLogoutClick"
         >
-          logout
+          {{ translations.navbar.value.logout }}
         </v-btn>
       </v-list>
       <div v-else class="d-flex justify-center align-center" style="height: 100%">
@@ -101,9 +105,11 @@ import { ref, computed, onMounted, watch, nextTick, onUnmounted } from "vue";
 import { hasRole, loadRoles, roles } from "./RoleManager";
 import { useRouter } from "vue-router";
 import { dispatchTokenChangedEvent } from "../utils/events";
+import { useTranslations } from "@/composables/useTranslations";
 
 const router = useRouter();
 const devMode = import.meta.env.VITE_DEV_MODE === "true";
+const translations = useTranslations();
 
 // Add a flag to track when roles are loaded
 const rolesLoaded = ref(false);

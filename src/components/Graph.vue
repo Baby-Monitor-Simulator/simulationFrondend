@@ -5,12 +5,13 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { Chart as ChartJS, Title, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, type ChartData } from 'chart.js'
 import { Line } from 'vue-chartjs'
 import { useImportStore } from '@/stores/import';
 import GraphType from "@/enums/graphTypes"
 import { useGlobalStore } from '@/stores/global';
+import { useTranslations } from '@/composables/useTranslations';
 
 import { connectGraph, sendUserId } from "./websocket.js";
 import eventBusGraphData from "./eventBusGraphData.js";
@@ -25,6 +26,7 @@ const lineChartRef = ref(null);
 
 const importStore: any = useImportStore()
 const globalStore: any = useGlobalStore()
+const { graph: graphTranslations } = useTranslations();
 
 let coordinates = [];
 const myChart = ref(null);
@@ -42,84 +44,40 @@ let first: boolean = true;
 
 
 const updateArray = (json) => {
-        //coordinates = newArray; // Update items with new data
-        //sdfsdf
-        console.log("test");
-        //let fmpResult: FMPResult = Object.assign(new FMPResult(), json)
-        //let response: Response = Object.assign(new Response(), json);
-        //console.log(response);
         let res = json[0];
-        console.log(res);
-
-        //const chart = myChart.value.chart;
-
-        console.log(res.fmp);
 
         if (res.fmp) {
-
-
             if (res.fmp.upResult) {
                 upResults = res.fmp.upResult.map(item => ({
                 x: item.timeSpan,
                 y: item.uPressure
-                }));  // Assigning nested fields manually if necessary
-                /*
-                const maxX = Math.max(...res.fmp.upResult.map(point => point.x));
-
-                chart.options.scales.x.min = maxX-11;
-                chart.options.scales.x.max = maxX;
-
-               console.log("up");
-                console.log(upResults);
-                */
-
+                }));
             }
             if (res.fmp.fhrResult) {
                 fhrResults = res.fmp.fhrResult.map(item => ({
                 x: item.timeSpan,
                 y: item.heartRate
-                })); // Assigning nested fields manually if necessary
-                //console.log("fhr");
-                //console.log(fhrResults);
+                }));
             }
             if (res.fmp.mapResult) {
                 mapResults = res.fmp.mapResult.map(item => ({
                 x: item.timeSpan,
                 y: item.MAP
-                }));  // Assigning nested fields manually if necessary
-                //console.log("map");
-                //console.log(mapResults);
+                }));
             }
             if (res.fmp.o2PResult) {
                 o2PResults = res.fmp.o2PResult.map(item => ({
                 x: item.timeSpan,
                 y: item.o2Pressure
-                }));  // Assigning nested fields manually if necessary
-                //console.log("o2");
-                //console.log(o2PResults);
+                }));
             }
-        // Add more fields as necessary depending on what json contains.
             console.log(upResults);
             console.log(fhrResults);
             console.log(mapResults);
             console.log(o2PResults);
         }
-
-
-
         updated = true;
-        /*
-        console.log(upResults);
-        console.log(fhrResults);
-        console.log(mapResults);
-        console.log(o2PResults);
-        //upResults = response.fmp.upResult;
-        */
 }
-
-
-
-
 
 const props = defineProps({
     type: Number,
@@ -129,6 +87,9 @@ const props = defineProps({
     chartTitle: String,
 })
 
+// Get the time axis label from translations
+const timeAxisLabel = computed(() => graphTranslations.value.xAxis);
+
 const options: any = {
     animation: false,
     spanGaps: true,
@@ -136,7 +97,7 @@ const options: any = {
     responsive: true,
     plugins: {
         title: {
-            display: false,
+            display: true,
             text: props.chartTitle
         },
         legend: {
@@ -151,10 +112,8 @@ const options: any = {
     scales: {
         y: {
             type: 'linear',
-            //min: props.yMin,
-            //max: props.yMax,
-            min: 0,
-            max: 300,
+            min: props.yMin,
+            max: props.yMax,
             ticks: {
                 stepSize: props.yStepSize
             },
@@ -174,13 +133,13 @@ const options: any = {
         x: {
             type: 'linear',
             min: 0,
-            max: 11, // Initial max
+            max: 11,
             ticks: {
                 stepSize: 1
             },
             title: {
                 display: true,
-                text: 'Time (s)',
+                text: timeAxisLabel.value,
                 color: '#911',
                 font: {
                     family: 'Cascadia Mono',
@@ -199,12 +158,11 @@ const data: any = ref<ChartData<'line'>>({
     datasets: []
 })
 
-const maxXValue = ref(11); // Reactive variable for the x-axis max value
-const waitForChange = ref(0); // Reactive variable for the x-axis max value
+const maxXValue = ref(11);
+const waitForChange = ref(0);
 
-// Increment x-axis max value
 const incrementXMaxValue = () => {
-    maxXValue.value += 0.1; // Increase max by 10
+    maxXValue.value += 0.1;
 }
 
 
@@ -215,23 +173,6 @@ onMounted(() => {
     const xIntervalId = setInterval(() => {
         const chart = myChart.value.chart;
 
-
-        /*
-        const arrayLength = coordinates.length;
-        const newestValue = coordinates[arrayLength - 1];
-
-        if (typeof newestValue !== 'undefined')
-        {
-            const newX = newestValue.x-11;
-            const newXMax = newestValue.x;
-
-            const chart = myChart.value.chart;
-            chart.options.scales.x.min = newX;
-            chart.options.scales.x.max = newXMax;
-            chart.update();
-        }
-        */
-       //console.log(myChart.value);
         if (waitForChange.value > 11 && updated)
         {
             if (chart.options.scales.x.max < upResults[upResults.length-1].timeSpan){
@@ -243,14 +184,9 @@ onMounted(() => {
         }
         chart.update();
 
-
-
        waitForChange.value += 0.1;
+    },100);
 
-
-    },100); // Every 0.1 seconds
-
-    // Control graph properties based on type
     switch (props.type) {
         case GraphType.FetalHeartRate:
             const heartRateId = setInterval(() => {
@@ -264,14 +200,14 @@ onMounted(() => {
                                 'rgba(255,99,132,1)',
                             ],
                             pointRadius: 0,
-                            data: fhrResults,//coordinates,//importStore.fetalHeartRate,
+                            data: fhrResults
                         }
                     ]
                 }
-                // Check if fetching should be halted
+
                 if (globalStore.haltFetch) {
                     clearInterval(heartRateId);
-                    clearInterval(xIntervalId); // Clear the x-axis increment interval
+                    clearInterval(xIntervalId);
                 }
             }, 250)
             break;
@@ -287,14 +223,13 @@ onMounted(() => {
                                 'rgba(255,99,132,1)',
                             ],
                             pointRadius: 0,
-                            data: upResults,//importStore.fetalBloodPressure,
+                            data: upResults,
                         }
                     ]
                 }
-                // Check if fetching should be halted
                 if (globalStore.haltFetch) {
                     clearInterval(fetalBloodPressureId);
-                    clearInterval(xIntervalId); // Clear the x-axis increment interval
+                    clearInterval(xIntervalId);
                 }
             }, 250)
             break;
@@ -310,14 +245,14 @@ onMounted(() => {
                                 'rgba(255,99,132,1)',
                             ],
                             pointRadius: 0,
-                            data: mapResults//importStore.uterineContractions,
+                            data: mapResults
                         }
                     ]
                 }
-                // Check if fetching should be halted
+
                 if (globalStore.haltFetch) {
                     clearInterval(utertineContractionsId);
-                    clearInterval(xIntervalId); // Clear the x-axis increment interval
+                    clearInterval(xIntervalId);
                 }
             }, 250)
             break;
@@ -326,7 +261,7 @@ onMounted(() => {
                 data.value = {
                     datasets: [
                         {
-                            label: 'Data',
+                            label: graphTranslations.value.title,
                             backgroundColor: [
                                 'rgba(255,99,132,1)',
                             ],
@@ -334,14 +269,14 @@ onMounted(() => {
                                 'rgba(255,99,132,1)',
                             ],
                             pointRadius: 0,
-                            data: o2PResults,//importStore.fetalBlood,
+                            data: o2PResults,
                         }
                     ]
                 }
-                // Check if fetching should be halted
+
                 if (globalStore.haltFetch) {
                     clearInterval(fetalBloodId);
-                    clearInterval(xIntervalId); // Clear the x-axis increment interval
+                    clearInterval(xIntervalId);
                 }
             }, 250)
             break;

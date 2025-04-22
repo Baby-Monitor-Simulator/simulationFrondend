@@ -54,7 +54,7 @@ const router = createRouter({
       path: '/dashboard/:lobbyId',
       name: 'dashboard',
       component: DashboardView,
-      //meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['deelnemer','admin']} // Protected route
+      meta: { requiresAuth: (devMode ? false : true ) , allowedRoles: ['deelnemer','admin']}, // Protected route
       props: true,
 
     },

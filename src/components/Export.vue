@@ -3,15 +3,10 @@ import FileReader from "@/components/Import.vue";
 import Form from "@/components/Form.vue";
 import { useHoverStore } from "@/stores/hover";
 import { computed } from "vue";
-import { useI18n } from "vue-i18n";
+import { useTranslations } from "@/composables/useTranslations";
 
 const hoverStore: any = useHoverStore();
-const { t } = useI18n();
-const strs = computed(() => {
-  return {
-    exportData: t("message.fileExport"),
-  };
-});
+const { export: exportTranslations } = useTranslations();
 </script>
 <template>
   <v-sheet class="ma-1 pa-2">
@@ -23,7 +18,7 @@ const strs = computed(() => {
       title="Export Data"
       @click="null"
       variant="outlined"
-      >Export Data</v-btn
+      >{{ exportTranslations.exportData }}</v-btn
     >
   </v-sheet>
 </template>

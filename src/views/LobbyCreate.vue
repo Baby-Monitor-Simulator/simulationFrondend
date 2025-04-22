@@ -1,32 +1,41 @@
 <template>
   <div class="lobby-container">
     <div class="lobby-form">
-      <h1 class="title">Create Lobby</h1>
+      <h1 class="title">{{ translations.lobby.value.create.title }}</h1>
       <form @submit.prevent="createLobby">
         <div class="form-group">
-          <label for="scenario">Scenario</label>
+          <label for="scenario">{{
+            translations.lobby.value.create.scenarioSelect
+          }}</label>
           <select id="scenario" v-model="scenario" required>
-            <option v-for="scenario in scenarios" :key="scenario._id" :value="scenario._id">
+            <option
+              v-for="scenario in scenarios"
+              :key="scenario._id"
+              :value="scenario._id"
+            >
               {{ scenario.name }}
             </option>
           </select>
         </div>
 
-        <button type="submit" class="submit-btn">Create Lobby</button>
+        <button type="submit" class="submit-btn">
+          {{ translations.lobby.value.create.createButton }}
+        </button>
       </form>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-
+import axios from "axios";
+import { useTranslations } from "@/composables/useTranslations";
 
 export default {
   data() {
     return {
       scenario: "",
-      scenarios: []
+      scenarios: [],
+      translations: useTranslations(),
     };
   },
   mounted() {
@@ -34,39 +43,48 @@ export default {
   },
   methods: {
     async fetchScenarios() {
-      console.log("Fetching the scenarios")
+      console.log("Fetching the scenarios");
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
 
         const response = await axios.get(`${import.meta.env.VITE_APP_API_SCENARIO}/all`, {
           headers: {
             Authorization: `Bearer ${token}`,
-          }
+          },
         });
 
         this.scenarios = response.data;
       } catch (error) {
-        console.error('Error fetching scenarios:', error);
+        console.error("Error fetching scenarios:", error);
       }
     },
     async createLobby() {
       try {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
 
-        const response = await axios.post(`${import.meta.env.VITE_APP_API_LOBBY}/NewLobby`, 
-        {scenarioid: this.scenario}, {
-        headers: {
-          Authorization: `Bearer ${token}` 
-        }});
+        const response = await axios.post(
+          `${import.meta.env.VITE_APP_API_LOBBY}/NewLobby`,
+          { scenarioid: this.scenario },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-        console.log(response)
+        console.log(response);
         if (response.status === 200) {
-          console.log("lobby has been created, received the following data", response.data);
+          console.log(
+            "lobby has been created, received the following data",
+            response.data
+          );
           const lobbyId = response.data.lobbyid; // Extract lobbyid from response
           this.$router.push(`/lobby/${lobbyId}`); // Navigate to the new route
-        } 
+        }
       } catch (error) {
-        this.errorMessage = error.response ? error.response.data.message : 'An error occurred. Please try again.';
+        this.errorMessage = error.response
+          ? error.response.data.message
+          : this.translations.common.value.error;
       }
     },
   },
@@ -80,7 +98,7 @@ export default {
   align-items: center;
   min-height: 100vh;
   background-color: #f4f7fc;
-  font-family: 'Arial', sans-serif;
+  font-family: "Arial", sans-serif;
 }
 
 .lobby-form {

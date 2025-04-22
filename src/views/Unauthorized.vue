@@ -1,10 +1,10 @@
 <template>
   <div class="unauthorized-container">
     <div class="unauthorized-card">
-      <h1>Unauthorized Access</h1>
+      <h1>{{ translations.errors.value.unauthorized.title }}</h1>
       <div class="alert alert-warning">
         <i class="fas fa-exclamation-triangle"></i>
-        You don't have permission to access this page.
+        {{ translations.errors.value.unauthorized.message }}
       </div>
 
       <p v-if="attemptedPath">
@@ -12,7 +12,9 @@
       </p>
 
       <div class="actions">
-        <button @click="goToHome" class="btn btn-secondary">Go to Home</button>
+        <button @click="goToHome" class="btn btn-secondary">
+          {{ translations.errors.value.unauthorized.backToHome }}
+        </button>
       </div>
     </div>
   </div>
@@ -21,6 +23,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { useRouter } from "vue-router";
+import { useTranslations } from "@/composables/useTranslations";
 
 export default defineComponent({
   name: "UnauthorizedView",
@@ -32,6 +35,7 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
+    const translations = useTranslations();
 
     const goToHome = () => {
       router.push({ name: "home" });
@@ -39,6 +43,7 @@ export default defineComponent({
 
     return {
       goToHome,
+      translations,
     };
   },
 });

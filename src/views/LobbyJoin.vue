@@ -1,13 +1,13 @@
 <script>
 import { computed } from "vue";
-import { useI18n } from "vue-i18n";
+import { useTranslations } from "@/composables/useTranslations";
 import axios from "axios";
 
 export default {
   data() {
-    const { t } = useI18n();
     return {
       lobbyCode: 1,
+      translations: useTranslations(),
     };
   },
   methods: {
@@ -49,7 +49,7 @@ export default {
       } catch (error) {
         this.errorMessage = error.response
           ? error.response.data.message
-          : "An error occurred. Please try again.";
+          : this.translations.common.value.error;
       }
     },
   },
@@ -59,12 +59,14 @@ export default {
 <template>
   <div class="lobby-container">
     <div class="lobby-form">
-      <h1 class="title">{{ $t("lobby.joinTitle") }}</h1>
+      <h1 class="title">{{ translations.lobby.value.joinTitle }}</h1>
       <form @submit.prevent="joinLobby">
         <div class="form-group">
           <input type="number" id="lobby-code" v-model="lobbyCode" required min="1" />
         </div>
-        <button type="submit" class="submit-btn">{{ $t("lobby.joinLobby") }}</button>
+        <button type="submit" class="submit-btn">
+          {{ translations.lobby.value.joinLobby }}
+        </button>
       </form>
     </div>
   </div>

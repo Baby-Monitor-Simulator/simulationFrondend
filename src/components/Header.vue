@@ -20,12 +20,20 @@ const languageString = computed(() => {
 const displayedIcon = computed(() => {
   return globalStore.showGraph ? "mdi-help" : "mdi-chart-line";
 });
+const { t } = useI18n();
+const languageStrs = computed(() => {
+  return {
+    title: t("header.title"),
+    manualTitle: t("header.manualTitle"),
+    showGraph: t("header.showGraph"),
+  };
+});
 </script>
 <template>
   <div class="container">
     <v-row>
       <v-col md-9>
-        <p>Babymonitor CTG Simulator</p>
+        <p>{{ languageStrs.title }}</p>
       </v-col>
       <v-col md-3>
         <v-btn
@@ -34,7 +42,7 @@ const displayedIcon = computed(() => {
           @click="overlay = !overlay"
           variant="outlined"
           color="blue-grey"
-          >{{ globalStore.showGraph ? $t("message.manual") : $t("message.showGraph") }}
+          >{{ globalStore.showGraph ? languageStrs.manualTitle : languageStrs.showGraph }}
         </v-btn>
         <Overlay />
       </v-col>
