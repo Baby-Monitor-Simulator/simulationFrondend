@@ -165,6 +165,14 @@ export default {
          
          graphTitle: "Hoe moet ik de grafiek lezen",
          graphDescription: "Deze grafiek laat zien hoe blabla."
+      },
+      scenario: {
+         exampleTitle: 'Scenario titel',
+         exampleDescription: 'Dit is een voorbeeld voor de scenario pagina.'
+      },
+      dashboard: {
+         exampleTitle: 'Dashboard titel',
+         exampleDescription: 'Dit is een beschrijving voor de dashboard page.'
       }
    },
    lobby: {
