@@ -31,7 +31,7 @@ export function GetManualItems(): ManualItem[] {
     case "/lobby/join":
       return JoinLobbItems;
     default:
-      return HomeItems;
+      return NotFoundItems;
   }
 }
 
@@ -66,8 +66,8 @@ const ResultsItems: ManualItem[] = [
   {
     id: HoverItem.Scenario,
     icon: "mdi-web",
-    titleKey: "manual.results.exampleTitle",
-    descriptionKey: "manual.results.exampleDescription",
+    titleKey: "manual.results.title",
+    descriptionKey: "manual.results.description",
   },
   {
     id: HoverItem.Export,
@@ -116,8 +116,23 @@ const NewLobbyItems: ManualItem[] = [
 const JoinLobbItems: ManualItem[] = [
   {
     id: HoverItem.Scenario,
-    icon: "mdi-linux",
+    icon: "mdi-door",
     titleKey: "manual.joinLobby.title",
     descriptionKey: "manual.joinLobby.description",
+  },
+  {
+    id: HoverItem.Scenario,
+    icon: "mdi-door-open",
+    titleKey: "manual.joinLobby.leaveTitle",
+    descriptionKey: "manual.joinLobby.leaveDescription",
+  },
+];
+
+const NotFoundItems: ManualItem[] = [
+  {
+    id: HoverItem.Scenario,
+    icon: "mdi-alert-circle",
+    titleKey: "manual.notFound.title",
+    descriptionKey: "manual.notFound.description",
   },
 ];

@@ -180,6 +180,13 @@ export default {
     joinLobby: {
       title: "Join an existing lobby",
       description: "You can join an existing lobby here.",
+
+      leaveTitle: "Leave lobby",
+      leaveDescription: "Leave the current lobby.",
+    },
+    notFound: {
+      title: "Not found",
+      description: "Failed to find a manual for the current page.",
     },
   },
   lobby: {
