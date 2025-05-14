@@ -5,6 +5,11 @@ on:
     branches: [ main, zap-dast ]
   pull_request:
     branches: [ main, zap-dast ]
+    
+    
+permissions:
+  issues: write
+
 
 jobs:
   zap_scan:
