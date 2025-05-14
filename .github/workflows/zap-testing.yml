@@ -12,9 +12,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        
+      - name: Build container image
+        run: |
+            docker build -t simulation-frontend .
 
-      - name: Run application
-        run: npm run dev
+      - name: Run application container
+        run: |
+          docker run -d --name frontend \
+            -p 4173:4173 \
+            simulation-frontend
 
       # 4. Wait until the app is responding
       - name: Wait for web app to be up
