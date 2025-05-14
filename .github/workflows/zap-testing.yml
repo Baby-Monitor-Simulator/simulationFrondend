@@ -2,9 +2,9 @@ name: DAST with OWASP ZAP
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, zap-dast ]
   pull_request:
-    branches: [ main ]
+    branches: [ main, zap-dast ]
 
 jobs:
   zap_scan:
