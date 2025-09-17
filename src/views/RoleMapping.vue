@@ -36,12 +36,15 @@ import axios from "axios";
 import { useTranslations } from "@/composables/useTranslations";
 
 export default {
+  setup(){
+    const translations = useTranslations();
+    return {translations};
+  },
   data() {
     return {
       userid: "",
       roleName: "",
-      errorMessage: "",
-      translations: useTranslations(),
+      errorMessage: ""
     };
   },
   methods: {

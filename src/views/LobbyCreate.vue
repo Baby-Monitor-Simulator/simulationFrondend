@@ -31,11 +31,14 @@ import axios from "axios";
 import { useTranslations } from "@/composables/useTranslations";
 
 export default {
+  setup(){
+    const translations = useTranslations();
+    return {translations};
+  },
   data() {
     return {
       scenario: "",
       scenarios: [],
-      translations: useTranslations(),
     };
   },
   mounted() {

@@ -64,13 +64,16 @@ import { loadRoles } from "../components/RoleManager";
 import { useTranslations } from "@/composables/useTranslations";
 
 export default {
+  setup(){
+    const translations = useTranslations();
+    return {translations};
+  },
   data() {
     return {
       email: "",
       password: "",
       errorMessage: "",
-      devMode: import.meta.env.VITE_DEV_MODE === "true",
-      translations: useTranslations(),
+      devMode: import.meta.env.VITE_DEV_MODE === "true"
     };
   },
 
