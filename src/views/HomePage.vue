@@ -26,6 +26,7 @@ export default {
     },
   },
   mounted() {
+    let t1 = performance.now()
     const token = localStorage.getItem("token");
 
     if (token) {
@@ -37,6 +38,9 @@ export default {
         console.error("Error decoding token:", error);
       }
     }
+    let t2 = performance.now()
+    let time = t2-t1
+    console.log("mount time : " + time)
   },
 };
 </script>
