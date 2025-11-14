@@ -48,12 +48,15 @@ import { useTranslations } from "@/composables/useTranslations";
 
 export default {
   name: "Scenario",
+  setup(){
+    const translations = useTranslations();
+    return {translations};
+  },
   data() {
     return {
       scenarios: [],
       loading: true,
       error: null,
-      translations: useTranslations(),
     };
   },
   created() {

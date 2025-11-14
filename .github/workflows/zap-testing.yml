@@ -1,0 +1,42 @@
+name: DAST with OWASP ZAP
+
+on:
+  push:
+    branches: [ main, zap-dast ]
+  pull_request:
+    branches: [ main, zap-dast ]
+    
+    
+permissions:
+  issues: write
+
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Build container image
+        run: |
+            docker build -t simulation-frontend .
+
+      - name: Run application container
+        run: |
+          docker run -d --name frontend \
+            -p 4173:4173 \
+            simulation-frontend
+
+      # 4. Wait until the app is responding
+      - name: Wait for web app to be up
+        run: |
+          timeout 60 bash -c \
+          'until curl -s http://localhost:4173 >/dev/null; do sleep 1; done'
+
+      # 5. Run ZAP full scan against localhost
+      - name: OWASP ZAP Full Scan
+        uses: zaproxy/action-full-scan@v0.12.0
+
+        with:
+          target: 'http://127.0.0.1:4173/'

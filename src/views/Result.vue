@@ -51,6 +51,10 @@ import axios from "axios";
 import { useTranslations } from "@/composables/useTranslations";
 
 export default {
+  setup(){
+    const translations = useTranslations();
+    return {translations};
+  },
   data() {
     return {
       userId: "",
@@ -59,7 +63,6 @@ export default {
       result: null,
       loading: true,
       error: null,
-      translations: useTranslations(),
       newResult: {
         userId: "",
         sessionId: "",

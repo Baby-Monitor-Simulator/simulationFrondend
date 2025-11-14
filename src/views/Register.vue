@@ -55,13 +55,16 @@ import axios from "axios";
 import { useTranslations } from "@/composables/useTranslations";
 
 export default {
+  setup(){
+    const translations = useTranslations();
+    return {translations};
+  },
   data() {
     return {
       username: "",
       email: "",
       password: "",
-      errorMessage: "",
-      translations: useTranslations(),
+      errorMessage: ""
     };
   },
   methods: {
@@ -80,6 +83,7 @@ export default {
           `${import.meta.env.VITE_APP_API_REGISTER}`,
           userData
         );
+        console.log(response.message)
 
         if (response.data.success) {
           this.$router.push("/login");

@@ -4,10 +4,13 @@ import { useTranslations } from "@/composables/useTranslations";
 import axios from "axios";
 
 export default {
+  setup(){
+    const translations = useTranslations();
+    return {translations};
+  },
   data() {
     return {
       lobbyCode: 1,
-      translations: useTranslations(),
     };
   },
   methods: {
