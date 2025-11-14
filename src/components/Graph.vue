@@ -42,7 +42,7 @@ let updated: boolean = false;
 let first: boolean = true;
 
 
-
+// updateing the result arrays based on json from backend
 const updateArray = (json) => {
         let res = json[0];
 
@@ -170,6 +170,7 @@ onMounted(() => {
     // Interval to increment x-axis max value
     eventBusGraphData.on('arrayUpdated', updateArray);
 
+    //TODO figure out units
     const xIntervalId = setInterval(() => {
         const chart = myChart.value.chart;
 
